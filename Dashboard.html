@@ -26,84 +26,54 @@
     <div class="dashboard">
       <div class="container">
         <div class="row">
-          <div class="col-2 sidebar">
-            <!-- <iframe
-                  src="../Layout/DashboardSidebar.html"
+          <div class="col-2 sidebar p-2">
+            <iframe
+                  src="/Layout/DashboardSidebar.html"
                   frameborder="0"
                   scrolling="no"
-                  width="250px"
                   height="100%"
-                ></iframe> -->
-            <div class="logo">
-              <h4>Management</h4>
-            </div>
-            <div class="sidebaritems">
-              <h3>DASHBOARD</h3>
-              <!-- <p>
-                <span
-                  ><i class="fa-solid fa-table-cells"></i>
-                  <a href="../Dashboard.html"> Dashboard</a></span
-                >
-              </p> -->
+                  ></iframe>
+                  <!-- width="250px" -->
+            <!-- <div class="logo bold">
+              <h3>Management</h3>
+              <h3>Dashboard</h3> -->
+              <!-- <h4>DASHBOARD</h4> -->
+            <!-- </div> -->
+            <!-- <div class="sidebaritems">
               <div class="sidebaritems">
                 <div class="dropdown">
-                  <!-- Use JavaScript to toggle the dropdown when the button is clicked -->
                   <button class="dropbtn" onclick="toggleDropdown()">
                     <i class="fa-solid fa-table-cells"></i>
                     <a href="../Dashboard.html">Dashboard</a>
                   </button>
                 </div>
               </div>
-              <!-- <p><span><i class="fa-solid fa-bars"></i> Class</span></p> -->
-              <!-- Use JavaScript to toggle the dropdown when the button is clicked -->
-              <!-- <div class="dropdown">
-                    <button class="dropbtn" onclick="toggleDropdown()">
-                      <i class="fa-solid fa-table-cells"></i
-                      ><a href="../Banner.html">Banner</a>
-                    </button>
-                  </div> -->
               <div class="sidebaritems">
                 <div class="dropdown">
-                  <!-- Use JavaScript to toggle the dropdown when the button is clicked -->
                   <button class="dropbtn" onclick="toggleDropdown()">
                     <i class="fa-solid fa-flag"></i>
                     <a href="../Banner/Banner.html">Banner</a>
                   </button>
-                  <!-- <div class="dropdown-content" id="classDropdown">
-                                      <a href="Manageclass.html">Manage Class</a>
-                                      <a href="Managesection.html">Manage Section</a>
-                                      <a href="Managesubject.html">Manage Subject</a>
-                                  </div> -->
                 </div>
               </div>
               <div class="sidebaritems">
                 <div class="dropdown">
-                  <!-- Use JavaScript to toggle the dropdown when the button is clicked -->
                   <button class="dropbtn" onclick="toggleDropdown()">
                     <i class="fa-solid fa-barcode"></i>
                     <a href="/Category/Category.html">Category</a>
                   </button>
-                  <!-- <div class="dropdown-content" id="classDropdown">
-                                        <a href="#">Manage Student</a>
-                                    </div> -->
                 </div>
               </div>
               <div class="sidebaritems">
                 <div class="dropdown">
-                  <!-- Use JavaScript to toggle the dropdown when the button is clicked -->
                   <button class="dropbtn" onclick="toggleDropdown()">
                     <i class="fa-solid fa-ticket"></i>
                     <a href="../Coupon/Coupon.html">Coupon</a>
                   </button>
-                  <!-- <div class="dropdown-content" id="classDropdown">
-                                        <a href="#">Manage Teacher</a>
-                                    </div> -->
                 </div>
               </div>
-
               <div class="sidebaritems">
                 <div class="dropdown">
-                  <!-- Use JavaScript to toggle the dropdown when the button is clicked -->
                   <button class="dropbtn" onclick="toggleDropdown()">
                     <i class="fa-solid fa-handshake"></i>
                     <a href="../Transaction/transaction.html">Transactions</a>
@@ -113,7 +83,6 @@
               </div>
               <div class="sidebaritems">
                 <div class="dropdown">
-                  <!-- Use JavaScript to toggle the dropdown when the button is clicked -->
                   <button class="dropbtn" onclick="toggleDropdown()">
                     <i class="fa-solid fa-user"></i>
                     <a href="../Users/Users.html">Users</a>
@@ -121,7 +90,16 @@
                   <div class="dropdown-content" id="classDropdown"></div>
                 </div>
               </div>
-            </div>
+              <div class="sidebaritems">
+                <div class="dropdown">
+                  <button class="dropbtn" onclick="toggleDropdown()">
+                    <i class="fa-solid fa-truck"></i>
+                    <a href="OrderDetail.html">Order Details</a>
+                  </button>
+                  <div class="dropdown-content" id="classDropdown"></div>
+                </div>
+              </div>
+            </div> -->
             <!-- In your main HTML page -->
             <!-- #include virtual="sidebar.html" -->
           </div>
@@ -152,33 +130,77 @@
                   <i class="fa-solid fa-bell"></i>
                 </div>
               </div>
-              <h2 class="mt-5">WELCOME - Super Admin</h2>
+              <h2 class="mt-5">Welcome - Super Admin</h2>
               <div class="bars">
                 <i class="fa-solid fa-bars"></i>
               </div>
-              <div class="row mt-5">
-                <div class="col-3 col-t-6 col-p-12">
-                  <div class="admin_box">
-                    <h4>Customers</h4>
-                    <p>Total Customers</p>
-                    <p class="purple">262</p>
+              <!-- <div class="col-3 col-t-6 col-p-12">
+                <div class="admin_box ">
+                  <h4>Customers</h4>
+                  <p>Total Customers</p>
+                  <p class="purple">262</p>
+                </div>
+              </div> -->
+
+
+              <!-- <div class="container-fluid  no-gutters w-100">
+
+                <div class="mt-5 w-full d-flex align-items-center justify-content-space-between no-gutters ">
+                  <div class="card col-4 col-t-6 col-p-12">
+                    <div class="card-body  d-flex flex-column justify-content-center">
+                      <h3 class="card-title">Customers</h3>
+                      <h1 class="card-text mt-5 blue">262</h1>
+                      <p class="card-text">Total Customers</p>
+                    </div>
+                  </div>
+                  <div class="card col-4 col-t-6 col-p-12">
+                    <div class="card-body  d-flex flex-column justify-content-center">
+                      <h3 class="card-title">Sales</h3>
+                      <h1 class="card-text mt-5 blue">2</h1>
+                      <p class="card-text">Total Sales</p>
+                    </div>
+                  </div>
+                  <div class="card col-4 col-t-6 col-p-12">
+                    <div class="card-body  d-flex flex-column justify-content-center">
+                      <h3 class="card-title">Profits</h3>
+                      <h1 class="card-text mt-5 blue">262</h1>
+                      <p class="card-text">Total Profits</p>
+                    </div>
                   </div>
                 </div>
-                <div class="col-3 col-t-6 col-p-12">
-                  <div class="admin_box">
-                    <h4>Sales</h4>
-                    <p>Total Sales</p>
-                    <p class="purple">6</p>
+              </div> -->
+              <div class="container-fluid">
+                <div class="row mt-5">
+                  <div class="col-sm-12 col-md-4">
+                    <div class="card">
+                      <div class="card-body d-flex flex-column justify-content-center">
+                        <h3 class="card-title">Customers</h3>
+                        <h1 class="card-text mt-5 blue">262</h1>
+                        <p class="card-text">Total Customers</p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div class="col-3 col-t-6 col-p-12">
-                  <div class="admin_box">
-                    <h4>Profits</h4>
-                    <p>Total Profits</p>
-                    <p class="purple">262</p>
+                  <div class="col-sm-12 col-md-4">
+                    <div class="card">
+                      <div class="card-body d-flex flex-column justify-content-center">
+                        <h3 class="card-title">Sales</h3>
+                        <h1 class="card-text mt-5 blue">2</h1>
+                        <p class="card-text">Total Sales</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-12 col-md-4">
+                    <div class="card">
+                      <div class="card-body d-flex flex-column justify-content-center">
+                        <h3 class="card-title">Profits</h3>
+                        <h1 class="card-text mt-5 blue">262</h1>
+                        <p class="card-text">Total Profits</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
+              
             </div>
           </div>
         </div>
