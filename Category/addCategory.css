@@ -1,0 +1,48 @@
+.addCategory h1 {
+  text-align: center;
+}
+
+.addCategory form {
+  display: flex;
+  flex-direction: column;
+}
+
+.addCategory label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.addCategory input[type="text"],
+.addCategory input[type="file"],
+.addCategory textarea {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.addCategory button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.addCategory button:hover {
+  background-color: #0056b3;
+}
+
+.addCategory .actions {
+  display: flex;
+  gap: 5px;
+  width: 100%;
+  align-items: center;
+  justify-content: right;
+}
+
+.addCategory .actions .closebtn {
+  background-color: red;
+}
