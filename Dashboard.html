@@ -27,50 +27,77 @@
       <div class="container">
         <div class="row">
           <div class="col-2 sidebar">
+            <!-- <iframe
+                  src="../Layout/DashboardSidebar.html"
+                  frameborder="0"
+                  scrolling="no"
+                  width="250px"
+                  height="100%"
+                ></iframe> -->
             <div class="logo">
               <h4>Management</h4>
             </div>
             <div class="sidebaritems">
               <h3>DASHBOARD</h3>
-              <p>
+              <!-- <p>
                 <span
                   ><i class="fa-solid fa-table-cells"></i>
                   <a href="../Dashboard.html"> Dashboard</a></span
                 >
-              </p>
-              <!-- <p><span><i class="fa-solid fa-bars"></i> Class</span></p> -->
-              <div class="dropdown">
-                <!-- Use JavaScript to toggle the dropdown when the button is clicked -->
-                <button class="dropbtn" onclick="toggleDropdown()">
-                  <i class="fa-solid fa-table-cells"></i> Banner
-                </button>
-                <!-- <div class="dropdown-content" id="classDropdown">
-                                <a href="Manageclass.html">Manage Class</a>
-                                <a href="Managesection.html">Manage Section</a>
-                                <a href="Managesubject.html">Manage Subject</a>
-                            </div> -->
-              </div>
+              </p> -->
               <div class="sidebaritems">
                 <div class="dropdown">
                   <!-- Use JavaScript to toggle the dropdown when the button is clicked -->
                   <button class="dropbtn" onclick="toggleDropdown()">
                     <i class="fa-solid fa-table-cells"></i>
-                    <a href="/Category/Category.html">Category</a>
+                    <a href="../Dashboard.html">Dashboard</a>
+                  </button>
+                </div>
+              </div>
+              <!-- <p><span><i class="fa-solid fa-bars"></i> Class</span></p> -->
+              <!-- Use JavaScript to toggle the dropdown when the button is clicked -->
+              <!-- <div class="dropdown">
+                    <button class="dropbtn" onclick="toggleDropdown()">
+                      <i class="fa-solid fa-table-cells"></i
+                      ><a href="../Banner.html">Banner</a>
+                    </button>
+                  </div> -->
+              <div class="sidebaritems">
+                <div class="dropdown">
+                  <!-- Use JavaScript to toggle the dropdown when the button is clicked -->
+                  <button class="dropbtn" onclick="toggleDropdown()">
+                    <i class="fa-solid fa-flag"></i>
+                    <a href="../Banner/Banner.html">Banner</a>
                   </button>
                   <!-- <div class="dropdown-content" id="classDropdown">
-                                    <a href="#">Manage Student</a>
-                                </div> -->
+                                      <a href="Manageclass.html">Manage Class</a>
+                                      <a href="Managesection.html">Manage Section</a>
+                                      <a href="Managesubject.html">Manage Subject</a>
+                                  </div> -->
                 </div>
               </div>
               <div class="sidebaritems">
                 <div class="dropdown">
                   <!-- Use JavaScript to toggle the dropdown when the button is clicked -->
                   <button class="dropbtn" onclick="toggleDropdown()">
-                    <i class="fa-solid fa-table-cells"></i> Coupon
+                    <i class="fa-solid fa-barcode"></i>
+                    <a href="/Category/Category.html">Category</a>
                   </button>
                   <!-- <div class="dropdown-content" id="classDropdown">
-                                    <a href="#">Manage Teacher</a>
-                                </div> -->
+                                        <a href="#">Manage Student</a>
+                                    </div> -->
+                </div>
+              </div>
+              <div class="sidebaritems">
+                <div class="dropdown">
+                  <!-- Use JavaScript to toggle the dropdown when the button is clicked -->
+                  <button class="dropbtn" onclick="toggleDropdown()">
+                    <i class="fa-solid fa-ticket"></i>
+                    <a href="../Coupon/Coupon.html">Coupon</a>
+                  </button>
+                  <!-- <div class="dropdown-content" id="classDropdown">
+                                        <a href="#">Manage Teacher</a>
+                                    </div> -->
                 </div>
               </div>
 
@@ -78,7 +105,8 @@
                 <div class="dropdown">
                   <!-- Use JavaScript to toggle the dropdown when the button is clicked -->
                   <button class="dropbtn" onclick="toggleDropdown()">
-                    <i class="fa-solid fa-table-cells"></i> Transactions
+                    <i class="fa-solid fa-handshake"></i>
+                    <a href="../Transaction/transaction.html">Transactions</a>
                   </button>
                   <div class="dropdown-content" id="classDropdown"></div>
                 </div>
@@ -87,12 +115,15 @@
                 <div class="dropdown">
                   <!-- Use JavaScript to toggle the dropdown when the button is clicked -->
                   <button class="dropbtn" onclick="toggleDropdown()">
-                    <i class="fa-solid fa-table-cells"></i> Users
+                    <i class="fa-solid fa-user"></i>
+                    <a href="../Users/Users.html">Users</a>
                   </button>
                   <div class="dropdown-content" id="classDropdown"></div>
                 </div>
               </div>
             </div>
+            <!-- In your main HTML page -->
+            <!-- #include virtual="sidebar.html" -->
           </div>
 
           <!-- dashboard -->

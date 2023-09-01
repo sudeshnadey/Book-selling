@@ -6,6 +6,14 @@
   display: flex;
   flex-direction: column;
 }
+.addCategory .imgPreview {
+  display: flex;
+  justify-content: center;
+}
+.addCategory .imgPreview img {
+  max-width: 200px;
+  max-height: 200px;
+}
 
 .addCategory label {
   font-weight: bold;
