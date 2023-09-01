@@ -1,0 +1,430 @@
+/* Basic Css  */
+* {
+    margin: 0;
+    box-sizing: border-box;
+  }
+  a {
+    text-decoration: none;
+  }
+  img {
+    vertical-align: bottom;
+  }
+  ::placeholder {
+    color: #FFFFFF; /* You can adjust the color code as needed */
+}
+  :disabled {
+    cursor: not-allowed;
+  }
+  button {
+    cursor: pointer;
+    padding: 0;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  abbr[title] {
+    text-decoration: underline dotted;
+    -webkit-text-decoration: underline dotted;
+  }
+  
+  html {
+    font-size: 15px;
+    scroll-behavior: smooth;
+  }
+  body {
+    font: 16px/1.2 "Montserrat", sans-serif;
+  }
+  .thin {
+    font-weight: 100;
+  }
+.image-preview {
+    max-width: 100px;
+    max-height: 100px;
+}
+
+  .container {
+    max-width: 1600px;
+    margin: auto;
+    padding: 0 1rem;
+  }
+  .row {
+    display: flex;
+    flex-flow: row wrap;
+    margin: 0 -1rem;
+  }
+  [class^="col-"] {
+    flex: 1 0 auto;
+    padding: 0 1rem;
+  }
+  .col-1 {
+    flex-basis: 8.33%;
+    max-width: 8.33%;
+  }
+  .col-2 {
+    flex-basis: 16.66%;
+    max-width: 16.66%;
+  }
+  .col-3 {
+    flex-basis: 25%;
+    max-width: 25%;
+  }
+  .col-4 {
+    flex-basis: 33.33%;
+    max-width: 33.33%;
+  }
+  .col-5 {
+    flex-basis: 41.66%;
+    max-width: 41.66%;
+  }
+  .col-6 {
+    flex-basis: 50%;
+    max-width: 50%;
+  }
+  .col-7 {
+    flex-basis: 58.33%;
+    max-width: 58.33%;
+  }
+  .col-8 {
+    flex-basis: 66.66%;
+    max-width: 66.66%;
+  }
+  .col-9 {
+    flex-basis: 75%;
+    max-width: 75%;
+  }
+  .col-10 {
+    flex-basis: 83.33%;
+    max-width: 83.33%;
+  }
+  .col-11 {
+    flex-basis: 91.66%;
+    max-width: 91.66%;
+  }
+  .col-12 {
+    flex-basis: 100%;
+    max-width: 100%;
+  }
+  .flex {
+    display: flex;
+  }
+  .justify-right {
+    justify-content: right;
+  }
+  .align-center {
+    align-items: center;
+  }
+  .purple{
+    color: #be9ef1 !important;
+  }
+/* dropdown */
+/* Style the dropdown container */
+.dropdown2 {
+padding: 2px;
+}
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Style the dropdown button */
+.dropbtn {
+  background-color: transparent;
+  color: rgb(0, 0, 0);
+
+  border: none;
+  cursor: pointer;
+}
+.table-box {
+  border: 2px solid #ccc;
+  padding: 10px; /* Add padding to create space between the border and table */
+  border-radius: 10px; /* Add rounded corners */
+  background-color: #f8f8f8; /* Add a background color if desired */
+}
+
+/* Style the dropdown content (hidden by default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #eaf2ff;
+  min-width:200px;
+  z-index: 1;
+}
+
+/* Style the dropdown links */
+.dropdown-content a {
+  color: black;
+  padding: 5px 6px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color on hover */
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+/* Show the dropdown content when the dropdown button is hovered over */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+  /* Login Page Styling  */
+  .login_page{
+    background: linear-gradient(to bottom, #f4f4f4, #cd9bc5);
+    text-align: center;
+    height: 100vh;
+  }
+  .login_box{
+    border: 2px solid black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 40px 50px;
+    width: 50%;
+    height: 80vh;
+    background: #705e9b;
+    border-radius: 20px;
+    border: none;
+  }
+  .login_box input {
+    padding: 20px;
+    border: none;
+    border-bottom: 2px solid rgb(231, 231, 231);
+    width: 100%;
+    text-align: left;
+    margin: 20px 0px;
+    background: transparent;
+    font-size: 20px;
+    color: white;
+}
+.login_box input:focus{
+    outline: none;
+    border-bottom: 2px solid black;
+}
+.login_box .flex{
+    justify-content: space-between;
+}
+.login_box h1{
+    color: antiquewhite;
+    font-weight: 800;
+}
+.login_box p{
+    font-size: 10px;
+    color: wheat;
+    margin-bottom: 40px;
+}
+.login_box h2{
+    color: white;
+}
+.login_box .flex p{
+    font-size: 15px;
+    margin: 20px 0px;
+}
+.login_box .flex .rememberme{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: wheat;
+    padding: 0px;
+    font-size: 15px;
+}
+.btn{
+    padding: 15px;
+    font-size: 20px;
+    border-radius: 15px;
+    border: none;
+    background: linear-gradient(to bottom, #614385, #614385);
+    color: white;
+    text-align: center;
+}
+.btn i{
+    margin: 0px 10px;
+}
+
+/* responsive  */
+@media screen and (max-width: 460px){
+    .login_box input{
+        font-size: 12px;
+    }
+    .login_box .flex p{
+        font-size: 10px;
+    }
+}
+/* ===============================================dashboard styling============================================================= */
+/* sidebar styling  */
+
+.sidebar{
+    background: #edf2f6;
+    padding: 10px;
+    color: #000000;
+    height: 800px;
+}
+.sidebar .logo{
+    margin-bottom: 20px;
+}
+.sidebar .sidebaritems{
+    margin-bottom: 10px;
+}
+.sidebar .sidebaritems h3{
+    margin-bottom: 10px;
+}
+.sidebar .sidebaritems p{
+    color: #0c0c0c;
+}
+.sidebar .sidebaritems i{
+    margin-right: 20px;
+}
+.sidebar .sidebaritems .arrow{
+    float: right;
+}
+
+
+/* maindashboard */
+.maindash{
+background: rgb(244, 241, 251) 20%;
+}
+.bars{
+  display: none;
+}
+.maindashboard{
+    padding: 20px 0px;
+    color: black;
+}
+.maindashboard i{
+    font-size: 20px;
+}
+.maindashboard .btnd{
+    padding: 7px;
+    background: white;
+    border: none;
+    border-radius: 12px;
+    width: 100%;
+    font-size: 13px;
+    text-align: center;
+    color: black;
+    font-weight: 600;
+}
+.maindashboard .col-1, .col-2{
+    line-height: 50px;
+}
+.maindashboard h4{
+    margin: 40px 0px;
+}
+.admin_box{
+    width: 100%;
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+}
+.admin_box h3{
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+.admin_box p{
+    font-size: 30px;
+    color: #54595F;
+    margin-bottom: 20px;
+}
+.maindashboard .flex{
+    justify-content: space-between;
+    align-items: center;
+}
+.maindashboard .flex a{
+    width: 100px;
+    padding: 10px;
+    text-align: center;
+    border: 2px solid transparent;
+    border-radius: 15px;
+    background: #f3ecff;
+    color: white;
+}
+.maindashboard .notice_box{
+    padding: 60px 20px;
+}
+.maindashboard .notice_box .flex{
+    border-bottom: 2px solid purple;
+    border-width: 100%;
+}
+
+
+/* responsive design  */
+@media screen and (max-width: 1220px){
+  .row .col-t-6 {flex-basis: 50%; max-width: 50%;}
+  .sidebar{
+    position: absolute;
+    top: 0;
+    left: -1000px;
+    max-width: 409px;
+    height: auto;
+  }
+  .display{
+    left: 0;
+  }
+  .maindash{
+    max-width: 100%;
+    height: 100vh;
+  }
+  .navbar{
+    display: none;
+  }
+  .admin_box{
+    margin-top: 20px;
+  }
+  .col-t-6{
+    margin: 20px 0px;
+  }
+  .bars{
+    position: absolute;
+    /* left: 200px; */
+    display: block;
+    margin-bottom: 20px;
+  }
+  .barsleft{
+    left: 200px;
+  }
+}
+.btnadd{
+  background-color: #d7f0da;
+  display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+.btn2{
+  padding: 5px;
+  background-color: #ff4545;
+  border-radius: 10px;
+  border-color: transparent;
+}
+.btn3{
+  padding: 5px;
+  background-color: #0fff27;
+  border-radius: 10px;
+  border-color: transparent;
+}
+@media screen and (max-width: 460px){
+  .row .col-p-12{flex-basis: 100%; max-width: 100%;}
+  .maindash{
+    height: fit-content;
+  }
+  .admin_box p{
+    font-size: 20px;
+  }
+}
