@@ -1,0 +1,24 @@
+.sidebar {
+  background: #edf2f6;
+  padding: 10px;
+  color: #000000;
+  height: 800px;
+}
+.sidebar .logo {
+  margin-bottom: 20px;
+}
+.sidebar .sidebaritems {
+  margin-bottom: 10px;
+}
+.sidebar .sidebaritems h3 {
+  margin-bottom: 10px;
+}
+.sidebar .sidebaritems p {
+  color: #0c0c0c;
+}
+.sidebar .sidebaritems i {
+  margin-right: 20px;
+}
+.sidebar .sidebaritems .arrow {
+  float: right;
+}

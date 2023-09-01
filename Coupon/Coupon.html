@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Category</title>
+    <title>Coupon</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css"
@@ -13,9 +13,9 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../Style.css" />
-    <link rel="stylesheet" href="table.css" />
-    <link rel="stylesheet" href="popUpStyle.css" />
-    <link rel="stylesheet" href="addCategory.css" />
+    <link rel="stylesheet" href="../Category/table.css" />
+    <link rel="stylesheet" href="../Category/popUpStyle.css" />
+    <link rel="stylesheet" href="../Category/addCategory.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
@@ -142,29 +142,18 @@
               </div>
               <!-- maincontent   -->
               <div>
-                <h2 class="mt-5">Category</h2>
-                <!--  <button >Add</button> -->
+                <h2 class="mt-5">Coupon</h2>
+                <!-- <button >Add</button> -->
                 <div
                   style="
                     display: flex;
+                    gap: 5px;
                     align-items: center;
-                    justify-content: space-between;
+                    justify-content: left;
                   "
                 >
-                  <div
-                    style="
-                      display: flex;
-                      gap: 5px;
-                      align-items: center;
-                      justify-content: left;
-                    "
-                  >
-                    <i class="fa-solid fa-plus"></i
-                    ><a href="/Category/AddCategory.html">Add</a>
-                  </div>
-                  <div class="searbar">
-                    <input type="text" name="searchbar" id="searchbar" />
-                  </div>
+                  <i class="fa-solid fa-plus"></i
+                  ><a href="addCoupon.html">Add</a>
                 </div>
               </div>
 
@@ -175,10 +164,10 @@
                 <table class="styled-table">
                   <thead>
                     <tr>
-                      <th>No</th>
+                      <th>No0</th>
                       <th>Name</th>
-                      <th>Image</th>
-                      <th>Description</th>
+                      <th>Validity and Starting</th>
+                      <th>Discount Price</th>
                       <th></th>
                     </tr>
                   </thead>
@@ -187,11 +176,7 @@
                       <td>1</td>
                       <td>Hunda</td>
                       <td>M</td>
-                      <td>
-                        Lorem ipsum dolor, sit amet consectetur adipisicing
-                        elit. Maxime distinctio at officia nihil consequatur
-                        enim ad!
-                      </td>
+                      <td>125</td>
                       <td>
                         <button class="edit-button">
                           <i class="fa-solid fa-user-pen"></i>
@@ -210,22 +195,16 @@
                     <label for="name">Name:</label>
                     <input type="text" id="name" name="name" required />
 
-                    <label for="image">Image:</label>
+                    <label for="image">Validity and Starting:</label>
+                    <input type="text" id="validity" name="validity" required />
+
+                    <label for="description">Discount Price:</label>
                     <input
-                      type="file"
-                      id="image"
-                      name="image"
-                      accept="image/*"
+                      id="discountPrice"
+                      name="discountPrice"
+                      type="number"
                       required
                     />
-
-                    <label for="description">Description:</label>
-                    <textarea
-                      id="description"
-                      name="description"
-                      rows="4"
-                      required
-                    ></textarea>
 
                     <div class="actions">
                       <button type="submit">Submit</button>

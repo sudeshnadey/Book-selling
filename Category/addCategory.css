@@ -13,6 +13,7 @@
 }
 
 .addCategory input[type="text"],
+.addCategory input[type="number"],
 .addCategory input[type="file"],
 .addCategory textarea {
   padding: 10px;
@@ -41,6 +42,7 @@
   width: 100%;
   align-items: center;
   justify-content: right;
+  margin: 0.5rem 0;
 }
 
 .addCategory .actions .closebtn {
