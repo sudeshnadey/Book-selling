@@ -34,17 +34,17 @@
           <!-- In your main HTML page -->
           <div class="col-2 sidebar">
             <iframe
-                  src="/Layout/DashboardSidebar.html"
-                  frameborder="0"
-                  scrolling="no"
-                  height="100%"
-                  ></iframe>
+              src="/Layout/DashboardSidebar.html"
+              frameborder="0"
+              scrolling="no"
+              height="100%"
+            ></iframe>
             <!-- In your main HTML page -->
             <!-- #include virtual="sidebar.html" -->
           </div>
 
           <!-- dashboard -->
-          <div class="col-10 maindash">
+          <div class="col-10 maindash ps-4">
             <div class="maindashboard">
               <!-- banner -->
               <div class="row navbar">
@@ -105,7 +105,10 @@
                 <i class="fa-solid fa-bars"></i>
               </div>
               <div class="categoryTable row mt-3">
-                <table class="table table-hover table-bordered">
+                <table
+                  class="table table-hover table-bordered"
+                  id="category-table"
+                >
                   <!-- <table class="styled-table"> -->
                   <thead>
                     <tr>
@@ -116,8 +119,8 @@
                       <th></th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
+                  <tbody id="category-table-body">
+                    <!-- <tr>
                       <td>1</td>
                       <td>Hunda</td>
                       <td>M</td>
@@ -126,7 +129,6 @@
                         elit. Maxime distinctio at officia nihil consequatur
                         enim ad!
                       </td>
-                      <td></td>
                       <td>
                         <button class="edit-button" style="border: none">
                           <i class="fa-solid fa-pen"></i>
@@ -135,7 +137,7 @@
                           <i class="fa-solid fa-trash"></i>
                         </button>
                       </td>
-                    </tr>
+                    </tr> -->
                   </tbody>
                 </table>
               </div>
@@ -336,7 +338,8 @@
         </div>
       </div>
     </div>
-    <script src="Script.js"></script>
+    <script src="../Script.js"></script>
+    <script src="category.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
     <script>
       // JavaScript to handle the popup

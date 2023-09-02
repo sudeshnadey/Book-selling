@@ -1,6 +1,6 @@
 .sidebar button {
-    cursor: pointer;
-    padding: 0;
+  cursor: pointer;
+  padding: 0;
   border: none;
 }
 
@@ -25,20 +25,29 @@
   border: none;
   cursor: pointer;
 }
-.sidebar .dropbtn i{
+.sidebar .dropbtn i {
   width: 10px;
 }
 
 /* Style the dropdown links */
+.sidebar .dropdown {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-width: 90%;
+}
+
+.sidebar .dropdown:hover a {
+  font-weight: 500;
+}
+
 .sidebar .dropdown a {
   color: black;
   padding: 5px 6px;
   text-decoration: none;
   display: block;
-  font-size: 16px;
+  font-size: 18px;
 }
 
-.sidebar .highlight{
+.sidebar .highlight {
   font-weight: bolder;
 }
 

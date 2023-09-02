@@ -136,7 +136,7 @@ body {
   border: none;
   cursor: pointer;
 }
-.dropbtn i{
+.dropbtn i {
   width: 10px;
 }
 .table-box {
@@ -295,6 +295,7 @@ body {
 /* maindashboard */
 .maindash {
   background: rgb(244, 241, 251) 20%;
+  padding-left: 25px;
 }
 .bars {
   display: none;
