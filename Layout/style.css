@@ -6,6 +6,11 @@
 
 .sidebar {
   font-family: sans-serif;
+  margin: 0;
+  width: 250px;
+  /* position: sticky; */
+  /* position: sticky; */
+  /* top: 0; */
 }
 
 .sidebar a {
@@ -71,6 +76,7 @@
 .sidebar .logo {
   margin-bottom: 20px;
   margin-top: 20px;
+  font-weight: bold;
 }
 .sidebar .sidebaritems {
   margin-bottom: 10px;

@@ -1,3 +1,61 @@
+// Function to populate the coupon table
+function populateCouponTable(data) {
+  data.forEach(function (item) {
+    var row = document.createElement("tr");
+
+    row.innerHTML = `
+                  <td>${item.No}</td>
+                  <td>${item.Name}</td>
+                  <td>${item.Validity}</td>
+                  <td>$ ${item.Price}</td>
+                  <td>
+                      <button class="edit-button" style="border: none" data-coupon='${JSON.stringify(
+                        item
+                      )}'>
+                          <i class="fa-solid fa-pen"></i>
+                        </button>
+
+                        <button style="border: none; color: red" onclick="deleteCoupon(${
+                          item.No
+                        })">
+                          <i class="fa-solid fa-trash"></i>
+                        </button>
+                  </td>
+              `;
+
+    couponTableBody.appendChild(row);
+
+    // Add an event listener to the "Edit" button
+    var editButton = row.querySelector(".edit-button");
+    editButton.addEventListener("click", function () {
+      var couponData = JSON.parse(editButton.getAttribute("data-coupon"));
+      editCoupon(couponData);
+    });
+  });
+}
+
+function fetchDataFromAPI() {
+  fetch("https://api.bhattacharjeesolution.in/book/api/admin-show-banner.php", {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }) // Replace with your API endpoint
+    .then(function (response) {
+      console.log(response);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json(); // Parse the response as JSON
+    })
+    .then(function (data) {
+      // Call the populateBannerTableWithData function with the retrieved data
+      populateCouponTable(data);
+      console.log("data:", data);
+    })
+    .catch(function (error) {
+      console.error("Error fetching data:", error);
+    });
+}
 // coupon.js
 document.addEventListener("DOMContentLoaded", function () {
   var couponTable = document.getElementById("coupon-table");
@@ -21,44 +79,9 @@ document.addEventListener("DOMContentLoaded", function () {
       // Add more coupon data as needed
     ];
 
-    // Function to populate the coupon table
-    function populateCouponTable(data) {
-      data.forEach(function (item) {
-        var row = document.createElement("tr");
-
-        row.innerHTML = `
-                  <td>${item.No}</td>
-                  <td>${item.Name}</td>
-                  <td>${item.Validity}</td>
-                  <td>$ ${item.Price}</td>
-                  <td>
-                      <button class="edit-button" style="border: none" data-coupon='${JSON.stringify(
-                        item
-                      )}'>
-                          <i class="fa-solid fa-pen"></i>
-                        </button>
-
-                        <button style="border: none; color: red" onclick="deleteCoupon(${
-                          item.No
-                        })">
-                          <i class="fa-solid fa-trash"></i>
-                        </button>
-                  </td>
-              `;
-
-        couponTableBody.appendChild(row);
-
-        // Add an event listener to the "Edit" button
-        var editButton = row.querySelector(".edit-button");
-        editButton.addEventListener("click", function () {
-          var couponData = JSON.parse(editButton.getAttribute("data-coupon"));
-          editCoupon(couponData);
-        });
-      });
-    }
-
     // Call the populateCouponTable function with your coupon data on initial render
     populateCouponTable(couponData);
+    fetchDataFromAPI();
   }, 0); // No simulated delay in this example (adjust as needed)
 
   // Add an event listener to the search input field
@@ -112,7 +135,35 @@ document.addEventListener("DOMContentLoaded", function () {
 function deleteCoupon(couponNo) {
   // Add your code here to handle the deletion of the coupon with the specified No
   // For example, you can show a confirmation dialog and then remove the coupon from the table and data array
-  alert("Coupon with No " + couponNo + " will be deleted.");
+  // alert("Coupon with No " + couponNo + " will be deleted.");
+  if (window.confirm("Are you sure?") == true) {
+    console.log(couponNo);
+    const formdata = new FormData();
+    formdata.append("bannerId", couponNo);
+    var requestData = {
+      bannerId: couponNo,
+    };
+    fetch(`https://api.bhattacharjeesolution.in/book/api/delete-banner.php`, {
+      method: "POST",
+      // body: JSON.stringify(requestData),
+      body: formdata,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(function (response) {
+        console.log(response);
+        return response.json(); // Parse the response as JSON
+      })
+      .then(function (data) {
+        // Call the populateBannerTableWithData function with the retrieved data
+        // populateBannerTable(data);
+        console.log("data:", data);
+      })
+      .catch(function (error) {
+        console.error("Error fetching data:", error);
+      });
+  }
 }
 
 function editCoupon(couponData) {
@@ -132,7 +183,7 @@ function editCoupon(couponData) {
 
   // Add an event listener to the form submission
   const editForm = document.getElementById("editForm");
-  editForm.addEventListener("submit", function (e) {
+  editForm.addEventListener("submit", async function (e) {
     e.preventDefault(); // Prevent the form from submitting normally (you can handle the submission logic here)
     // You can access the form data using nameInput.value, validityInput.value, and priceInput.value
     console.log(
@@ -141,6 +192,35 @@ function editCoupon(couponData) {
       validityInput.value,
       discountPriceInput.value
     );
+
+    const formData = new FormData();
+    formData.append("name", nameInput.value);
+    formData.append("validity", validityInput.value);
+    formData.append("discountprice", discountPriceInput.value);
+    formData.append("bannerId", couponData.id);
+
+    try {
+      const response = await fetch(
+        "https://api.bhattacharjeesolution.in/book/api/edit-banner.php",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (response.ok) {
+        // Handle success (e.g., display a success message)
+        console.log("Form submitted successfully!");
+        fetchDataFromAPI();
+        editPopup.style.display = "none"; // Close the popup after submission (you can replace this with your logic)
+      } else {
+        // Handle error (e.g., display an error message)
+        console.error("Form submission failed!");
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+
     editPopup.style.display = "none"; // Close the popup after submission (you can replace this with your logic)
   });
 

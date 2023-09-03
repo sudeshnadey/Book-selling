@@ -283,6 +283,9 @@ body {
   padding: 10px;
   color: #000000;
   height: 800px;
+  /* position: sticky;
+  top: 0;
+  width: 250px; */
 }
 .sidebar .logo {
   margin-bottom: 20px;

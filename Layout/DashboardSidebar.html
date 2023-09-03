@@ -27,7 +27,7 @@
       <div>
         <i class="fa-solid fa-gear fa-2xl"></i>
       </div>
-      <div class="logo bold ">
+      <div class="logo bold">
         <h3>Management</h3>
         <h3>Dashboard</h3>
         <!-- <h4>DASHBOARD</h4> -->
@@ -60,8 +60,10 @@
         <div class="sidebaritems">
           <div class="dropdown">
             <button class="dropbtn" onclick="toggleDropdown()">
-              <i class="fa-solid fa-barcode"></i>
-              <a href="/SubCategory/subCategory.html" target="_top">Sub Category</a>
+              <i class="fa-solid fa-divide"></i>
+              <a href="/SubCategory/subCategory.html" target="_top"
+                >Sub Category</a
+              >
             </button>
           </div>
         </div>
@@ -77,7 +79,7 @@
           <div class="dropdown">
             <button class="dropbtn" onclick="toggleDropdown()">
               <i class="fa-solid fa-handshake"></i>
-              <a href="#">Transactions</a> 
+              <a href="#">Transactions</a>
               <!-- <a href="../Transaction/transaction.html" target="_top">Transactions</a> -->
             </button>
             <div class="dropdown-content" id="classDropdown"></div>
@@ -96,7 +98,20 @@
           <div class="dropdown">
             <button class="dropbtn" onclick="toggleDropdown()">
               <i class="fa-solid fa-truck"></i>
-              <a href="../Orders/OrderDetail.html" target="_top">Order Details</a>
+              <a href="../Orders/OrderDetail.html" target="_top"
+                >Order Details</a
+              >
+            </button>
+            <div class="dropdown-content" id="classDropdown"></div>
+          </div>
+        </div>
+        <div class="sidebaritems">
+          <div class="dropdown">
+            <button class="dropbtn" onclick="toggleDropdown()">
+              <i class="fa-brands fa-product-hunt"></i>
+              <a href="../Product/Product.html" target="_top"
+                >Product</a
+              >
             </button>
             <div class="dropdown-content" id="classDropdown"></div>
           </div>
@@ -106,20 +121,19 @@
     <!-- </div> -->
     <script>
       // Get the current URL
-var url = window.location.href;
-console.log(url);
-// Get all the links in the sidebar
-var links = document.querySelectorAll('.sidebaritems a');
-console.log(links);
-// Loop through each link and check if it matches the current URL
-for (var i = 0; i < links.length; i++) {
-  // if (links[i].href === url) {
-  if ( url.includes(links[i].href)) {
-    // Add a class to the corresponding tab
-    links[i].classList.add('highlight');
-  }
-}
-
+      var url = window.location.href;
+      console.log(url);
+      // Get all the links in the sidebar
+      var links = document.querySelectorAll(".sidebaritems a");
+      console.log(links);
+      // Loop through each link and check if it matches the current URL
+      for (var i = 0; i < links.length; i++) {
+        // if (links[i].href === url) {
+        if (url.includes(links[i].href)) {
+          // Add a class to the corresponding tab
+          links[i].classList.add("highlight");
+        }
+      }
     </script>
     <script src="../Script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
