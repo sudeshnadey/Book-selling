@@ -4,6 +4,10 @@
   border: none;
 }
 
+.sidebar {
+  font-family: sans-serif;
+}
+
 .sidebar a {
   text-decoration: none;
   color: black;
@@ -44,7 +48,7 @@
   padding: 5px 6px;
   text-decoration: none;
   display: block;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .sidebar .highlight {

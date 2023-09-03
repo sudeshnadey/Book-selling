@@ -12,24 +12,88 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                <div class="login_box">
-                    <h1> BOOKING MANAGEMENT</h1>
-                    <!-- <p>ULTIMATE EDUCATION ERP</p> -->
-                    <h2> ADMIN LOGIN </h2>
-                    <input type="text" placeholder="ENTER EMAIL ADDRESS">
-                    <input type="password" placeholder="ENTER PASSWORD">
-                    <div class="flex">
-                    <span class="rememberme">
-                    <input type="checkbox" name="" id="">
-                    <p>Remember Me</p>
-                    </span> 
-                    <p class="margin">Forgot Password?</p>                   
-                    </div>
-                   <a href="Dashboard.html"><button class="btn"><i class="fa-solid fa-lock"></i>LOGIN</button></a>
-                </div>
+                    <form id="loginForm" onsubmit="return handleLogin()">
+                        <div class="login_box">
+                            <h1> BOOKING MANAGEMENT</h1>
+                            <!-- <p>ULTIMATE EDUCATION ERP</p> -->
+                            <h2> ADMIN LOGIN </h2>
+                            <input type="text" id="email" placeholder="ENTER EMAIL ADDRESS">
+                            <input type="password" id="password" placeholder="ENTER PASSWORD">
+                            <div class="flex">
+                            <span class="rememberme">
+                            <input type="checkbox" name="" id="remember">
+                            <p>Remember Me</p>
+                            </span> 
+                            <p class="margin">Forgot Password?</p>                   
+                            </div>
+                            <!-- <a href="Dashboard.html"> -->
+                                <button class="btn" type="submit">
+                                    <i class="fa-solid fa-lock"></i>LOGIN
+                                </button>
+                            <!-- </a> -->
+                            <p class="error-message" ></p> <!-- Error message placeholder -->
+
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>  
+    <script>
+        function handleLogin() {
+            console.log('inside');
+            // Get values from input fields
+            // var email = document.getElementById("email").value;
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+            var remember = document.getElementById("remember").checked;
+            var errorMessage = document.querySelector(".error-message");
+            // Perform login logic here (e.g., sending a request to the server)
+            console.log(email);
+            console.log(password);
+            console.log(remember);
+
+            if (email && password) {
+            // Define the API URL where you want to send the login request
+            var apiUrl = 'https://api.bhattacharjeesolution.in/book/api/admin-login.php';
+
+            // Prepare the request data (you may need to adjust this based on your API)
+            var requestData = {
+                emailid: email,
+                password: password,
+            };
+
+            // Send a POST request to the API using the Fetch API
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(function(response) {
+                // Check if the response status is OK (200)
+                if (response.ok) {
+                    // Handle successful login (e.g., redirect to dashboard)
+                    window.location.href = 'Dashboard.html';
+                } else {
+                    // Handle login failure (e.g., show an error message)
+                    alert('Login failed. Please check your credentials.');
+                }
+            })
+            .catch(function(error) {
+                // Handle network errors or other issues
+                console.error('Error:', error);
+            });
+        } else {
+            // Handle the case where either email or password is missing
+            console.log('Please enter both email and password.');
+            errorMessage.textContent = 'Please enter both email and password.';
+
+        }
+            // Return false to prevent the form from submitting
+            return false;
+        }
+    </script>
 </body>
 </html>

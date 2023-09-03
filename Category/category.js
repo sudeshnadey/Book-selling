@@ -57,6 +57,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Call the populateCategoryTable function with your category data on initial render
     populateCategoryTable(categoryData);
+
+    function fetchDataFromAPI() {
+      fetch('http://api.bhattacharjeesolution.in/book/api/category/admin-show.php', {
+      // fetch('https://api.bhattacharjeesolution.in/book/api/product/admin-show.php', {
+        headers: {
+          'Content-Type': 'application/json'
+      },
+      }) // Replace with your API endpoint
+        .then(function (response) {
+          // console.log(response);
+          // if (!response.ok) {
+          //   throw new Error('Network response was not ok');
+          // }
+          return response.json(); // Parse the response as JSON
+        })
+        .then(function (data) {
+          // Call the populateBannerTableWithData function with the retrieved data
+          // populateBannerTable(data);
+            console.log('data:', data);
+        })
+        .catch(function (error) {
+          console.error('Error fetching data:', error);
+        });
+    }
+    fetchDataFromAPI();
   }, 0); // No simulated delay in this example (adjust as needed)
 
   // Create a message element for displaying "No categories found" message
