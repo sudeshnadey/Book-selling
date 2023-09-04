@@ -1,3 +1,4 @@
+const token = localStorage.getItem("user");
 // Function to populate the category table
 function populateCategoryTable(data) {
   var categoryTable = document.getElementById("category-table");
@@ -40,7 +41,8 @@ function fetchDataFromAPI() {
     {
       // fetch('https://api.bhattacharjeesolution.in/book/api/product/admin-show.php', {
       headers: {
-        "Content-Type": "application/json",
+        // "Content-Type": "application/json",
+        token: token,
       },
     }
   ) // Replace with your API endpoint
@@ -209,32 +211,32 @@ function editCategory(categoryData) {
     );
 
     const formData = new FormData();
-      formData.append("name", nameInput.value);
-      formData.append("description", descriptionInput.value);
-      formData.append("image", imageInput.files[0]);
-      formData.append("bannerId", categoryData.id);
+    formData.append("name", nameInput.value);
+    formData.append("description", descriptionInput.value);
+    formData.append("image", imageInput.files[0]);
+    formData.append("bannerId", categoryData.id);
 
-      try {
-        const response = await fetch(
-          "http://api.bhattacharjeesolution.in/book/api/category/edit.php",
-          {
-            method: "POST",
-            body: formData,
-          }
-        );
-
-        if (response.ok) {
-          // Handle success (e.g., display a success message)
-          console.log("Form submitted successfully!");
-          fetchDataFromAPI();
-          editPopup.style.display = "none"; // Close the popup after submission (you can replace this with your logic)
-        } else {
-          // Handle error (e.g., display an error message)
-          console.error("Form submission failed!");
+    try {
+      const response = await fetch(
+        "http://api.bhattacharjeesolution.in/book/api/category/edit.php",
+        {
+          method: "POST",
+          body: formData,
         }
-      } catch (error) {
-        console.error("An error occurred:", error);
+      );
+
+      if (response.ok) {
+        // Handle success (e.g., display a success message)
+        console.log("Form submitted successfully!");
+        fetchDataFromAPI();
+        editPopup.style.display = "none"; // Close the popup after submission (you can replace this with your logic)
+      } else {
+        // Handle error (e.g., display an error message)
+        console.error("Form submission failed!");
       }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
     editPopup.style.display = "none"; // Close the popup after submission (you can replace this with your logic)
   });
 
