@@ -87,8 +87,8 @@ document.addEventListener("DOMContentLoaded", function () {
     ];
 
     // Call the populateCategoryTable function with your category data on initial render
-    populateCategoryTable(categoryData);
-    // fetchDataFromAPI();
+    // populateCategoryTable(categoryData);
+    fetchDataFromAPI();
   }, 0); // No simulated delay in this example (adjust as needed)
 
   // Create a message element for displaying "No categories found" message
