@@ -1,7 +1,9 @@
+const token = localStorage.getItem("user");
 function fetchDataFromAPI() {
   fetch("https://api.bhattacharjeesolution.in/book/api/admin-show-banner.php", {
     headers: {
       "Content-Type": "application/json",
+      token: token,
     },
   }) // Replace with your API endpoint
     .then(function (response) {
@@ -38,7 +40,7 @@ function populateBannerTable(data) {
               <td>${item.name}</td>
               <td>${item.description}</td>
               <td>
-              <img src="https://api.bhattacharjeesolution.in/book/api/images/${item.image.replace(
+              <img src="${item.image.replace(
                 " ",
                 "%20"
               )}" alt="" style="width: calc(80% - 30px); flex: 5; object-fit: cover; max-width: 100px; max-height: 100px;" />
@@ -118,7 +120,8 @@ function deleteBanner(bannerNumber) {
       // body: JSON.stringify(requestData),
       body: formdata,
       headers: {
-        "Content-Type": "application/json",
+        // "Content-Type": "application/json",
+        token: token,
       },
     })
       .then(function (response) {
@@ -128,6 +131,7 @@ function deleteBanner(bannerNumber) {
       .then(function (data) {
         // Call the populateBannerTableWithData function with the retrieved data
         // populateBannerTable(data);
+        fetchDataFromAPI();
         console.log("data:", data);
       })
       .catch(function (error) {
@@ -153,10 +157,7 @@ function editBanner(bannerData) {
   // Set the initial values in the form fields
   bannerNameInput.value = bannerData.name;
   bannerDescripitonInput.value = bannerData.description;
-  bannerImagePreInput.src = `https://api.bhattacharjeesolution.in/book/api/images/${bannerData.image.replace(
-    " ",
-    "%20"
-  )}`;
+  bannerImagePreInput.src = `${bannerData.image.replace(" ", "%20")}`;
 
   // Show the popup
   editButtons.forEach((button) => {
@@ -180,27 +181,40 @@ function editBanner(bannerData) {
       const formData = new FormData();
       formData.append("name", bannerNameInput.value);
       formData.append("description", bannerDescripitonInput.value);
-      formData.append("image", bannerImageInput.files[0]);
+      if (bannerImageInput.files[0]) {
+        formData.append("image", bannerImageInput.files[0]);
+      }
       formData.append("bannerId", bannerData.id);
-
+      console.log(token);
       try {
-        const response = await fetch(
-          "https://api.bhattacharjeesolution.in/book/api/edit-banner.php",
-          {
-            method: "POST",
-            body: formData,
-          }
-        );
-
-        if (response.ok) {
-          // Handle success (e.g., display a success message)
-          console.log("Form submitted successfully!");
-          fetchDataFromAPI();
-          editPopup.style.display = "none"; // Close the popup after submission (you can replace this with your logic)
-        } else {
-          // Handle error (e.g., display an error message)
-          console.error("Form submission failed!");
-        }
+        fetch("https://api.bhattacharjeesolution.in/book/api/edit-banner.php", {
+          method: "POST",
+          body: formData,
+          headers: {
+            // "Content-Type": "application/json",
+            token: token,
+          },
+        })
+          .then(async (response) => {
+            // console.log(response);
+            // response.json();
+            if (response.ok) {
+              const data = await response.json();
+              console.log(data);
+              // Handle success (e.g., display a success message)
+              console.log("Form submitted successfully!");
+              fetchDataFromAPI();
+              editPopup.style.display = "none"; // Close the popup after submission (you can replace this with your logic)
+            } else {
+              // Handle error (e.g., display an error message)
+              console.error("Form submission failed!");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            document.querySelector(".error-message").textContent =
+              "An error occurred while logging in.";
+          });
       } catch (error) {
         console.error("An error occurred:", error);
       }

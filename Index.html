@@ -1,99 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login Page</title>
-    <link rel="stylesheet" href="Style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
-<body>
+    <link rel="stylesheet" href="Style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
     <div class="login_page">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <form id="loginForm" onsubmit="return handleLogin()">
-                        <div class="login_box">
-                            <h1> BOOKING MANAGEMENT</h1>
-                            <!-- <p>ULTIMATE EDUCATION ERP</p> -->
-                            <h2> ADMIN LOGIN </h2>
-                            <input type="text" id="email" placeholder="ENTER EMAIL ADDRESS">
-                            <input type="password" id="password" placeholder="ENTER PASSWORD">
-                            <div class="flex">
-                            <span class="rememberme">
-                            <input type="checkbox" name="" id="remember">
-                            <p>Remember Me</p>
-                            </span> 
-                            <p class="margin">Forgot Password?</p>                   
-                            </div>
-                            <!-- <a href="Dashboard.html"> -->
-                                <button class="btn" type="submit">
-                                    <i class="fa-solid fa-lock"></i>LOGIN
-                                </button>
-                            <!-- </a> -->
-                            <p class="error-message" ></p> <!-- Error message placeholder -->
-
-                        </div>
-                    </form>
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <form id="loginForm" onsubmit="return handleLogin()">
+              <div class="login_box">
+                <h1>BOOKING MANAGEMENT</h1>
+                <!-- <p>ULTIMATE EDUCATION ERP</p> -->
+                <h2>ADMIN LOGIN</h2>
+                <input
+                  type="text"
+                  id="email"
+                  placeholder="ENTER EMAIL ADDRESS"
+                />
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="ENTER PASSWORD"
+                />
+                <div class="flex">
+                  <span class="rememberme">
+                    <input type="checkbox" name="" id="remember" />
+                    <p>Remember Me</p>
+                  </span>
+                  <p class="margin">Forgot Password?</p>
                 </div>
-            </div>
+                <!-- <a href="Dashboard.html"> -->
+                <button class="btn" type="submit">
+                  <i class="fa-solid fa-lock"></i>LOGIN
+                </button>
+                <!-- </a> -->
+                <p class="error-message"></p>
+                <!-- Error message placeholder -->
+              </div>
+            </form>
+          </div>
         </div>
-    </div>  
+      </div>
+    </div>
     <script>
-        function handleLogin() {
-            console.log('inside');
-            // Get values from input fields
-            // var email = document.getElementById("email").value;
-            var email = document.getElementById("email").value;
-            var password = document.getElementById("password").value;
-            var remember = document.getElementById("remember").checked;
-            var errorMessage = document.querySelector(".error-message");
-            // Perform login logic here (e.g., sending a request to the server)
-            console.log(email);
-            console.log(password);
-            console.log(remember);
+      function handleLogin() {
+        // Prevent the default form submission
+        event.preventDefault();
+        console.log("inside");
+        // Get values from input fields
+        // var email = document.getElementById("email").value;
+        var email = document.getElementById("email").value;
+        var password = document.getElementById("password").value;
+        var remember = document.getElementById("remember").checked;
+        var errorMessage = document.querySelector(".error-message");
+        // Perform login logic here (e.g., sending a request to the server)
+        console.log(email);
+        console.log(password);
+        console.log(remember);
 
-            if (email && password) {
-            // Define the API URL where you want to send the login request
-            var apiUrl = 'https://api.bhattacharjeesolution.in/book/api/admin-login.php';
+        if (email && password) {
+          // Define the API URL where you want to send the login request
+          var apiUrl =
+            "https://api.bhattacharjeesolution.in/book/api/admin-login.php";
 
-            // Prepare the request data (you may need to adjust this based on your API)
-            var requestData = {
-                emailid: email,
-                password: password,
-            };
+          // Prepare the request data (you may need to adjust this based on your API)
+          var requestData = {
+            emailid: email,
+            password: password,
+          };
 
-            // Send a POST request to the API using the Fetch API
-            fetch(apiUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(requestData)
+          // Send a POST request to the API using the Fetch API
+          fetch(apiUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestData),
+          })
+            .then(async (response) => {
+              // Check if the response status is OK (200)
+              console.log(response);
+              if (response.ok) {
+                const json = await response.json();
+                localStorage.setItem("user", json.token);
+                // Handle successful login (e.g., redirect to dashboard)
+                window.location.href = "Dashboard.html";
+              } else {
+                // Handle login failure (e.g., show an error message)
+                // alert("Login failed. Please check your credentials.");
+                errorMessage.textContent =
+                  "Login failed. Please check your credentials.";
+              }
             })
-            .then(function(response) {
-                // Check if the response status is OK (200)
-                if (response.ok) {
-                    // Handle successful login (e.g., redirect to dashboard)
-                    window.location.href = 'Dashboard.html';
-                } else {
-                    // Handle login failure (e.g., show an error message)
-                    alert('Login failed. Please check your credentials.');
-                }
-            })
-            .catch(function(error) {
-                // Handle network errors or other issues
-                console.error('Error:', error);
+            .catch(function (error) {
+              // Handle network errors or other issues
+              console.error("Error:", error);
             });
         } else {
-            // Handle the case where either email or password is missing
-            console.log('Please enter both email and password.');
-            errorMessage.textContent = 'Please enter both email and password.';
-
+          // Handle the case where either email or password is missing
+          console.log("Please enter both email and password.");
+          errorMessage.textContent = "Please enter both email and password.";
         }
-            // Return false to prevent the form from submitting
-            return false;
-        }
+        // Return false to prevent the form from submitting
+        return false;
+      }
     </script>
-</body>
+  </body>
 </html>
