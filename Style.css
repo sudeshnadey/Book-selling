@@ -283,9 +283,10 @@ body {
   padding: 10px;
   color: #000000;
   height: 800px;
-  /* position: sticky;
+  position: sticky;
   top: 0;
-  width: 250px; */
+  /* left: 0; */
+  /* width: 250px; */
 }
 .sidebar .logo {
   margin-bottom: 20px;
@@ -311,6 +312,7 @@ body {
 .maindash {
   background: rgb(244, 241, 251) 20%;
   padding-left: 25px;
+  z-index: 100;
 }
 .bars {
   display: none;

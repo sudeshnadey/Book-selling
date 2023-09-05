@@ -157,16 +157,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Function to handle category deletion
 function deleteCategory(categoryNumber) {
-  // Add your code here to handle the deletion of the category with the specified Number
-  // For example, you can show a confirmation dialog and then remove the category from the table and data array
-  // alert("Category with Number " + categoryNumber + " will be deleted.");
-  if (window.confirm("Are you sure?") == true) {
-    console.log("num", categoryNumber);
+  const modal = document.getElementById('deleteCategoryModal');
+  const confirmDeleteCategoryButton = document.getElementById('confirmDeleteCategory');
+  const cancelButton = document.querySelector('#deleteCategoryModal .modal-footer .btn-secondary');
+
+  // Store the categoryNumber in a data attribute for later use
+  modal.dataset.categoryNumber = categoryNumber;
+
+  // Add an event listener for the "Delete" button inside the modal
+  confirmDeleteCategoryButton.addEventListener('click', function () {
+    const categoryNumberToDelete = modal.dataset.categoryNumber;
+    modal.classList.remove('show'); // Close the modal
+    modal.style.display = 'none';
+
+    // Perform the deletion here
     const formdata = new FormData();
-    formdata.append("categoryId", categoryNumber);
+    formdata.append("categoryId", categoryNumberToDelete);
     fetch(`https://api.bhattacharjeesolution.in/book/api/delete-category.php`, {
       method: "POST",
-      // body: JSON.stringify(requestData),
       body: formdata,
       headers: {
         token: token,
@@ -177,15 +185,28 @@ function deleteCategory(categoryNumber) {
         return response.json(); // Parse the response as JSON
       })
       .then(function (data) {
-        // Call the populateBannerTableWithData function with the retrieved data
-        fetchDataFromAPI();
+        fetchDataFromAPI(); // Update the table after deletion
         console.log("data:", data);
       })
       .catch(function (error) {
         console.error("Error fetching data:", error);
       });
-  }
+
+    // Remove the event listener to prevent multiple deletions
+    confirmDeleteCategoryButton.removeEventListener('click', this);
+  });
+
+  // Add an event listener to the "Cancel" button to close the modal
+  cancelButton.addEventListener('click', function () {
+    modal.classList.remove('show');
+    modal.style.display = 'none';
+  });
+
+  // Show the Bootstrap modal
+  modal.classList.add('show');
+  modal.style.display = 'block';
 }
+
 
 // Function to handle editing a category
 function editCategory(categoryData) {
