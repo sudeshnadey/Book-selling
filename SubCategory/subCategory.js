@@ -1,9 +1,11 @@
+const token = localStorage.getItem("user");
 function fetchDataFromAPI() {
   fetch(
-    "http://api.bhattacharjeesolution.in/book/api/sub-category/admin-show.php",
+    "https://api.bhattacharjeesolution.in/book/api/admin-show-subcategory.php",
     {
       headers: {
         "Content-Type": "application/json",
+        token: token,
       },
     }
   ) // Replace with your API endpoint
@@ -41,7 +43,7 @@ function populateBannerTable(data) {
               <td>${item.name}</td>
               <td>${item.description}</td>
               <td>
-              <img src="https://api.bhattacharjeesolution.in/book/api/images/${item.image.replace(
+              <img src="${item.image.replace(
                 " ",
                 "%20"
               )}" alt="" style="width: calc(80% - 30px); flex: 5; object-fit: cover; max-width: 100px; max-height: 100px;" />
@@ -112,25 +114,29 @@ function deleteBanner(bannerNumber) {
   if (window.confirm("Are you sure?") == true) {
     console.log(bannerNumber);
     const formdata = new FormData();
-    formdata.append("bannerId", bannerNumber);
+    formdata.append("categoryId", bannerNumber);
     var requestData = {
       bannerId: bannerNumber,
     };
-    fetch(`https://api.bhattacharjeesolution.in/book/api/delete-banner.php`, {
-      method: "POST",
-      // body: JSON.stringify(requestData),
-      body: formdata,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    fetch(
+      `https://api.bhattacharjeesolution.in/book/api/delete-subcategory.php`,
+      {
+        method: "POST",
+        // body: JSON.stringify(requestData),
+        body: formdata,
+        headers: {
+          token: token,
+        },
+      }
+    )
       .then(function (response) {
         console.log(response);
-        return response.json(); // Parse the response as JSON
+        return response.json(); // Parse the response as JSON\
       })
       .then(function (data) {
         // Call the populateBannerTableWithData function with the retrieved data
         // populateBannerTable(data);
+        fetchDataFromAPI();
         console.log("data:", data);
       })
       .catch(function (error) {
@@ -145,6 +151,7 @@ let isSubmitEventListenerAdded = false;
 // Function to handle editing a banner
 function editBanner(bannerData) {
   console.log(bannerData);
+  fetchCategoryData();
   const editPopup = document.getElementById("editPopup");
   const editButtons = document.querySelectorAll(".edit-button");
   const closePopupButton = document.getElementById("closePopup");
@@ -152,14 +159,12 @@ function editBanner(bannerData) {
   const bannerImageInput = document.getElementById("fileInput");
   const bannerImagePreInput = document.getElementById("preimage");
   const bannerDescripitonInput = document.getElementById("description");
+  const category = document.getElementById("category");
 
   // Set the initial values in the form fields
   bannerNameInput.value = bannerData.name;
   bannerDescripitonInput.value = bannerData.description;
-  bannerImagePreInput.src = `https://api.bhattacharjeesolution.in/book/api/images/${bannerData.image.replace(
-    " ",
-    "%20"
-  )}`;
+  bannerImagePreInput.src = `${bannerData.image.replace(" ", "%20")}`;
 
   // Show the popup
   editButtons.forEach((button) => {
@@ -179,19 +184,24 @@ function editBanner(bannerData) {
         bannerNameInput.value,
         bannerImageInput.files[0]
       );
+      console.log("id", bannerData.id);
 
       const formData = new FormData();
       formData.append("name", bannerNameInput.value);
       formData.append("description", bannerDescripitonInput.value);
       formData.append("image", bannerImageInput.files[0]);
-      formData.append("bannerId", bannerData.id);
+      formData.append("id", bannerData.id);
+      formData.append("categoryId", category.value);
 
       try {
         const response = await fetch(
-          "http://localhost:80/BookSellingAPI/api/sub-category/edit.php",
+          "https://api.bhattacharjeesolution.in/book/api/edit-subcategory.php",
           {
             method: "POST",
             body: formData,
+            headers: {
+              token: token,
+            },
           }
         );
 
@@ -216,4 +226,45 @@ function editBanner(bannerData) {
   closePopupButton.addEventListener("click", () => {
     editPopup.style.display = "none";
   });
+}
+
+function fetchCategoryData() {
+  // Replace 'YOUR_API_URL' with the actual API endpoint
+  console.log("fethichg", token);
+  fetch(
+    "https://api.bhattacharjeesolution.in/book/api/admin-show-category.php",
+    {
+      headers: {
+        token: token,
+      },
+    }
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("data", data);
+      const categorySelect = document.getElementById("category");
+
+      // Clear existing options
+      categorySelect.innerHTML = "";
+
+      // Add a default option
+      const defaultOption = document.createElement("option");
+      defaultOption.value = "0";
+      defaultOption.textContent = "Select a category";
+      categorySelect.appendChild(defaultOption);
+
+      // Populate the select with data from the API
+      data.forEach((category) => {
+        const option = document.createElement("option");
+        option.value = category.id;
+        option.textContent = category.name;
+        categorySelect.appendChild(option);
+      });
+
+      // Add an event listener to fetch subcategories when a category is selected
+      // categorySelect.addEventListener("change", fetchSubcategories);
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
 }
