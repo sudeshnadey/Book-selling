@@ -149,22 +149,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Function to handle banner deletion
 function deleteBanner(bannerNumber) {
-  // Add your code here to handle the deletion of the banner with the specified Number
-  // For example, you can show a confirmation dialog and then remove the banner from the table and data array
-  // alert("Banner with Number " + bannerNumber + " will be deleted.");
-  if (window.confirm("Are you sure?") == true) {
-    console.log(bannerNumber);
+  const modal = document.getElementById("deleteBannerModal");
+  const confirmDeleteButton = document.getElementById("confirmDelete");
+
+  // Store the bannerNumber in a data attribute for later use
+  modal.dataset.bannerNumber = bannerNumber;
+
+  // Add an event listener for the "Delete" button inside the modal
+  confirmDeleteButton.addEventListener("click", function () {
+    const bannerNumberToDelete = modal.dataset.bannerNumber;
+    modal.classList.remove("show"); // Close the modal
+    modal.style.display = "none";
+
+    // Perform the deletion here
     const formdata = new FormData();
-    formdata.append("bannerId", bannerNumber);
+    formdata.append("bannerId", bannerNumberToDelete);
     var requestData = {
-      bannerId: bannerNumber,
+      bannerId: bannerNumberToDelete,
     };
     fetch(`https://api.bhattacharjeesolution.in/book/api/delete-banner.php`, {
       method: "POST",
-      // body: JSON.stringify(requestData),
       body: formdata,
       headers: {
-        // "Content-Type": "application/json",
         token: token,
       },
     })
@@ -173,15 +179,20 @@ function deleteBanner(bannerNumber) {
         return response.json(); // Parse the response as JSON
       })
       .then(function (data) {
-        // Call the populateBannerTableWithData function with the retrieved data
-        // populateBannerTable(data);
-        fetchDataFromAPI();
+        fetchDataFromAPI(); // Update the table after deletion
         console.log("data:", data);
       })
       .catch(function (error) {
         console.error("Error fetching data:", error);
       });
-  }
+
+    // Remove the event listener to prevent multiple deletions
+    confirmDeleteButton.removeEventListener("click", this);
+  });
+
+  // Show the Bootstrap modal
+  modal.classList.add("show");
+  modal.style.display = "block";
 }
 
 // Flag to check if the submit event listener is already added
