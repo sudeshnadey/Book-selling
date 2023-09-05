@@ -1,13 +1,18 @@
 const token = localStorage.getItem("user");
+
+// Number of items per page
+var itemsPerPage = 5;
+var currentPage = 1;
+var allBannersData;
+var filteredBannersData = []; // This will store the filtered data
+
 function fetchDataFromAPI() {
-  // fetch(
-  // "http://api.bhattacharjeesolution.in/book/api/category/admin-show.php",
   fetch("https://api.bhattacharjeesolution.in/book/api/admin-show-banner.php", {
     headers: {
       "Content-Type": "application/json",
       token: token,
     },
-  }) // Replace with your API endpoint
+  })
     .then(function (response) {
       console.log(response);
       if (!response.ok) {
@@ -16,8 +21,14 @@ function fetchDataFromAPI() {
       return response.json(); // Parse the response as JSON
     })
     .then(function (data) {
-      // Call the populateBannerTableWithData function with the retrieved data
-      populateBannerTable(data);
+      // Store the fetched data globally
+      allBannersData = data;
+
+      // Call the populateBannerTable function with the retrieved data
+      populateBannerTable(currentPage);
+
+      // Handle pagination
+      handlePagination();
       console.log("data:", data);
     })
     .catch(function (error) {
@@ -26,7 +37,7 @@ function fetchDataFromAPI() {
 }
 
 // Function to populate the banner table
-function populateBannerTable(data) {
+function populateBannerTable(page) {
   var bannerTable = document.getElementById("banner-table");
   var bannerTableBody = document.getElementById("banner-table-body");
 
@@ -34,9 +45,15 @@ function populateBannerTable(data) {
   while (bannerTableBody.firstChild) {
     bannerTableBody.removeChild(bannerTableBody.firstChild);
   }
-  data.forEach(function (item) {
-    var row = document.createElement("tr");
 
+  var startIndex = (page - 1) * itemsPerPage;
+  var endIndex = startIndex + itemsPerPage;
+  // var data = allBannersData.slice(startIndex, endIndex);
+  filteredBannersData = allBannersData.slice(startIndex, endIndex);
+
+  filteredBannersData.forEach(function (item) {
+    var row = document.createElement("tr");
+    row.id = "row-" + item.id; // Assign a unique ID to each row
     row.innerHTML = `
               <td>${item.id}</td>
               <td>${item.name}</td>
@@ -69,6 +86,29 @@ function populateBannerTable(data) {
     });
   });
 }
+
+function handlePagination() {
+  var pagination = document.getElementById("pagination");
+  pagination.innerHTML = "";
+
+  var totalPages = Math.ceil(allBannersData.length / itemsPerPage);
+
+  for (var i = 1; i <= totalPages; i++) {
+    var pageLink = document.createElement("a");
+    pageLink.href = "#";
+    pageLink.textContent = i;
+    pageLink.className = "btn btn-outline-primary"; // Apply Bootstrap styling here
+
+    pageLink.addEventListener("click", function (e) {
+      e.preventDefault();
+      currentPage = parseInt(this.textContent);
+      populateBannerTable(currentPage);
+    });
+
+    pagination.appendChild(pageLink);
+  }
+}
+
 // banner.js
 document.addEventListener("DOMContentLoaded", function () {
   var bannerTable = document.getElementById("banner-table");
@@ -79,26 +119,28 @@ document.addEventListener("DOMContentLoaded", function () {
     // Call the populateBannerTable function with your banner data on initial render
     // populateBannerTable(bannerData);
     // Function to fetch data from the API
-
-    fetchDataFromAPI();
+    // handlePagination();
+    fetchDataFromAPI(currentPage);
 
     // Add an event listener to the search input field
     var searchInput = document.getElementById("searchbar");
     searchInput.addEventListener("input", function () {
       var searchText = searchInput.value.trim().toLowerCase();
 
-      // Loop through the table rows (skip the first row which is the header)
-      var rows = bannerTableBody.querySelectorAll("tr");
+      // Loop through the filtered data
+      for (var i = 0; i < filteredBannersData.length; i++) {
+        var item = filteredBannersData[i];
+        var nameText = item.name.trim().toLowerCase();
+        var row = document.getElementById("row-" + item.id); // Get the corresponding row by ID
+        console.log("nameText:", nameText);
+        console.log("searchText:", searchText);
 
-      for (var i = 0; i < rows.length; i++) {
-        var row = rows[i];
-        var nameColumn = row.querySelector("td:nth-child(2)"); // Target the "Banner Name" column (2nd column)
-        var nameText = nameColumn.textContent.trim().toLowerCase();
-
-        if (nameText.includes(searchText)) {
-          row.style.display = ""; // Show the row
-        } else {
-          row.style.display = "none"; // Hide the row
+        if (row) {
+          if (nameText.includes(searchText)) {
+            row.style.display = ""; // Show the row
+          } else {
+            row.style.display = "none"; // Hide the row
+          }
         }
       }
     });
