@@ -36,16 +36,15 @@ function populateCategoryTable(data) {
 }
 
 function fetchDataFromAPI() {
-  fetch(
-    "http://api.bhattacharjeesolution.in/book/api/category/admin-show.php",
-    {
-      // fetch('https://api.bhattacharjeesolution.in/book/api/product/admin-show.php', {
-      headers: {
-        // "Content-Type": "application/json",
-        token: token,
-      },
-    }
-  ) // Replace with your API endpoint
+  console.log("fetchig");
+  // fetch(
+  // "https://api.bhattacharjeesolution.in/book/api/admin-show-banner.php",
+  fetch("https://api.bhattacharjeesolution.in/book/api/admin-show-category", {
+    headers: {
+      "Content-Type": "application/json",
+      token: token,
+    },
+  }) // Replace with your API endpoint
     .then(function (response) {
       // console.log(response);
       // if (!response.ok) {
@@ -67,7 +66,7 @@ function fetchDataFromAPI() {
 document.addEventListener("DOMContentLoaded", function () {
   var categoryTable = document.getElementById("category-table");
   var categoryTableBody = document.getElementById("category-table-body");
-
+  console.log("handleskjl");
   // Sample category data (simulated delay for demonstration)
   setTimeout(function () {
     var categoryData = [
@@ -87,8 +86,8 @@ document.addEventListener("DOMContentLoaded", function () {
     ];
 
     // Call the populateCategoryTable function with your category data on initial render
-    populateCategoryTable(categoryData);
-    // fetchDataFromAPI();
+    // populateCategoryTable(categoryData);
+    fetchDataFromAPI();
   }, 0); // No simulated delay in this example (adjust as needed)
 
   // Create a message element for displaying "No categories found" message

@@ -1,5 +1,7 @@
 const token = localStorage.getItem("user");
 function fetchDataFromAPI() {
+  // fetch(
+  // "http://api.bhattacharjeesolution.in/book/api/category/admin-show.php",
   fetch("https://api.bhattacharjeesolution.in/book/api/admin-show-banner.php", {
     headers: {
       "Content-Type": "application/json",
