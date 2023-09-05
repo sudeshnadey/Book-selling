@@ -151,6 +151,9 @@ document.addEventListener("DOMContentLoaded", function () {
 function deleteBanner(bannerNumber) {
   const modal = document.getElementById("deleteBannerModal");
   const confirmDeleteButton = document.getElementById("confirmDelete");
+  const cancelButton = document.querySelector(
+    "#deleteBannerModal .modal-footer .btn-secondary"
+  );
 
   // Store the bannerNumber in a data attribute for later use
   modal.dataset.bannerNumber = bannerNumber;
@@ -188,6 +191,12 @@ function deleteBanner(bannerNumber) {
 
     // Remove the event listener to prevent multiple deletions
     confirmDeleteButton.removeEventListener("click", this);
+  });
+
+  // Add an event listener to the "Cancel" button to close the modal
+  cancelButton.addEventListener("click", function () {
+    modal.classList.remove("show");
+    modal.style.display = "none";
   });
 
   // Show the Bootstrap modal
