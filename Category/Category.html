@@ -152,9 +152,15 @@
                     <label for="image">Image:</label>
                     <input
                       type="file"
-                      id="image"
+                      id="fileInput"
                       name="image"
                       accept="image/*"
+                    />
+                    <img
+                      id="preimage"
+                      name="preimage"
+                      width="100%"
+                      height="100px"
                     />
 
                     <label for="description">Description:</label>
@@ -284,7 +290,7 @@
       </div>
     </div>
     <!-- Add banner -->
-    <div id="addClassModal" class="modal">
+    <!-- <div id="addClassModal" class="modal">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -336,10 +342,32 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- <script src="../Script.js"></script> -->
     <script src="category.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
+    <script>
+      var fileInput = document.getElementById("fileInput");
+      var imgElement = document.getElementById("preimage");
+
+      // Add an event listener to the file input
+      fileInput.addEventListener("change", function (event) {
+        // Check if a file was selected
+        if (fileInput.files && fileInput.files[0]) {
+          // Create a FileReader to read the selected file
+          var reader = new FileReader();
+
+          // Set up an event listener for when the FileReader finishes reading the file
+          reader.onload = function (e) {
+            // Set the src attribute of the img element to the data URL of the selected file
+            imgElement.src = e.target.result;
+          };
+
+          // Read the selected file as a data URL
+          reader.readAsDataURL(fileInput.files[0]);
+        }
+      });
+    </script>
     <script>
       // JavaScript to handle the popup
       const editButtons = document.querySelectorAll(".edit-button");

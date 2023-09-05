@@ -119,6 +119,7 @@
     <script src="Script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
     <script>
+      const token = localStorage.getItem("user");
       function previewImage() {
         const input = document.getElementById("image");
         const preview = document.getElementById("imagePreview");
@@ -153,10 +154,13 @@
         try {
           // const response = await fetch("https://api.bhattacharjeesolution.in/book/api/category/add.php", {
           const response = await fetch(
-            "https://api.bhattacharjeesolution.in/book/api/add-category",
+            "https://api.bhattacharjeesolution.in/book/api/add-category.php",
             {
               method: "POST",
               body: formData,
+              headers: {
+                token: token,
+              },
             }
           );
 

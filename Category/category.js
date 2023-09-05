@@ -1,16 +1,58 @@
 const token = localStorage.getItem("user");
 // Function to populate the category table
+
+function fetchDataFromAPI() {
+  console.log("fetchig");
+  // fetch(
+  // "https://api.bhattacharjeesolution.in/book/api/admin-show-banner.php",
+  fetch(
+    "https://api.bhattacharjeesolution.in/book/api/admin-show-category.php",
+    {
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    }
+  ) // Replace with your API endpoint
+    .then(function (response) {
+      // console.log(response);
+      // if (!response.ok) {
+      //   throw new Error('Network response was not ok');
+      // }
+      return response.json(); // Parse the response as JSON
+    })
+    .then(function (data) {
+      // Call the populateBannerTableWithData function with the retrieved data
+      console.log("data:", data);
+      populateCategoryTable(data);
+    })
+    .catch(function (error) {
+      console.error("Error fetching data:", error);
+    });
+}
+
 function populateCategoryTable(data) {
   var categoryTable = document.getElementById("category-table");
   var categoryTableBody = document.getElementById("category-table-body");
+
+  // Clear the existing rows in bannerTableBody
+  while (categoryTableBody.firstChild) {
+    categoryTableBody.removeChild(categoryTableBody.firstChild);
+  }
+
   data.forEach(function (item) {
     var row = document.createElement("tr");
 
     row.innerHTML = `
-                  <td>${item.Number}</td>
-                  <td>${item.Name}</td>
-                  <td>${item.Image}</td>
-                  <td>${item.Description}</td>
+                  <td>${item.id}</td>
+                  <td>${item.name}</td>
+                  <td>
+                  <img src="${item.image.replace(
+                    " ",
+                    "%20"
+                  )}" alt="" style="width: calc(80% - 30px); flex: 5; object-fit: cover; max-width: 100px; max-height: 100px;" />
+                  </td>
+                  <td>${item.description}</td>
                   <td>
                       <button class="edit-button" style="border: none" data-coupon='${JSON.stringify(
                         item
@@ -18,7 +60,7 @@ function populateCategoryTable(data) {
                           <i class="fa-solid fa-pen"></i>
                         </button>
                         <button style="border: none; color: red"  onclick="deleteCategory(${
-                          item.Number
+                          item.id
                         })">
                           <i class="fa-solid fa-trash"></i>
                         </button>
@@ -33,33 +75,6 @@ function populateCategoryTable(data) {
       editCategory(couponData);
     });
   });
-}
-
-function fetchDataFromAPI() {
-  console.log("fetchig");
-  // fetch(
-  // "https://api.bhattacharjeesolution.in/book/api/admin-show-banner.php",
-  fetch("https://api.bhattacharjeesolution.in/book/api/admin-show-category", {
-    headers: {
-      "Content-Type": "application/json",
-      token: token,
-    },
-  }) // Replace with your API endpoint
-    .then(function (response) {
-      // console.log(response);
-      // if (!response.ok) {
-      //   throw new Error('Network response was not ok');
-      // }
-      return response.json(); // Parse the response as JSON
-    })
-    .then(function (data) {
-      // Call the populateBannerTableWithData function with the retrieved data
-      // populateBannerTable(data);
-      console.log("data:", data);
-    })
-    .catch(function (error) {
-      console.error("Error fetching data:", error);
-    });
 }
 
 // category.js
@@ -146,18 +161,15 @@ function deleteCategory(categoryNumber) {
   // For example, you can show a confirmation dialog and then remove the category from the table and data array
   // alert("Category with Number " + categoryNumber + " will be deleted.");
   if (window.confirm("Are you sure?") == true) {
-    console.log(bannerNumber);
+    console.log("num", categoryNumber);
     const formdata = new FormData();
-    formdata.append("bannerId", bannerNumber);
-    var requestData = {
-      bannerId: bannerNumber,
-    };
-    fetch(`https://api.bhattacharjeesolution.in/book/api/delete-banner.php`, {
+    formdata.append("categoryId", categoryNumber);
+    fetch(`https://api.bhattacharjeesolution.in/book/api/delete-category.php`, {
       method: "POST",
       // body: JSON.stringify(requestData),
       body: formdata,
       headers: {
-        "Content-Type": "application/json",
+        token: token,
       },
     })
       .then(function (response) {
@@ -166,7 +178,7 @@ function deleteCategory(categoryNumber) {
       })
       .then(function (data) {
         // Call the populateBannerTableWithData function with the retrieved data
-        // populateBannerTable(data);
+        fetchDataFromAPI();
         console.log("data:", data);
       })
       .catch(function (error) {
@@ -183,11 +195,14 @@ function editCategory(categoryData) {
   const closePopupButton = document.getElementById("closePopup");
   const nameInput = document.getElementById("name");
   const imageInput = document.getElementById("image");
+  const categoryImageInput = document.getElementById("fileInput");
+  const categoryImagePreInput = document.getElementById("preimage");
   const descriptionInput = document.getElementById("description");
 
   // Set the initial values in the form fields
-  nameInput.value = categoryData.Name;
-  descriptionInput.value = categoryData.Description;
+  nameInput.value = categoryData.name;
+  descriptionInput.value = categoryData.description;
+  categoryImagePreInput.src = `${categoryData.image.replace(" ", "%20")}`;
 
   // Show the popup
   editButtons.forEach((button) => {
@@ -205,22 +220,25 @@ function editCategory(categoryData) {
     console.log(
       "Form submitted:",
       nameInput.value,
-      imageInput.files[0],
+      categoryImageInput.files[0],
       descriptionInput.value
     );
 
     const formData = new FormData();
     formData.append("name", nameInput.value);
     formData.append("description", descriptionInput.value);
-    formData.append("image", imageInput.files[0]);
-    formData.append("bannerId", categoryData.id);
+    formData.append("image", categoryImageInput.files[0]);
+    formData.append("categoryId", categoryData.id);
 
     try {
       const response = await fetch(
-        "http://api.bhattacharjeesolution.in/book/api/category/edit.php",
+        "https://api.bhattacharjeesolution.in/book/api/edit-category.php",
         {
           method: "POST",
           body: formData,
+          headers: {
+            token: token,
+          },
         }
       );
 
