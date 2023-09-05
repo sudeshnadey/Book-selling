@@ -104,8 +104,8 @@
                       <th>#</th>
                       <th>Name</th>
                       <th>Image</th>
-                      <th>Category Id</th>
-                      <th>Sub Category Id</th>
+                      <!-- <th>Category Id</th> -->
+                      <!-- <th>Sub Category Id</th> -->
                       <th>Description</th>
                       <th>Mrp</th>
                       <th>Discount</th>
@@ -118,8 +118,24 @@
                 </table>
               </div>
 
-              <div class="popup-overlay" id="editPopup">
-                <div class="popup-container addCategory">
+              <!-- The Modal -->
+              <!-- <div>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content"> -->
+
+              <div
+                class="popup-overlay"
+                id="editPopup"
+                class="modal fade"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="editModalLabel"
+                aria-hidden="true"
+              >
+                <div
+                  class="popup-container addCategory"
+                  style="max-height: 90vh; overflow-y: auto"
+                >
                   <h2>Edit Item</h2>
                   <form action="#" method="post">
                     <label for="name">Name:</label>
@@ -139,7 +155,6 @@
                       id="fileInput"
                       name="image"
                       accept="image/*"
-                      required
                     />
                     <img
                       id="preimage"
@@ -148,11 +163,23 @@
                       height="100px"
                     />
 
-                    <label for="name">Discount:</label>
-                    <input type="number" id="name" name="discount" required />
+                    <label for="mrp">Mrp:</label>
+                    <input type="text" id="mrp" name="mrp" required />
+                    <label for="discount">Discount:</label>
+                    <input
+                      type="number"
+                      id="discount"
+                      name="discount"
+                      required
+                    />
 
-                    <label for="name">Quantity:</label>
-                    <input type="number" id="name" name="quantity" required />
+                    <label for="quantity">Quantity:</label>
+                    <input
+                      type="number"
+                      id="quantity"
+                      name="quantity"
+                      required
+                    />
 
                     <div class="actions">
                       <button type="submit" id="submitEdit">Submit</button>

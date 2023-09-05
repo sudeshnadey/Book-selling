@@ -138,9 +138,10 @@
         </div>
       </div>
     </div>
-    <script src="Script.js"></script>
+    <!-- <script src="Script.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
     <script>
+      const token = localStorage.getItem("user");
       function previewImage() {
         const input = document.getElementById("image");
         const preview = document.getElementById("imagePreview");
@@ -163,7 +164,12 @@
       function fetchCategoryData() {
         // Replace 'YOUR_API_URL' with the actual API endpoint
         fetch(
-          "http://api.bhattacharjeesolution.in/book/api/category/admin-show.php"
+          "https://api.bhattacharjeesolution.in/book/api/admin-show-category.php",
+          {
+            headers: {
+              token: token,
+            },
+          }
         )
           .then((response) => response.json())
           .then((data) => {
@@ -187,7 +193,7 @@
             });
 
             // Add an event listener to fetch subcategories when a category is selected
-            categorySelect.addEventListener('change', fetchSubcategories);
+            categorySelect.addEventListener("change", fetchSubcategories);
           })
           .catch((error) => {
             console.error("Error fetching data:", error);
@@ -195,43 +201,54 @@
       }
 
       // Function to fetch subcategories based on the selected category
-    function fetchSubcategories() {
-        const categoryId = document.getElementById('category').value;
-        const subcategorySelect = document.getElementById('subcategory');
+      function fetchSubcategories() {
+        const categoryId = document.getElementById("category").value;
+        const subcategorySelect = document.getElementById("subcategory");
 
         // Clear existing options
-        subcategorySelect.innerHTML = '';
+        subcategorySelect.innerHTML = "";
 
         // Add a default option
-        const defaultOption = document.createElement('option');
-        defaultOption.value = '0';
-        defaultOption.textContent = 'Select a category first';
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "0";
+        defaultOption.textContent = "Select a category first";
         subcategorySelect.appendChild(defaultOption);
 
-        if (categoryId === '0') {
-            // No category selected, so no subcategories to fetch
-            return;
+        if (categoryId === "0") {
+          // No category selected, so no subcategories to fetch
+          return;
         }
 
         // Replace 'YOUR_API_URL' with the actual API endpoint for subcategories
         // fetch(`YOUR_API_URL/subcategories/${categoryId}`)
-        fetch(`http://api.bhattacharjeesolution.in/book/api/sub-category/admin-show.php`)
-            .then(response => response.json())
-            .then(subcategories => {
-                // Populate the subcategory select with data from the API
-                subcategories.forEach(subcategory => {
-                    const option = document.createElement('option');
-                    option.value = subcategory.id;
-                    option.textContent = subcategory.name;
-                    subcategorySelect.appendChild(option);
-                });
-            })
-            .catch(error => {
-                console.error('Error fetching subcategories:', error);
+        fetch(
+          `https://api.bhattacharjeesolution.in/book/api/admin-show-subcategory.php`,
+          {
+            headers: {
+              token: token,
+            },
+          }
+        )
+          .then((response) => response.json())
+          .then((subcategories) => {
+            // Populate the subcategory select with data from the API
+            subcategories.forEach((subcategory) => {
+              console.log("suc id: ", categoryId);
+              console.log("suc id: ", subcategory.id);
+              if (subcategory.id == categoryId) {
+                const option = document.createElement("option");
+                option.value = subcategory.id;
+                option.textContent = subcategory.name;
+                subcategorySelect.appendChild(option);
+              }
             });
-    }
+          })
+          .catch((error) => {
+            console.error("Error fetching subcategories:", error);
+          });
+      }
 
-    async function submitForm(event) {
+      async function submitForm(event) {
         event.preventDefault();
         console.log("inside");
 
@@ -251,31 +268,36 @@
         formData.append("mrp", mrp);
         formData.append("discount", discount);
         formData.append("quantity", quantity);
-        formData.append("category", categoryId);
-        formData.append("subcategory", subcategoryId);
+        formData.append("categoryId", categoryId);
+        formData.append("subCategoryId", subcategoryId);
 
         try {
-            const response = await fetch(
-                "http://api.bhattacharjeesolution.in/book/api/product/add.php",
-                {
-                    method: "POST",
-                    body: formData,
-                }
-            );
-
-            if (response.ok) {
-                // Handle success (e.g., display a success message)
-                console.log("Form submitted successfully!");
-                window.location.href = "product.html";
-            } else {
-                // Handle error (e.g., display an error message)
-                console.error("Form submission failed!");
+          const response = await fetch(
+            "https://api.bhattacharjeesolution.in/book/api/add-product.php",
+            {
+              method: "POST",
+              body: formData,
+              headers: {
+                token: token,
+              },
             }
+          );
+
+          if (response.ok) {
+            // Handle success (e.g., display a success message)
+            console.log("Form submitted successfully!");
+            window.location.href = "product.html";
+          } else {
+            // Handle error (e.g., display an error message)
+            console.error("Form submission failed!");
+          }
         } catch (error) {
-            console.error("An error occurred:", error);
+          console.error("An error occurred:", error);
         }
-    }
+      }
+
       window.addEventListener("load", fetchCategoryData);
+      // window.addEventListener("load", fetchCategoryData);
     </script>
   </body>
 </html>
