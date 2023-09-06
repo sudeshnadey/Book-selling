@@ -22,4 +22,6 @@ function displayMobileWarning() {
 // Check if the user is on a mobile device and display the warning message
 if (isMobileDevice()) {
   displayMobileWarning();
+} else {
+  console.log("not mobile");
 }
