@@ -276,7 +276,11 @@ body {
   }
 }
 /* ===============================================dashboard styling============================================================= */
-/* sidebar styling  */
+/* sidebar styling   */
+
+.modal .modal-content {
+  background-color: rgb(225, 225, 225);
+}
 
 .sidebar {
   background: #edf2f6;
