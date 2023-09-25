@@ -53,6 +53,7 @@ function populateCategoryTable(data) {
                   )}" alt="" style="width: calc(80% - 30px); flex: 5; object-fit: cover; max-width: 100px; max-height: 100px;" />
                   </td>
                   <td>${item.description}</td>
+                  <td>${item.description}</td>
                   <td>
                       <button class="edit-button" style="border: none" data-coupon='${JSON.stringify(
                         item

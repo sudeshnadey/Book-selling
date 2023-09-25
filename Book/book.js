@@ -42,6 +42,12 @@ function populateBannerTable(data) {
               <td>${item.id}</td>
               <td>${item.name}</td>
               <td>${item.description}</td>
+              <td>${item.name}</td>
+              <td>${item.description}</td>
+              <td>${item.name}</td>
+              <td>${item.name}</td>
+              <td>${item.description}</td>
+              <td>${item.description}</td>
               <td>
               <img src="${item.image.replace(
                 " ",
