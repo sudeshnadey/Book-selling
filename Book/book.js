@@ -1,3 +1,8 @@
+// Define global variables for pagination
+var currentPage = 1;
+var itemsPerPage = 10; // Number of items to display per page
+var filteredData = [];
+var totalFilteredPages = 1; // Initialize to 1 page
 const token = localStorage.getItem("user");
 function fetchDataFromAPI() {
   fetch("https://api.bhattacharjeesolution.in/book/api/admin-show-book.php", {
@@ -15,8 +20,12 @@ function fetchDataFromAPI() {
     })
     .then(function (data) {
       // Call the populateBannerTableWithData function with the retrieved data
+      window.fetchedData = data;
+      filteredData = data;
+      totalFilteredPages = data.length; // Calculate total pages for the original data
+      console.log("totalpage:", totalFilteredPages);
       populateBannerTable(data);
-      console.log("data:", data);
+      console.log("data:", data.length);
     })
     .catch(function (error) {
       console.error("Error fetching data:", error);
@@ -32,7 +41,13 @@ function populateBannerTable(data) {
   while (bannerTableBody.firstChild) {
     bannerTableBody.removeChild(bannerTableBody.firstChild);
   }
-  data.forEach(function (item) {
+
+  // Calculate the start and end indices for the current page
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, data.length);
+
+  for (let index = startIndex; index < endIndex; index++) {
+    const item = data[index];
     var row = document.createElement("tr");
 
     // <td>${item.description}</td>
@@ -66,7 +81,60 @@ function populateBannerTable(data) {
       var couponData = JSON.parse(editButton.getAttribute("data-coupon"));
       editBanner(couponData);
     });
+  }
+
+  // updatePaginationControls(totalFilteredPages);
+  updatePaginationControls(data.length);
+}
+
+function searchTable() {
+  const searchInput = document.getElementById("searchbar").value.toLowerCase();
+
+  // Filter the data based on the search query
+  filteredData = window.fetchedData.filter(function (item) {
+    return item.name.toLowerCase().includes(searchInput);
+    // Add more fields to search as needed
   });
+
+  // Reset the current page to 1 when searching
+  currentPage = 1;
+  // Calculate the total number of pages for the filtered data
+  totalFilteredPages = filteredData.length / itemsPerPage;
+
+  // Update the pagination controls based on the filtered data length
+  updatePaginationControls(filteredData.length);
+  // Update the table with the filtered data
+  populateBannerTable(filteredData);
+}
+
+function updatePaginationControls(totalItems) {
+  console.log("rows: ", totalItems);
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const pageInfo = document.getElementById("page-info");
+  pageInfo.textContent = "Page " + currentPage + " of " + totalPages;
+
+  const prevButton = document.getElementById("prev-button");
+  const nextButton = document.getElementById("next-button");
+
+  prevButton.disabled = currentPage === 1;
+  nextButton.disabled = currentPage === totalPages;
+}
+
+function prevPage() {
+  if (currentPage > 1) {
+    currentPage--;
+    populateBannerTable(filteredData); // Display data for the updated page
+    // populateBannerTable(window.fetchedData); // Display data for the updated page
+  }
+}
+
+function nextPage() {
+  const totalPages = Math.ceil(window.fetchedData.length / itemsPerPage);
+  if (currentPage < totalPages) {
+    currentPage++;
+    populateBannerTable(filteredData); // Display data for the updated page
+    // populateBannerTable(window.fetchedData); // Display data for the updated page
+  }
 }
 // banner.js
 document.addEventListener("DOMContentLoaded", function () {

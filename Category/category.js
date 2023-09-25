@@ -1,3 +1,8 @@
+// Define global variables for pagination
+var currentPage = 1;
+var itemsPerPage = 10; // Number of items to display per page
+var filteredData = [];
+var totalFilteredPages = 1; // Initialize to 1 page
 const token = localStorage.getItem("user");
 // Function to populate the category table
 
@@ -24,6 +29,9 @@ function fetchDataFromAPI() {
     .then(function (data) {
       // Call the populateBannerTableWithData function with the retrieved data
       console.log("data:", data);
+      window.fetchedData = data;
+      filteredData = data;
+      totalFilteredPages = data.length; // Calculate total pages for the original data
       populateCategoryTable(data);
     })
     .catch(function (error) {
@@ -39,8 +47,12 @@ function populateCategoryTable(data) {
   while (categoryTableBody.firstChild) {
     categoryTableBody.removeChild(categoryTableBody.firstChild);
   }
+  // Calculate the start and end indices for the current page
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, data.length);
 
-  data.forEach(function (item) {
+  for (let index = startIndex; index < endIndex; index++) {
+    const item = data[index];
     var row = document.createElement("tr");
 
     row.innerHTML = `
@@ -75,7 +87,55 @@ function populateCategoryTable(data) {
       var couponData = JSON.parse(editButton.getAttribute("data-coupon"));
       editCategory(couponData);
     });
+  }
+
+  updatePaginationControls(data.length);
+}
+
+function searchTable() {
+  const searchInput = document.getElementById("searchbar").value.toLowerCase();
+
+  // Filter the data based on the search query
+  filteredData = window.fetchedData.filter(function (item) {
+    return item.name.toLowerCase().includes(searchInput);
+    // Add more fields to search as needed
   });
+
+  // Reset the current page to 1 when searching
+  currentPage = 1;
+  totalFilteredPages = filteredData.length / itemsPerPage;
+
+  // Update the pagination controls based on the filtered data length
+  updatePaginationControls(filteredData.length);
+  // Update the table with the filtered data
+  populateCategoryTable(filteredData);
+}
+
+function updatePaginationControls(totalItems) {
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const pageInfo = document.getElementById("page-info");
+  pageInfo.textContent = "Page " + currentPage + " of " + totalPages;
+
+  const prevButton = document.getElementById("prev-button");
+  const nextButton = document.getElementById("next-button");
+
+  prevButton.disabled = currentPage === 1;
+  nextButton.disabled = currentPage === totalPages;
+}
+
+function prevPage() {
+  if (currentPage > 1) {
+    currentPage--;
+    populateCategoryTable(filteredData); // Display data for the updated page
+  }
+}
+
+function nextPage() {
+  const totalPages = Math.ceil(window.fetchedData.length / itemsPerPage);
+  if (currentPage < totalPages) {
+    currentPage++;
+    populateCategoryTable(filteredData); // Display data for the updated page
+  }
 }
 
 // category.js
