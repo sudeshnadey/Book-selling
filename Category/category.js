@@ -52,7 +52,7 @@ function populateCategoryTable(data) {
                     "%20"
                   )}" alt="" style="width: calc(80% - 30px); flex: 5; object-fit: cover; max-width: 100px; max-height: 100px;" />
                   </td>
-                  <td>${item.description}</td>
+                  <td>${item.type}</td>
                   <td>${item.description}</td>
                   <td>
                       <button class="edit-button" style="border: none" data-coupon='${JSON.stringify(
@@ -158,18 +158,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Function to handle category deletion
 function deleteCategory(categoryNumber) {
-  const modal = document.getElementById('deleteCategoryModal');
-  const confirmDeleteCategoryButton = document.getElementById('confirmDeleteCategory');
-  const cancelButton = document.querySelector('#deleteCategoryModal .modal-footer .btn-secondary');
+  const modal = document.getElementById("deleteCategoryModal");
+  const confirmDeleteCategoryButton = document.getElementById(
+    "confirmDeleteCategory"
+  );
+  const cancelButton = document.querySelector(
+    "#deleteCategoryModal .modal-footer .btn-secondary"
+  );
 
   // Store the categoryNumber in a data attribute for later use
   modal.dataset.categoryNumber = categoryNumber;
 
   // Add an event listener for the "Delete" button inside the modal
-  confirmDeleteCategoryButton.addEventListener('click', function () {
+  confirmDeleteCategoryButton.addEventListener("click", function () {
     const categoryNumberToDelete = modal.dataset.categoryNumber;
-    modal.classList.remove('show'); // Close the modal
-    modal.style.display = 'none';
+    modal.classList.remove("show"); // Close the modal
+    modal.style.display = "none";
 
     // Perform the deletion here
     const formdata = new FormData();
@@ -186,6 +190,9 @@ function deleteCategory(categoryNumber) {
         return response.json(); // Parse the response as JSON
       })
       .then(function (data) {
+        console.log(data);
+        alert(data.data || "Successfully Deleted!");
+        window.location.reload();
         fetchDataFromAPI(); // Update the table after deletion
         console.log("data:", data);
       })
@@ -194,20 +201,19 @@ function deleteCategory(categoryNumber) {
       });
 
     // Remove the event listener to prevent multiple deletions
-    confirmDeleteCategoryButton.removeEventListener('click', this);
+    confirmDeleteCategoryButton.removeEventListener("click", this);
   });
 
   // Add an event listener to the "Cancel" button to close the modal
-  cancelButton.addEventListener('click', function () {
-    modal.classList.remove('show');
-    modal.style.display = 'none';
+  cancelButton.addEventListener("click", function () {
+    modal.classList.remove("show");
+    modal.style.display = "none";
   });
 
   // Show the Bootstrap modal
-  modal.classList.add('show');
-  modal.style.display = 'block';
+  modal.classList.add("show");
+  modal.style.display = "block";
 }
-
 
 // Function to handle editing a category
 function editCategory(categoryData) {
@@ -216,6 +222,7 @@ function editCategory(categoryData) {
   const editPopup = document.getElementById("editPopup");
   const closePopupButton = document.getElementById("closePopup");
   const nameInput = document.getElementById("name");
+  const typeInput = document.getElementById("edittype");
   const imageInput = document.getElementById("image");
   const categoryImageInput = document.getElementById("fileInput");
   const categoryImagePreInput = document.getElementById("preimage");
@@ -224,6 +231,7 @@ function editCategory(categoryData) {
   // Set the initial values in the form fields
   nameInput.value = categoryData.name;
   descriptionInput.value = categoryData.description;
+  typeInput.value = categoryData.type;
   categoryImagePreInput.src = `${categoryData.image.replace(" ", "%20")}`;
 
   // Show the popup
@@ -248,6 +256,7 @@ function editCategory(categoryData) {
 
     const formData = new FormData();
     formData.append("name", nameInput.value);
+    formData.append("type", typeInput.value);
     formData.append("description", descriptionInput.value);
     formData.append("image", categoryImageInput.files[0]);
     formData.append("categoryId", categoryData.id);
@@ -267,6 +276,7 @@ function editCategory(categoryData) {
       if (response.ok) {
         // Handle success (e.g., display a success message)
         console.log("Form submitted successfully!");
+        window.location.reload();
         fetchDataFromAPI();
         editPopup.style.display = "none"; // Close the popup after submission (you can replace this with your logic)
       } else {

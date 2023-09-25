@@ -23,7 +23,8 @@
 .addCategory input[type="text"],
 .addCategory input[type="number"],
 .addCategory input[type="file"],
-.addCategory textarea {
+.addCategory textarea,
+.addCategory select {
   padding: 10px;
   margin-bottom: 15px;
   border: 1px solid #ccc;

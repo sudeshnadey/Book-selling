@@ -1,14 +1,11 @@
 const token = localStorage.getItem("user");
 function fetchDataFromAPI() {
-  fetch(
-    "https://api.bhattacharjeesolution.in/book/api/admin-show-subcategory.php",
-    {
-      headers: {
-        "Content-Type": "application/json",
-        token: token,
-      },
-    }
-  ) // Replace with your API endpoint
+  fetch("https://api.bhattacharjeesolution.in/book/api/admin-show-book.php", {
+    headers: {
+      "Content-Type": "application/json",
+      token: token,
+    },
+  }) // Replace with your API endpoint
     .then(function (response) {
       console.log(response);
       if (!response.ok) {
@@ -38,33 +35,28 @@ function populateBannerTable(data) {
   data.forEach(function (item) {
     var row = document.createElement("tr");
 
+    // <td>${item.description}</td>
+    // <td>${item.name}</td>
     row.innerHTML = `
               <td>${item.id}</td>
               <td>${item.name}</td>
               <td>${item.description}</td>
-              <td>${item.name}</td>
-              <td>${item.description}</td>
-              <td>${item.name}</td>
-              <td>${item.name}</td>
-              <td>${item.description}</td>
-              <td>${item.description}</td>
-              <td>
-              <img src="${item.image.replace(
-                " ",
-                "%20"
-              )}" alt="" style="width: calc(80% - 30px); flex: 5; object-fit: cover; max-width: 100px; max-height: 100px;" />
-              </td>
+              <td><img src="${item.images}" height="50px" widht="50px" /></td>
+              <td>${item.type}</td>
+              <td>${item.quantity}</td>
+              <td>${item.mrp}</td>
+              <td>${item.discount}</td>
               <td>
                   <button class="edit-button" style="border: none"  data-coupon='${JSON.stringify(
                     item
                   )}'>
-                      <i class="fa-solid fa-pen"></i>
-                    </button>
-                    <button style="border: none; color: red" onclick="deleteBanner(${
-                      item.id
-                    })">
-                      <i class="fa-solid fa-trash"></i>
-                    </button>
+                    <i class="fa-solid fa-pen"></i>
+                  </button>
+                  <button style="border: none; color: red" onclick="deleteBanner(${
+                    item.id
+                  })">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
               </td>
           `;
 
@@ -114,23 +106,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Function to handle banner deletion
 function deleteBanner(bannerNumber) {
-  const modal = document.getElementById('deleteBannerModal');
-  const confirmDeleteBannerButton = document.getElementById('confirmDeleteBanner');
-  const cancelButton = document.querySelector('#deleteBannerModal .modal-footer .btn-secondary');
+  const modal = document.getElementById("deleteBannerModal");
+  const confirmDeleteBannerButton = document.getElementById(
+    "confirmDeleteBanner"
+  );
+  const cancelButton = document.querySelector(
+    "#deleteBannerModal .modal-footer .btn-secondary"
+  );
 
   // Store the bannerNumber in a data attribute for later use
   modal.dataset.bannerNumber = bannerNumber;
 
   // Add an event listener for the "Delete" button inside the modal
-  confirmDeleteBannerButton.addEventListener('click', function () {
+  confirmDeleteBannerButton.addEventListener("click", function () {
     const bannerNumberToDelete = modal.dataset.bannerNumber;
-    modal.classList.remove('show'); // Close the modal
-    modal.style.display = 'none';
+    modal.classList.remove("show"); // Close the modal
+    modal.style.display = "none";
 
     // Perform the deletion here
     const formdata = new FormData();
-    formdata.append("categoryId", bannerNumberToDelete);
-    fetch(`https://api.bhattacharjeesolution.in/book/api/delete-subcategory.php`, {
+    formdata.append("id", bannerNumberToDelete);
+    fetch(`https://api.bhattacharjeesolution.in/book/api/delete-book.php`, {
       method: "POST",
       body: formdata,
       headers: {
@@ -142,6 +138,9 @@ function deleteBanner(bannerNumber) {
         return response.json(); // Parse the response as JSON
       })
       .then(function (data) {
+        console.log(data);
+        alert(data.data || "Book deleted!");
+        window.location.reload();
         fetchDataFromAPI(); // Update the table after deletion
         console.log("data:", data);
       })
@@ -150,20 +149,19 @@ function deleteBanner(bannerNumber) {
       });
 
     // Remove the event listener to prevent multiple deletions
-    confirmDeleteBannerButton.removeEventListener('click', this);
+    confirmDeleteBannerButton.removeEventListener("click", this);
   });
 
   // Add an event listener to the "Cancel" button to close the modal
-  cancelButton.addEventListener('click', function () {
-    modal.classList.remove('show');
-    modal.style.display = 'none';
+  cancelButton.addEventListener("click", function () {
+    modal.classList.remove("show");
+    modal.style.display = "none";
   });
 
   // Show the Bootstrap modal
-  modal.classList.add('show');
-  modal.style.display = 'block';
+  modal.classList.add("show");
+  modal.style.display = "block";
 }
-
 
 // Flag to check if the submit event listener is already added
 let isSubmitEventListenerAdded = false;
@@ -174,17 +172,31 @@ function editBanner(bannerData) {
   fetchCategoryData();
   const editPopup = document.getElementById("editPopup");
   const editButtons = document.querySelectorAll(".edit-button");
-  const closePopupButton = document.getElementById("closePopup");
-  const bannerNameInput = document.getElementById("name");
+  const closePopupButton = document.getElementById("closemodal");
   const bannerImageInput = document.getElementById("fileInput");
-  const bannerImagePreInput = document.getElementById("preimage");
-  const bannerDescripitonInput = document.getElementById("description");
+
+  const bannerNameInput = document.getElementById("name");
   const category = document.getElementById("category");
+  const bannerDescripitonInput = document.getElementById("description");
+  const mrp = document.getElementById("mrp");
+  const quantity = document.getElementById("quantity");
+  const discount = document.getElementById("discount");
+  const lang = document.getElementById("lang");
+  const type = document.getElementById("type");
+  const bannerImagePreInput = document.getElementById("imagePreview");
+  // const image= document.getElementById("image").files[0];
 
   // Set the initial values in the form fields
   bannerNameInput.value = bannerData.name;
   bannerDescripitonInput.value = bannerData.description;
-  bannerImagePreInput.src = `${bannerData.image.replace(" ", "%20")}`;
+  category.value = bannerData.categoryId;
+  mrp.value = bannerData.mrp;
+  quantity.value = bannerData.quantity;
+  discount.value = bannerData.discount;
+  lang.value = bannerData.lang;
+  type.value = bannerData.type;
+  bannerImagePreInput.src = `${bannerData?.image}`;
+  bannerImagePreInput.style.display = "block";
 
   // Show the popup
   editButtons.forEach((button) => {
@@ -199,23 +211,32 @@ function editBanner(bannerData) {
     editForm.addEventListener("submit", async function (e) {
       e.preventDefault(); // Prevent the form from submitting normally (you can handle the submission logic here)
       // You can access the form data using bannerNameInput.value and bannerImageInput.files[0]
-      console.log(
-        "Form submitted:",
-        bannerNameInput.value,
-        bannerImageInput.files[0]
-      );
+      // console.log(
+      //   "Form submitted:",
+      //   bannerNameInput.value,
+      //   bannerImageInput.files[0]
+      // );
       console.log("id", bannerData.id);
 
       const formData = new FormData();
-      formData.append("name", bannerNameInput.value);
-      formData.append("description", bannerDescripitonInput.value);
-      formData.append("image", bannerImageInput.files[0]);
+      formData.append("name", document.getElementById("name").value);
+      formData.append(
+        "description",
+        document.getElementById("description").value
+      );
+      formData.append("categoryId", document.getElementById("category").value);
+      formData.append("mrp", document.getElementById("mrp").value);
+      formData.append("quantity", document.getElementById("quantity").value);
+      formData.append("discount", document.getElementById("discount").value);
+      formData.append("lang", document.getElementById("lang").value);
+      formData.append("type", document.getElementById("type").value);
+      formData.append("image", document.getElementById("image").files[0]);
       formData.append("id", bannerData.id);
-      formData.append("categoryId", category.value);
+      // formData.append("pdf", document.getElementById("pdf").files[0]);
 
       try {
         const response = await fetch(
-          "https://api.bhattacharjeesolution.in/book/api/edit-subcategory.php",
+          "https://api.bhattacharjeesolution.in/book/api/edit-book.php",
           {
             method: "POST",
             body: formData,
@@ -228,6 +249,7 @@ function editBanner(bannerData) {
         if (response.ok) {
           // Handle success (e.g., display a success message)
           console.log("Form submitted successfully!");
+          window.location.reload();
           fetchDataFromAPI();
           editPopup.style.display = "none"; // Close the popup after submission (you can replace this with your logic)
         } else {

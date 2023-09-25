@@ -81,9 +81,7 @@
                   "
                 >
                   <button class="btnadd btn-primary mb-3">
-                    <a href="/Book/addbook.html"
-                      >Add Book</a
-                    >
+                    <a href="/Book/addbook.html">Add Book</a>
                   </button>
                   <form>
                     <div class="form-group">
@@ -111,8 +109,6 @@
                       <th>Name</th>
                       <th>Description</th>
                       <th>Image</th>
-                      <th>Barcode Image</th>
-                      <th>Pdf</th>
                       <th>Type</th>
                       <th>Quantity</th>
                       <th>Price</th>
@@ -128,74 +124,97 @@
               <div class="popup-overlay" id="editPopup">
                 <div class="popup-container addCategory">
                   <h2>Edit Items</h2>
-                  <form action="#" method="post">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required />
+                  <div style="max-height: 80vh; overflow-y: auto">
+                    <form
+                      action="#"
+                      method="post"
+                      onsubmit="submitForm(event)"
+                      enctype="multipart/form-data"
+                    >
+                      <label for="name">Name:</label>
+                      <input type="text" id="name" name="name" required />
 
-                    <label for="description">Description:</label>
-                    <textarea
-                      id="description"
-                      name="description"
-                      rows="4"
-                      required
-                    ></textarea>
+                      <label for="description">Description:</label>
+                      <textarea
+                        type="text"
+                        id="description"
+                        name="description"
+                        cols="4"
+                      ></textarea>
 
-                    <label for="category">Category:</label>
-                    <select name="category" id="category">
-                      <option value="0">Loading categories...</option>
-                    </select>
+                      <label for="image">Image:</label>
+                      <input
+                        type="file"
+                        id="image"
+                        name="image"
+                        accept="image/*"
+                        required
+                        onchange="previewImage()"
+                      />
+                      <div class="imgPreviewsx">
+                        <img
+                          id="imagePreview"
+                          src="#"
+                          alt="Image Preview"
+                          style="
+                            display: none;
+                            max-width: 200px;
+                            max-height: 200px;
+                          "
+                        />
+                      </div>
 
-                    <label for="image">Image:</label>
-                    <input
-                      type="file"
-                      id="fileInput"
-                      name="image"
-                      accept="image/*"
-                    />
-                    <img
-                      id="preimage"
-                      name="preimage"
-                      width="100%"
-                      height="100px"
-                    />
-                    <label for="barcodeImage">Barcode Image:</label>
-                  <input
-                      type="file"
-                      id="barcodeImage"
-                      name="barcodeImage"
-                      accept="image/*"
-                      required
-                      onchange="previewBarcodeImage()"
-                  />
-                    <label for="discount">Discount Price:</label>
-                    <input type="number" id="discount" name="discount" />
-                
-                    <label for="price">Price:</label>
-                    <input type="number" id="price" name="price" required />
-                    <label for="quantity">Quantity:</label>
-                  <input type="number" id="quantity" name="quantity" required />
-              
-                  <label for="createdApp">Created App:</label>
-                  <input type="text" id="createdApp" name="createdApp" />
-              
-                  <label for="mrp">MRP:</label>
-                  <input type="number" id="mrp" name="mrp" />
-              
-                  <label for="pdf">PDF File:</label>
-                  <input
-                      type="file"
-                      id="pdf"
-                      name="pdf"
-                      accept=".pdf"
-                      required
-                      onchange="previewPDF()"
-                  />
-                    <div class="actions">
-                      <button type="submit" id="submitEdit">Submit</button>
-                      <button class="closebtn" id="closePopup">Close</button>
-                    </div>
-                  </form>
-                  <!-- Add your edit form or content here -->
+                      <label for="category">Category:</label>
+                      <select name="category" id="category">
+                        <option value="0">Loading categories...</option>
+                      </select>
+
+                      <label for="mrp">MRP:</label>
+                      <input type="number" id="mrp" name="mrp" />
+
+                      <label for="discount">Discount Price:</label>
+                      <input type="number" id="discount" name="discount" />
+
+                      <label for="quantity">Quantity:</label>
+                      <input
+                        type="number"
+                        id="quantity"
+                        name="quantity"
+                        required
+                      />
+
+                      <label for="lang">Language:</label>
+                      <select id="lang" name="lang" required>
+                        <option value="in">INDIAN</option>
+                        <option value="en">ENGLISH</option>
+                      </select>
+
+                      <label for="type">Type:</label>
+                      <select id="type" name="type" required>
+                        <option value="book">Book</option>
+                        <option value="lecture">Lecture</option>
+                        <option value="news">News</option>
+                      </select>
+
+                      <!-- <label for="pdf">Content ( PDF File ):</label>
+                      <input
+                        type="file"
+                        id="pdf"
+                        name="pdf"
+                        accept=".pdf"
+                        required
+                      /> -->
+                      <!-- onchange="previewPDF()" -->
+                      <div
+                        style="display: flex; gap: 5px; justify-content: right"
+                      >
+                        <button style="background-color: red" id="closemodal">
+                          Close
+                        </button>
+                        <button type="submit">Submit</button>
+                      </div>
+                    </form>
+                  </div>
                 </div>
               </div>
 
@@ -285,30 +304,48 @@
       });
     </script>
     <script>
-      function previewImage(input) {
-        const previewElement = input.parentNode.querySelector(".image-preview");
+      function previewImage() {
+        const input = document.getElementById("image");
+        const preview = document.getElementById("imagePreview");
+
         if (input.files && input.files[0]) {
           const reader = new FileReader();
+
           reader.onload = function (e) {
-            previewElement.src = e.target.result;
-            // Store the image data in local storage
-            localStorage.setItem("imagePreview", e.target.result);
+            preview.style.display = "block";
+            preview.src = e.target.result;
           };
+
           reader.readAsDataURL(input.files[0]);
         } else {
-          previewElement.src = "#";
-          // Remove the image data from local storage
-          localStorage.removeItem("imagePreview");
+          preview.style.display = "none";
+          preview.src = "";
         }
       }
+      // function previewImage(input) {
+      //   const previewElement = input.parentNode.querySelector(".imgPreview");
+      //   if (input.files && input.files[0]) {
+      //     const reader = new FileReader();
+      //     reader.onload = function (e) {
+      //       previewElement.src = e.target.result;
+      //       // Store the image data in local storage
+      //       localStorage.setItem("imagePreview", e.target.result);
+      //     };
+      //     reader.readAsDataURL(input.files[0]);
+      //   } else {
+      //     previewElement.src = "#";
+      //     // Remove the image data from local storage
+      //     localStorage.removeItem("imagePreview");
+      //   }
+      // }
       // Check if there's a stored image preview on page load
-      const storedImagePreview = localStorage.getItem("imagePreview");
-      if (storedImagePreview) {
-        const previewElements = document.querySelectorAll(".image-preview");
-        previewElements.forEach((element) => {
-          element.src = storedImagePreview;
-        });
-      }
+      // const storedImagePreview = localStorage.getItem("imagePreview");
+      // if (storedImagePreview) {
+      //   const previewElements = document.querySelectorAll(".image-preview");
+      //   previewElements.forEach((element) => {
+      //     element.src = storedImagePreview;
+      //   });
+      // }
     </script>
     <!-- <script>
       fetch("../Layout/DashboardSidebar.html")
