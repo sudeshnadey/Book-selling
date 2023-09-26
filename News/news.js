@@ -6,7 +6,7 @@ var totalFilteredPages = 1; // Initialize to 1 page
 const token = localStorage.getItem("user");
 
 function fetchDataFromAPI() {
-  fetch("https://api.bhattacharjeesolution.in/book/api/admin-show-book.php", {
+  fetch("https://api.bhattacharjeesolution.in/book/api/news.php", {
     headers: {
       "Content-Type": "application/json",
       token: token,
@@ -32,6 +32,7 @@ function fetchDataFromAPI() {
       console.error("Error fetching data:", error);
     });
 }
+window.addEventListener("load", fetchDataFromAPI);
 
 // Function to populate the banner table
 function populateBannerTable(data) {
@@ -54,27 +55,25 @@ function populateBannerTable(data) {
     // <td>${item.description}</td>
     // <td>${item.name}</td>
     row.innerHTML = `
-              <td>${item.id}</td>
-              <td>${item.name}</td>
-              <td>${item.description}</td>
-              <td><img src="${item.images}" height="50px" widht="50px" /></td>
-              <td>${item.type}</td>
-              <td>${item.quantity}</td>
-              <td>${item.mrp}</td>
-              <td>${item.discount}</td>
-              <td>
-                  <button class="edit-button" style="border: none"  data-coupon='${JSON.stringify(
-                    item
-                  )}'>
-                    <i class="fa-solid fa-pen"></i>
-                  </button>
-                  <button style="border: none; color: red" onclick="deleteBanner(${
-                    item.id
-                  })">
-                    <i class="fa-solid fa-trash"></i>
-                  </button>
-              </td>
-          `;
+      <td>${item.id}</td>
+      <td>${item.title}</td>
+      <td>${item.description}</td>
+      <td><img src="${item.images}" height="50px" widht="50px" /></td>
+      <td>${item.added_by}</td>
+      <td>${item.created_at}</td>
+      <td>
+          <button class="edit-button" style="border: none"  data-coupon='${JSON.stringify(
+            item
+          )}'>
+            <i class="fa-solid fa-pen"></i>
+          </button>
+          <button style="border: none; color: red" onclick="deleteBanner(${
+            item.id
+          })">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+      </td>
+    `;
 
     bannerTableBody.appendChild(row);
     var editButton = row.querySelector(".edit-button");
@@ -101,7 +100,7 @@ function searchTable() {
 
   // Filter the data based on the search query
   filteredData = window.fetchedData.filter(function (item) {
-    return item.name.toLowerCase().includes(searchInput);
+    return item.title.toLowerCase().includes(searchInput);
     // Add more fields to search as needed
   });
 
@@ -145,41 +144,6 @@ function nextPage() {
     // populateBannerTable(window.fetchedData); // Display data for the updated page
   }
 }
-// banner.js
-document.addEventListener("DOMContentLoaded", function () {
-  var bannerTable = document.getElementById("banner-table");
-  var bannerTableBody = document.getElementById("banner-table-body");
-
-  // Sample banner data (simulated delay for demonstration)
-  setTimeout(function () {
-    // Call the populateBannerTable function with your banner data on initial render
-    // populateBannerTable(bannerData);
-    // Function to fetch data from the API
-
-    fetchDataFromAPI();
-
-    // Add an event listener to the search input field
-    var searchInput = document.getElementById("searchbar");
-    searchInput.addEventListener("input", function () {
-      var searchText = searchInput.value.trim().toLowerCase();
-
-      // Loop through the table rows (skip the first row which is the header)
-      var rows = bannerTableBody.querySelectorAll("tr");
-
-      for (var i = 0; i < rows.length; i++) {
-        var row = rows[i];
-        var nameColumn = row.querySelector("td:nth-child(2)"); // Target the "Banner Name" column (2nd column)
-        var nameText = nameColumn.textContent.trim().toLowerCase();
-
-        if (nameText.includes(searchText)) {
-          row.style.display = ""; // Show the row
-        } else {
-          row.style.display = "none"; // Hide the row
-        }
-      }
-    });
-  }, 0); // No simulated delay in this example (adjust as needed)
-});
 
 // Function to handle banner deletion
 function deleteBanner(bannerNumber) {
@@ -201,15 +165,19 @@ function deleteBanner(bannerNumber) {
     modal.style.display = "none";
 
     // Perform the deletion here
-    const formdata = new FormData();
-    formdata.append("id", bannerNumberToDelete);
-    fetch(`https://api.bhattacharjeesolution.in/book/api/delete-book.php`, {
-      method: "POST",
-      body: formdata,
-      headers: {
-        token: token,
-      },
-    })
+    console.log("id:", bannerNumberToDelete);
+    // const formdata = new FormData();
+    // formdata.append("id", bannerNumberToDelete);
+    fetch(
+      `https://api.bhattacharjeesolution.in/book/api/news.php?id=${bannerNumberToDelete}`,
+      {
+        method: "DELETE",
+        // body: formdata,
+        headers: {
+          token: token,
+        },
+      }
+    )
       .then(function (response) {
         console.log(response);
         return response.json(); // Parse the response as JSON
@@ -246,7 +214,7 @@ let isSubmitEventListenerAdded = false;
 // Function to handle editing a banner
 function editBanner(bannerData) {
   console.log(bannerData);
-  fetchCategoryData();
+  fetchCategoryData(bannerData.categoryId);
   const editPopup = document.getElementById("editPopup");
   // const editButtons = document.querySelectorAll(".edit-button");
   const closePopupButton = document.getElementById("closemodal");
@@ -256,21 +224,15 @@ function editBanner(bannerData) {
   const bannerNameInput = document.getElementById("name");
   const category = document.getElementById("category");
   const bannerDescripitonInput = document.getElementById("description");
-  const mrp = document.getElementById("mrp");
-  const quantity = document.getElementById("quantity");
-  const discount = document.getElementById("discount");
   const lang = document.getElementById("lang");
   const type = document.getElementById("type");
   const bannerImagePreInput = document.getElementById("imagePreview");
   // const image= document.getElementById("image").files[0];
 
   // Set the initial values in the form fields
-  bannerNameInput.value = bannerData.name;
+  bannerNameInput.value = bannerData.title;
   bannerDescripitonInput.value = bannerData.description;
   category.value = bannerData.categoryId;
-  mrp.value = bannerData.mrp;
-  quantity.value = bannerData.quantity;
-  discount.value = bannerData.discount;
   lang.value = bannerData.lang;
   // type.value = bannerData.type;
   bannerImagePreInput.src = `${bannerData?.image}`;
@@ -296,24 +258,20 @@ function editBanner(bannerData) {
       console.log("id", bannerData.id);
 
       const formData = new FormData();
-      formData.append("name", document.getElementById("name").value);
+      formData.append("title", document.getElementById("name").value);
       formData.append(
         "description",
         document.getElementById("description").value
       );
       formData.append("categoryId", document.getElementById("category").value);
-      formData.append("mrp", document.getElementById("mrp").value);
-      formData.append("quantity", document.getElementById("quantity").value);
-      formData.append("discount", document.getElementById("discount").value);
       formData.append("lang", document.getElementById("lang").value);
-      // formData.append("type", document.getElementById("type").value);
-      formData.append("image", document.getElementById("image").files[0]);
-      formData.append("id", bannerData.id);
-      // formData.append("pdf", document.getElementById("pdf").files[0]);
-
+      formData.append("update", 1);
+      formData.append("added_by ", "Hunda");
+      formData.append("photo", document.getElementById("image").files[0]);
+      formData.append("news_id", bannerData.id);
       try {
         const response = await fetch(
-          "https://api.bhattacharjeesolution.in/book/api/edit-book.php",
+          "https://api.bhattacharjeesolution.in/book/api/news.php",
           {
             method: "POST",
             body: formData,
@@ -348,13 +306,13 @@ function editBanner(bannerData) {
 }
 
 // Add event listeners for opening the popup when the "edit" buttons are clicked
-const editButtons = document.querySelectorAll(".edit-button");
-editButtons.forEach((button) => {
-  const couponData = JSON.parse(button.getAttribute("data-coupon"));
-  addEditButtonClickHandler(button, couponData);
-});
+// const editButtons = document.querySelectorAll(".edit-button");
+// editButtons.forEach((button) => {
+//   const couponData = JSON.parse(button.getAttribute("data-coupon"));
+//   addEditButtonClickHandler(button, couponData);
+// });
 
-function fetchCategoryData() {
+function fetchCategoryData(id) {
   // Replace 'YOUR_API_URL' with the actual API endpoint
   console.log("fethichg", token);
   fetch(
@@ -386,6 +344,8 @@ function fetchCategoryData() {
         option.textContent = category.name;
         categorySelect.appendChild(option);
       });
+
+      categorySelect.value = id;
 
       // Add an event listener to fetch subcategories when a category is selected
       // categorySelect.addEventListener("change", fetchSubcategories);
