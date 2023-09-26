@@ -279,7 +279,10 @@
         formData.append("quantity", document.getElementById("quantity").value);
         formData.append("discount", document.getElementById("discount").value);
         formData.append("lang", document.getElementById("lang").value);
-        formData.append("delivery", document.getElementById("delivery").value);
+        formData.append(
+          "delivery_price",
+          document.getElementById("delivery").value
+        );
         formData.append("type", "ebook");
         formData.append("image", document.getElementById("image").files[0]);
         formData.append("content", document.getElementById("pdf").files[0]);

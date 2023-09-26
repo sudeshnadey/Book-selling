@@ -20,6 +20,9 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   </head>
 
   <body>
@@ -33,75 +36,7 @@
               scrolling="no"
               height="100%"
             ></iframe>
-            <!-- width="250px" -->
-            <!-- <div class="logo bold">
-              <h3>Management</h3>
-              <h3>Dashboard</h3> -->
-            <!-- <h4>DASHBOARD</h4> -->
-            <!-- </div> -->
-            <!-- <div class="sidebaritems">
-              <div class="sidebaritems">
-                <div class="dropdown">
-                  <button class="dropbtn" onclick="toggleDropdown()">
-                    <i class="fa-solid fa-table-cells"></i>
-                    <a href="../Dashboard.html">Dashboard</a>
-                  </button>
-                </div>
-              </div>
-              <div class="sidebaritems">
-                <div class="dropdown">
-                  <button class="dropbtn" onclick="toggleDropdown()">
-                    <i class="fa-solid fa-flag"></i>
-                    <a href="../Banner/Banner.html">Banner</a>
-                  </button>
-                </div>
-              </div>
-              <div class="sidebaritems">
-                <div class="dropdown">
-                  <button class="dropbtn" onclick="toggleDropdown()">
-                    <i class="fa-solid fa-barcode"></i>
-                    <a href="/Category/Category.html">Category</a>
-                  </button>
-                </div>
-              </div>
-              <div class="sidebaritems">
-                <div class="dropdown">
-                  <button class="dropbtn" onclick="toggleDropdown()">
-                    <i class="fa-solid fa-ticket"></i>
-                    <a href="../Coupon/Coupon.html">Coupon</a>
-                  </button>
-                </div>
-              </div>
-              <div class="sidebaritems">
-                <div class="dropdown">
-                  <button class="dropbtn" onclick="toggleDropdown()">
-                    <i class="fa-solid fa-handshake"></i>
-                    <a href="../Transaction/transaction.html">Transactions</a>
-                  </button>
-                  <div class="dropdown-content" id="classDropdown"></div>
-                </div>
-              </div>
-              <div class="sidebaritems">
-                <div class="dropdown">
-                  <button class="dropbtn" onclick="toggleDropdown()">
-                    <i class="fa-solid fa-user"></i>
-                    <a href="../Users/Users.html">Users</a>
-                  </button>
-                  <div class="dropdown-content" id="classDropdown"></div>
-                </div>
-              </div>
-              <div class="sidebaritems">
-                <div class="dropdown">
-                  <button class="dropbtn" onclick="toggleDropdown()">
-                    <i class="fa-solid fa-truck"></i>
-                    <a href="OrderDetail.html">Order Details</a>
-                  </button>
-                  <div class="dropdown-content" id="classDropdown"></div>
-                </div>
-              </div>
-            </div> -->
-            <!-- In your main HTML page -->
-            <!-- #include virtual="sidebar.html" -->
+
           </div>
 
           <!-- dashboard -->
@@ -109,74 +44,31 @@
             <div class="maindashboard">
               <div class="row navbar">
                 <div class="col-1">
-                  <i class="fa-solid fa-bars"></i>
+                
                   <i class="fa-solid fa-magnifying-glass"></i>
                 </div>
-                <div class="col-2">
-                  <button class="btnd">WEBSITE</button>
+              
+                <div class="col-2 dropdown">
+                  <i class="fa-regular fa-user dropdown-toggle" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                  <div class="dropdown-menu" aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="#">Profile</a>
+                    <a class="dropdown-item" href="#">Settings</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Logout</a>
+                  </div>
                 </div>
-                <div class="col-2">
-                  <button class="btnd">DASHBOARD</button>
-                </div>
-                <div class="col-1">
-                  <button class="btnd">REPORTS</button>
-                </div>
-                <div class="col-2">
-                  <p>2023-2024</p>
-                </div>
-
-                <div class="col-1">
-                  <i class="fa-regular fa-comment"></i>
-                  <i class="fa-solid fa-bell"></i>
-                </div>
+                
               </div>
-              <h3 class="mt-5">Welcome - Super Admin</h3>
-              <!-- <div class="bars">
-                <i class="fa-solid fa-bars"></i>
-              </div> -->
-              <!-- <div class="col-3 col-t-6 col-p-12">
-                <div class="admin_box ">
-                  <h4>Customers</h4>
-                  <p>Total Customers</p>
-                  <p class="purple">262</p>
-                </div>
-              </div> -->
-
-              <!-- <div class="container-fluid  no-gutters w-100">
-
-                <div class="mt-5 w-full d-flex align-items-center justify-content-space-between no-gutters ">
-                  <div class="card col-4 col-t-6 col-p-12">
-                    <div class="card-body  d-flex flex-column justify-content-center">
-                      <h3 class="card-title">Customers</h3>
-                      <h2 class="card-text mt-5 blue">262</h2>
-                      <p class="card-text">Total Customers</p>
-                    </div>
-                  </div>
-                  <div class="card col-4 col-t-6 col-p-12">
-                    <div class="card-body  d-flex flex-column justify-content-center">
-                      <h3 class="card-title">Sales</h3>
-                      <h2 class="card-text mt-5 blue">2</h2>
-                      <p class="card-text">Total Sales</p>
-                    </div>
-                  </div>
-                  <div class="card col-4 col-t-6 col-p-12">
-                    <div class="card-body  d-flex flex-column justify-content-center">
-                      <h3 class="card-title">Profits</h3>
-                      <h2 class="card-text mt-5 blue">262</h2>
-                      <p class="card-text">Total Profits</p>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
+              <h4 class="mt-2 " style="margin-left: 30px;">Welcome - Super Admin</h4>
               <div class="container-fluid">
                 <div class="row mt-5">
                   <div class="col-sm-12 col-md-4">
                     <div class="card">
                       <div
-                        class="card-body d-flex flex-column justify-content-center"
+                        class="card-body d-flex flex-column justify-content-center" style="background-color: rgb(245, 220, 220);font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;"
                       >
                         <h3 class="card-title">Customers</h3>
-                        <h2 class="card-text mt-3 blue">262</h2>
+                        <h3 class="card-text mt-3 blue">262</h3>
                         <p class="card-text">Total Customers</p>
                       </div>
                     </div>
@@ -184,10 +76,10 @@
                   <div class="col-sm-12 col-md-4">
                     <div class="card">
                       <div
-                        class="card-body d-flex flex-column justify-content-center"
+                        class="card-body d-flex flex-column justify-content-center" style="background-color: rgb(220, 246, 191); font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;"
                       >
                         <h3 class="card-title">Sales</h3>
-                        <h2 class="card-text mt-3 blue">2</h2>
+                        <h3 class="card-text mt-3 blue">2</h3>
                         <p class="card-text">Total Sales</p>
                       </div>
                     </div>
@@ -195,10 +87,10 @@
                   <div class="col-sm-12 col-md-4">
                     <div class="card">
                       <div
-                        class="card-body d-flex flex-column justify-content-center"
+                        class="card-body d-flex flex-column justify-content-center "style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;"
                       >
                         <h3 class="card-title">Profits</h3>
-                        <h2 class="card-text mt-3 blue">262</h2>
+                        <h3 class="card-text mt-3 blue">262</h3>
                         <p class="card-text">Total Profits</p>
                       </div>
                     </div>

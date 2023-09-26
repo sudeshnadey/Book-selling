@@ -52,6 +52,9 @@
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
       crossorigin="anonymous"
     />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="../Style.css" />
     <link
       rel="stylesheet"
@@ -97,26 +100,20 @@
               <!-- banner -->
               <div class="row navbar">
                 <div class="col-1">
-                  <i class="fa-solid fa-bars"></i>
+                
                   <i class="fa-solid fa-magnifying-glass"></i>
                 </div>
-                <div class="col-2">
-                  <button class="btnd">WEBSITE</button>
+              
+                <div class="col-2 dropdown">
+                  <i class="fa-regular fa-user dropdown-toggle" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                  <div class="dropdown-menu" aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="#">Profile</a>
+                    <a class="dropdown-item" href="#">Settings</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Logout</a>
+                  </div>
                 </div>
-                <div class="col-2">
-                  <button class="btnd">DASHBOARD</button>
-                </div>
-                <div class="col-1">
-                  <button class="btnd">REPORTS</button>
-                </div>
-                <div class="col-2">
-                  <p>2023-2024</p>
-                </div>
-
-                <div class="col-1">
-                  <i class="fa-regular fa-comment"></i>
-                  <i class="fa-solid fa-bell"></i>
-                </div>
+                
               </div>
               <!-- maincontent   -->
               <div class="mt-3">

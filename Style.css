@@ -133,6 +133,9 @@ body {
   position: relative;
   display: inline-block;
 }
+.card-body{
+  background-color: #0fff273c;
+}
 
 /* Style the dropdown button */
 .dropbtn {
@@ -286,10 +289,10 @@ body {
   background: #edf2f6;
   padding: 10px;
   color: #000000;
-  height: 800px;
+
   position: sticky;
   top: 0;
-  height: 99vh;
+  height: 100vh;
   /* left: 0; */
   /* width: 250px; */
 }
