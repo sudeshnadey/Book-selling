@@ -83,9 +83,14 @@ function populateCategoryTable(data) {
     categoryTableBody.appendChild(row);
 
     var editButton = row.querySelector(".edit-button");
+    // Use a closure to capture the item data for each edit button
+    addEditButtonClickHandler(editButton, item);
+  }
+
+  function addEditButtonClickHandler(editButton, item) {
     editButton.addEventListener("click", function () {
       var couponData = JSON.parse(editButton.getAttribute("data-coupon"));
-      editCategory(couponData);
+      editCategory(item); // Pass the 'item' to the editCategory function
     });
   }
 

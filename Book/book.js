@@ -4,6 +4,7 @@ var itemsPerPage = 10; // Number of items to display per page
 var filteredData = [];
 var totalFilteredPages = 1; // Initialize to 1 page
 const token = localStorage.getItem("user");
+
 function fetchDataFromAPI() {
   fetch("https://api.bhattacharjeesolution.in/book/api/admin-show-book.php", {
     headers: {
@@ -77,9 +78,17 @@ function populateBannerTable(data) {
 
     bannerTableBody.appendChild(row);
     var editButton = row.querySelector(".edit-button");
+    addEditButtonClickHandler(editButton, item);
+    // editButton.addEventListener("click", function () {
+    //   var couponData = JSON.parse(editButton.getAttribute("data-coupon"));
+    //   editBanner(couponData);
+    // });
+  }
+
+  function addEditButtonClickHandler(editButton, item) {
     editButton.addEventListener("click", function () {
       var couponData = JSON.parse(editButton.getAttribute("data-coupon"));
-      editBanner(couponData);
+      editBanner(item); // Pass the 'item' to the editCategory function
     });
   }
 

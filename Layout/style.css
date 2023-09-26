@@ -72,6 +72,8 @@
   padding: 10px;
   color: #000000;
   height: 800px;
+  position: sticky;
+  top: 0;
   /* height: 100%;  */
 }
 .sidebar .logo {

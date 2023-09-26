@@ -1,3 +1,8 @@
+// Define global variables for pagination
+var currentPage = 1;
+var itemsPerPage = 10; // Number of items to display per page
+var filteredData = [];
+var totalFilteredPages = 1; // Initialize to 1 page
 const token = localStorage.getItem("user");
 function fetchDataFromAPI() {
   // fetch(
@@ -17,6 +22,10 @@ function fetchDataFromAPI() {
     })
     .then(function (data) {
       // Call the populateBannerTableWithData function with the retrieved data
+      window.fetchedData = data;
+      filteredData = data;
+      totalFilteredPages = data.length; // Calculate total pages for the original data
+      console.log("totalpage:", totalFilteredPages);
       populateBannerTable(data);
       console.log("data:", data);
     })
@@ -34,41 +43,110 @@ function populateBannerTable(data) {
   while (bannerTableBody.firstChild) {
     bannerTableBody.removeChild(bannerTableBody.firstChild);
   }
-  data.forEach(function (item) {
+
+  // Calculate the start and end indices for the current page
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, data.length);
+
+  for (let index = startIndex; index < endIndex; index++) {
+    const item = data[index];
     var row = document.createElement("tr");
 
     row.innerHTML = `
-              <td>${item.id}</td>
-              <td>${item.name}</td>
-              <td>${item.description}</td>
-              <td>
-              <img src="${item.image.replace(
-                " ",
-                "%20"
-              )}" alt="" style="width: calc(80% - 30px); flex: 5; object-fit: cover; max-width: 100px; max-height: 100px;" />
-              </td>
-              <td>
-                  <button class="edit-button" style="border: none"  data-coupon='${JSON.stringify(
-                    item
-                  )}'>
-                      <i class="fa-solid fa-pen"></i>
-                    </button>
-                    <button style="border: none; color: red" onclick="deleteBanner(${
-                      item.id
-                    })">
-                      <i class="fa-solid fa-trash"></i>
-                    </button>
-              </td>
-          `;
+      <td>${item.id}</td>
+      <td>${item.name}</td>
+      <td>${item.description}</td>
+      <td>
+      <img src="${item.image.replace(
+        " ",
+        "%20"
+      )}" alt="" style="width: calc(80% - 30px); flex: 5; object-fit: cover; max-width: 100px; max-height: 100px;" />
+      </td>
+      <td>
+          <button class="edit-button" style="border: none"  data-coupon='${JSON.stringify(
+            item
+          )}'>
+              <i class="fa-solid fa-pen"></i>
+            </button>
+            <button style="border: none; color: red" onclick="deleteBanner(${
+              item.id
+            })">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+      </td>
+    `;
 
     bannerTableBody.appendChild(row);
     var editButton = row.querySelector(".edit-button");
+    addEditButtonClickHandler(editButton, item);
+    // editButton.addEventListener("click", function () {
+    //   var couponData = JSON.parse(editButton.getAttribute("data-coupon"));
+    //   editBanner(couponData);
+    // });
+  };
+
+  
+  function addEditButtonClickHandler(editButton, item) {
     editButton.addEventListener("click", function () {
       var couponData = JSON.parse(editButton.getAttribute("data-coupon"));
-      editBanner(couponData);
+      editBanner(item); // Pass the 'item' to the editCategory function
     });
-  });
+  }
+
+  updatePaginationControls(data.length);
 }
+
+
+function searchTable() {
+  const searchInput = document.getElementById("searchbar").value.toLowerCase();
+
+  // Filter the data based on the search query
+  filteredData = window.fetchedData.filter(function (item) {
+    return item.name.toLowerCase().includes(searchInput);
+    // Add more fields to search as needed
+  });
+
+  // Reset the current page to 1 when searching
+  currentPage = 1;
+  // Calculate the total number of pages for the filtered data
+  totalFilteredPages = filteredData.length / itemsPerPage;
+
+  // Update the pagination controls based on the filtered data length
+  updatePaginationControls(filteredData.length);
+  // Update the table with the filtered data
+  populateBannerTable(filteredData);
+}
+
+function updatePaginationControls(totalItems) {
+  console.log("rows: ", totalItems);
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const pageInfo = document.getElementById("page-info");
+  pageInfo.textContent = "Page " + currentPage + " of " + totalPages;
+
+  const prevButton = document.getElementById("prev-button");
+  const nextButton = document.getElementById("next-button");
+
+  prevButton.disabled = currentPage === 1;
+  nextButton.disabled = currentPage === totalPages;
+}
+
+function prevPage() {
+  if (currentPage > 1) {
+    currentPage--;
+    populateBannerTable(filteredData); // Display data for the updated page
+    // populateBannerTable(window.fetchedData); // Display data for the updated page
+  }
+}
+
+function nextPage() {
+  const totalPages = Math.ceil(window.fetchedData.length / itemsPerPage);
+  if (currentPage < totalPages) {
+    currentPage++;
+    populateBannerTable(filteredData); // Display data for the updated page
+    // populateBannerTable(window.fetchedData); // Display data for the updated page
+  }
+}
+
 // banner.js
 document.addEventListener("DOMContentLoaded", function () {
   var bannerTable = document.getElementById("banner-table");
@@ -107,18 +185,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Function to handle banner deletion
 function deleteBanner(bannerNumber) {
-  const modal = document.getElementById('deleteBannerModal');
-  const confirmDeleteButton = document.getElementById('confirmDelete');
-  const cancelButton = document.querySelector('#deleteBannerModal .modal-footer .btn-secondary');
+  const modal = document.getElementById("deleteBannerModal");
+  const confirmDeleteButton = document.getElementById("confirmDelete");
+  const cancelButton = document.querySelector(
+    "#deleteBannerModal .modal-footer .btn-secondary"
+  );
 
   // Store the bannerNumber in a data attribute for later use
   modal.dataset.bannerNumber = bannerNumber;
 
   // Add an event listener for the "Delete" button inside the modal
-  confirmDeleteButton.addEventListener('click', function () {
+  confirmDeleteButton.addEventListener("click", function () {
     const bannerNumberToDelete = modal.dataset.bannerNumber;
-    modal.classList.remove('show'); // Close the modal
-    modal.style.display = 'none';
+    modal.classList.remove("show"); // Close the modal
+    modal.style.display = "none";
 
     // Perform the deletion here
     const formdata = new FormData();
@@ -138,28 +218,29 @@ function deleteBanner(bannerNumber) {
         return response.json(); // Parse the response as JSON
       })
       .then(function (data) {
-        fetchDataFromAPI(); // Update the table after deletion
         console.log("data:", data);
+        alert(data.data || "Successfully Deleted!");
+        window.location.reload();
+        fetchDataFromAPI(); // Update the table after deletion
       })
       .catch(function (error) {
         console.error("Error fetching data:", error);
       });
 
     // Remove the event listener to prevent multiple deletions
-    confirmDeleteButton.removeEventListener('click', this);
+    confirmDeleteButton.removeEventListener("click", this);
   });
 
   // Add an event listener to the "Cancel" button to close the modal
-  cancelButton.addEventListener('click', function () {
-    modal.classList.remove('show');
-    modal.style.display = 'none';
+  cancelButton.addEventListener("click", function () {
+    modal.classList.remove("show");
+    modal.style.display = "none";
   });
 
   // Show the Bootstrap modal
-  modal.classList.add('show');
-  modal.style.display = 'block';
+  modal.classList.add("show");
+  modal.style.display = "block";
 }
-
 
 // Flag to check if the submit event listener is already added
 let isSubmitEventListenerAdded = false;
