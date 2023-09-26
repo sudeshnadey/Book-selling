@@ -25,21 +25,28 @@
   <body style="position: fixed; top: 0">
     <!-- <div class="col-2 sidebar"> -->
     <div class="sidebar">
+      <div style="display: flex;">
       <div>
-        <i class="fa-solid fa-gear fa-2xl"></i>
+        <img src="logo.jpeg"  width="50" height="50" style="margin-left: 50px;">
       </div>
-      <div class="logo bold">
-        <h3>Management</h3>
-        <h3>Dashboard</h3>
-        <!-- <h4>DASHBOARD</h4> -->
-      </div>
-      <div class="sidebaritems">
+    
+    </div>
+      <div class="sidebaritems mt-3">
         <div class="sidebaritems">
           <div class="dropdown">
             <button class="dropbtn" onclick="toggleDropdown()">
               <i class="fa-solid fa-table-cells"></i>
               <a href="../Dashboard.html" target="_top">Dashboard</a>
             </button>
+          </div>
+        </div>
+        <div class="sidebaritems">
+          <div class="dropdown">
+            <button class="dropbtn" onclick="toggleDropdown()">
+              <i class="fa-solid fa-user"></i>
+              <a href="../Users/Users.html" target="_top">Users</a>
+            </button>
+            <div class="dropdown-content" id="classDropdown"></div>
           </div>
         </div>
         <div class="sidebaritems">
@@ -53,7 +60,7 @@
         <div class="sidebaritems">
           <div class="dropdown">
             <button class="dropbtn" onclick="toggleDropdown()">
-              <i class="fa-solid fa-barcode"></i>
+              <i class="fas fa-list"></i>
               <a href="/Category/Category.html" target="_top">Category</a>
             </button>
           </div>
@@ -61,16 +68,18 @@
         <div class="sidebaritems">
           <div class="dropdown">
             <button class="dropbtn" onclick="toggleDropdown()">
-              <i class="fa-solid fa-divide"></i>
+              <i class="fa-solid fa-book"></i>
               <a href="/Book/book.html" target="_top"
                 >Book</a
               >
             </button>
           </div>
+        </div>
+        <div>
           <div class="sidebaritems">
             <div class="dropdown">
               <button class="dropbtn" onclick="toggleDropdown()">
-                <i class="fa-solid fa-divide"></i>
+                <i class="fa-solid fa-book-open"></i>
                 <a href="/Ebook/ebook.html" target="_top"
                   >EBook</a
                 >
@@ -95,15 +104,7 @@
             <div class="dropdown-content" id="classDropdown"></div>
           </div>
         </div>
-        <div class="sidebaritems">
-          <div class="dropdown">
-            <button class="dropbtn" onclick="toggleDropdown()">
-              <i class="fa-solid fa-user"></i>
-              <a href="../Users/Users.html" target="_top">Users</a>
-            </button>
-            <div class="dropdown-content" id="classDropdown"></div>
-          </div>
-        </div>
+       
         <div class="sidebaritems">
           <div class="dropdown">
             <button class="dropbtn" onclick="toggleDropdown()">
@@ -115,15 +116,7 @@
             <div class="dropdown-content" id="classDropdown"></div>
           </div>
         </div>
-        <div class="sidebaritems">
-          <div class="dropdown">
-            <button class="dropbtn" onclick="toggleDropdown()">
-              <i class="fa-brands fa-product-hunt"></i>
-              <a href="../Product/Product.html" target="_top">Product</a>
-            </button>
-            <div class="dropdown-content" id="classDropdown"></div>
-          </div>
-        </div>
+       
       </div>
     </div>
     <!-- </div> -->
