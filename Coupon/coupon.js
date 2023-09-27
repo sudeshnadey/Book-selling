@@ -1,43 +1,15 @@
-// Function to populate the coupon table
-function populateCouponTable(data) {
-  data.forEach(function (item) {
-    var row = document.createElement("tr");
-
-    row.innerHTML = `
-                  <td>${item.No}</td>
-                  <td>${item.Name}</td>
-                  <td>${item.Validity}</td>
-                  <td>$ ${item.Price}</td>
-                  <td>
-                      <button class="edit-button" style="border: none" data-coupon='${JSON.stringify(
-                        item
-                      )}'>
-                          <i class="fa-solid fa-pen"></i>
-                        </button>
-
-                        <button style="border: none; color: red" onclick="deleteCoupon(${
-                          item.No
-                        })">
-                          <i class="fa-solid fa-trash"></i>
-                        </button>
-                  </td>
-              `;
-
-    couponTableBody.appendChild(row);
-
-    // Add an event listener to the "Edit" button
-    var editButton = row.querySelector(".edit-button");
-    editButton.addEventListener("click", function () {
-      var couponData = JSON.parse(editButton.getAttribute("data-coupon"));
-      editCoupon(couponData);
-    });
-  });
-}
+// Define global variables for pagination
+var currentPage = 1;
+var itemsPerPage = 10; // Number of items to display per page
+var filteredData = [];
+var totalFilteredPages = 1; // Initialize to 1 page
+const token = localStorage.getItem("user");
 
 function fetchDataFromAPI() {
-  fetch("https://api.bhattacharjeesolution.in/book/api/admin-show-banner.php", {
+  fetch("https://api.bhattacharjeesolution.in/book/api/coupon.php", {
     headers: {
       "Content-Type": "application/json",
+      token: token,
     },
   }) // Replace with your API endpoint
     .then(function (response) {
@@ -49,192 +21,313 @@ function fetchDataFromAPI() {
     })
     .then(function (data) {
       // Call the populateBannerTableWithData function with the retrieved data
-      populateCouponTable(data);
+      window.fetchedData = data;
+      filteredData = data;
+      totalFilteredPages = data.length; // Calculate total pages for the original data
+      console.log("totalpage:", totalFilteredPages);
+      populateBannerTable(data);
       console.log("data:", data);
     })
     .catch(function (error) {
       console.error("Error fetching data:", error);
     });
 }
-// coupon.js
-document.addEventListener("DOMContentLoaded", function () {
-  var couponTable = document.getElementById("coupon-table");
-  var couponTableBody = document.getElementById("coupon-table-body");
 
-  // Sample coupon data (simulated delay for demonstration)
-  setTimeout(function () {
-    var couponData = [
-      {
-        No: 1,
-        Name: "Coupon 1",
-        Validity: "2023-09-30",
-        Price: "10",
-      },
-      {
-        No: 2,
-        Name: "Coupon 2",
-        Validity: "2023-10-31",
-        Price: "20",
-      },
-      // Add more coupon data as needed
-    ];
+// Function to populate the banner table
+function populateBannerTable(data) {
+  var bannerTable = document.getElementById("coupon-table-body");
+  var bannerTableBody = document.getElementById("coupon-table");
 
-    // Call the populateCouponTable function with your coupon data on initial render
-    populateCouponTable(couponData);
-    fetchDataFromAPI();
-  }, 0); // No simulated delay in this example (adjust as needed)
+  // Clear the existing rows in bannerTableBody
+  while (bannerTableBody.firstChild) {
+    bannerTableBody.removeChild(bannerTableBody.firstChild);
+  }
 
-  // Add an event listener to the search input field
-  const noCouponMessage = document.createElement("div");
-  noCouponMessage.textContent = "No coupons found";
-  // Apply CSS styles to the message element
-  noCouponMessage.style.display = "none"; // Initially hide the message
-  noCouponMessage.style.textAlign = "center"; // Center-align text
-  noCouponMessage.style.padding = "20px 10px"; // Add padding
-  noCouponMessage.style.width = "100%"; // Add padding
-  noCouponMessage.style.columnSpan = 4;
-  noCouponMessage.style.fontSize = "18px"; // Increase text size
-  noCouponMessage.style.backgroundColor = "#f0f0f0"; // Background color (optional)
+  // Calculate the start and end indices for the current page
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, data.length);
 
-  // Append the message element just below the table
-  couponTable.parentNode.insertBefore(noCouponMessage, couponTable.nextSibling);
+  for (let index = startIndex; index < endIndex; index++) {
+    const item = data[index];
+    var row = document.createElement("tr");
 
-  // Add an event listener to the search input field
-  const searchInput = document.getElementById("searchbar");
-  searchInput.addEventListener("input", function () {
-    const searchText = searchInput.value.trim().toLowerCase(); // Get the search text and convert to lowercase
+    row.innerHTML = `
+      <td>${item.id}</td>
+      <td>${item.code}</td>
+      <td>${item.type}</td>
+      <td>${item.value}</td>
+      <td>${item.minimum_amount}</td>
+      <td>${item.valid_from}</td>
+      <td>${item.valid_until}</td>
+      <td>
+          <button class="edit-button" style="border: none"  data-coupon='${JSON.stringify(
+            item
+          )}'>
+              <i class="fa-solid fa-pen"></i>
+            </button>
+            <button style="border: none; color: red" onclick="deleteBanner(${
+              item.id
+            })">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+      </td>
+    `;
 
-    // Loop through the table rows (skip the first row which is the header)
-    const rows = couponTableBody.querySelectorAll("tr");
-    let anyMatch = false; // Flag to track if any match is found
+    bannerTableBody.appendChild(row);
+    var editButton = row.querySelector(".edit-button");
+    addEditButtonClickHandler(editButton, item);
+    // editButton.addEventListener("click", function () {
+    //   var couponData = JSON.parse(editButton.getAttribute("data-coupon"));
+    //   editBanner(couponData);
+    // });
+  }
 
-    for (let i = 1; i < rows.length; i++) {
-      const row = rows[i];
-      const nameColumn = row.querySelector("td:nth-child(2)"); // Target the "Name" column (2nd column)
-      const nameText = nameColumn.textContent.trim().toLowerCase();
+  function addEditButtonClickHandler(editButton, item) {
+    editButton.addEventListener("click", function () {
+      var couponData = JSON.parse(editButton.getAttribute("data-coupon"));
+      editBanner(item); // Pass the 'item' to the editCategory function
+    });
+  }
 
-      // Hide or show the row based on the search criteria for the "Name" column
-      if (nameText.includes(searchText)) {
-        row.style.display = ""; // Show the row
-        anyMatch = true; // Match found
-      } else {
-        row.style.display = "none"; // Hide the row
-      }
-    }
+  updatePaginationControls(data.length);
+}
 
-    // Show or hide the "No coupons found" message based on search results
-    if (anyMatch) {
-      noCouponMessage.style.display = "none"; // Hide the message
-    } else {
-      noCouponMessage.style.display = "block"; // Show the message
-    }
+function searchTable() {
+  const searchInput = document.getElementById("searchbar").value.toLowerCase();
+
+  // Filter the data based on the search query
+  filteredData = window.fetchedData.filter(function (item) {
+    return item.name.toLowerCase().includes(searchInput);
+    // Add more fields to search as needed
   });
+
+  // Reset the current page to 1 when searching
+  currentPage = 1;
+  // Calculate the total number of pages for the filtered data
+  totalFilteredPages = filteredData.length / itemsPerPage;
+
+  // Update the pagination controls based on the filtered data length
+  updatePaginationControls(filteredData.length);
+  // Update the table with the filtered data
+  populateBannerTable(filteredData);
+}
+
+function updatePaginationControls(totalItems) {
+  console.log("rows: ", totalItems);
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const pageInfo = document.getElementById("page-info");
+  pageInfo.textContent = "Page " + currentPage + " of " + totalPages;
+
+  const prevButton = document.getElementById("prev-button");
+  const nextButton = document.getElementById("next-button");
+
+  prevButton.disabled = currentPage === 1;
+  nextButton.disabled = currentPage === totalPages;
+}
+
+function prevPage() {
+  if (currentPage > 1) {
+    currentPage--;
+    populateBannerTable(filteredData); // Display data for the updated page
+    // populateBannerTable(window.fetchedData); // Display data for the updated page
+  }
+}
+
+function nextPage() {
+  const totalPages = Math.ceil(window.fetchedData.length / itemsPerPage);
+  if (currentPage < totalPages) {
+    currentPage++;
+    populateBannerTable(filteredData); // Display data for the updated page
+    // populateBannerTable(window.fetchedData); // Display data for the updated page
+  }
+}
+
+// banner.js
+document.addEventListener("DOMContentLoaded", function () {
+  var bannerTable = document.getElementById("coupon-table-body");
+  var bannerTableBody = document.getElementById("coupon-table");
+
+  // Sample banner data (simulated delay for demonstration)
+  setTimeout(function () {
+    // Call the populateBannerTable function with your banner data on initial render
+    // populateBannerTable(bannerData);
+    // Function to fetch data from the API
+
+    fetchDataFromAPI();
+
+    // Add an event listener to the search input field
+    var searchInput = document.getElementById("searchbar");
+    searchInput.addEventListener("input", function () {
+      var searchText = searchInput.value.trim().toLowerCase();
+
+      // Loop through the table rows (skip the first row which is the header)
+      var rows = bannerTableBody.querySelectorAll("tr");
+
+      for (var i = 0; i < rows.length; i++) {
+        var row = rows[i];
+        var nameColumn = row.querySelector("td:nth-child(2)"); // Target the "Banner Name" column (2nd column)
+        var nameText = nameColumn.textContent.trim().toLowerCase();
+
+        if (nameText.includes(searchText)) {
+          row.style.display = ""; // Show the row
+        } else {
+          row.style.display = "none"; // Hide the row
+        }
+      }
+    });
+  }, 0); // No simulated delay in this example (adjust as needed)
 });
 
-// Function to handle coupon deletion
-function deleteCoupon(couponNo) {
-  // Add your code here to handle the deletion of the coupon with the specified No
-  // For example, you can show a confirmation dialog and then remove the coupon from the table and data array
-  // alert("Coupon with No " + couponNo + " will be deleted.");
-  if (window.confirm("Are you sure?") == true) {
-    console.log(couponNo);
+// Function to handle banner deletion
+function deleteBanner(bannerNumber) {
+  const modal = document.getElementById("deleteBannerModal");
+  const confirmDeleteButton = document.getElementById("confirmDelete");
+  const cancelButton = document.querySelector(
+    "#deleteBannerModal .modal-footer .btn-secondary"
+  );
+
+  // Store the bannerNumber in a data attribute for later use
+  modal.dataset.bannerNumber = bannerNumber;
+
+  // Add an event listener for the "Delete" button inside the modal
+  confirmDeleteButton.addEventListener("click", function () {
+    const bannerNumberToDelete = modal.dataset.bannerNumber;
+    modal.classList.remove("show"); // Close the modal
+    modal.style.display = "none";
+
+    // Perform the deletion here
     const formdata = new FormData();
-    formdata.append("bannerId", couponNo);
+    formdata.append("bannerId", bannerNumberToDelete);
     var requestData = {
-      bannerId: couponNo,
+      bannerId: bannerNumberToDelete,
     };
-    fetch(`https://api.bhattacharjeesolution.in/book/api/delete-banner.php`, {
-      method: "POST",
-      // body: JSON.stringify(requestData),
-      body: formdata,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    fetch(
+      `https://api.bhattacharjeesolution.in/book/api/coupon.php?id=${bannerNumberToDelete}`,
+      {
+        method: "POST",
+        headers: {
+          token: token,
+        },
+      }
+    )
       .then(function (response) {
         console.log(response);
         return response.json(); // Parse the response as JSON
       })
       .then(function (data) {
-        // Call the populateBannerTableWithData function with the retrieved data
-        // populateBannerTable(data);
         console.log("data:", data);
+        alert(data.data || "Successfully Deleted!");
+        window.location.reload();
+        fetchDataFromAPI(); // Update the table after deletion
       })
       .catch(function (error) {
         console.error("Error fetching data:", error);
       });
-  }
+
+    // Remove the event listener to prevent multiple deletions
+    confirmDeleteButton.removeEventListener("click", this);
+  });
+
+  // Add an event listener to the "Cancel" button to close the modal
+  cancelButton.addEventListener("click", function () {
+    modal.classList.remove("show");
+    modal.style.display = "none";
+  });
+
+  // Show the Bootstrap modal
+  modal.classList.add("show");
+  modal.style.display = "block";
 }
 
-function editCoupon(couponData) {
+// Flag to check if the submit event listener is already added
+let isSubmitEventListenerAdded = false;
+
+// Function to handle editing a banner
+function editBanner(bannerData) {
+  console.log(bannerData);
   const editPopup = document.getElementById("editPopup");
+  const editButtons = document.querySelectorAll(".edit-button");
   const closePopupButton = document.getElementById("closePopup");
-  const nameInput = document.getElementById("name");
-  const validityInput = document.getElementById("validity");
-  const discountPriceInput = document.getElementById("discountPrice");
+
+  const minimum_amount = document.getElementById("minimum_amount");
+  const valid_until = document.getElementById("valid_until");
+  const valid_from = document.getElementById("valid_from");
+  const value = document.getElementById("value");
+  const type = document.getElementById("type");
+  const code = document.getElementById("code");
 
   // Set the initial values in the form fields
-  nameInput.value = couponData.Name;
-  validityInput.value = couponData.Validity; // Set the current date
-  discountPriceInput.value = parseInt(couponData.Price);
+  minimum_amount.value = bannerData.minimum_amount;
+  valid_until.value = bannerData.valid_until;
+  valid_from.value = bannerData.valid_from;
+  value.value = bannerData.value;
+  type.value = bannerData.type;
+  code.value = bannerData.code;
 
   // Show the popup
-  editPopup.style.display = "flex";
-
-  // Add an event listener to the form submission
-  const editForm = document.getElementById("editForm");
-  editForm.addEventListener("submit", async function (e) {
-    e.preventDefault(); // Prevent the form from submitting normally (you can handle the submission logic here)
-    // You can access the form data using nameInput.value, validityInput.value, and priceInput.value
-    console.log(
-      "Form submitted:",
-      nameInput.value,
-      validityInput.value,
-      discountPriceInput.value
-    );
-
-    const formData = new FormData();
-    formData.append("name", nameInput.value);
-    formData.append("validity", validityInput.value);
-    formData.append("discountprice", discountPriceInput.value);
-    formData.append("bannerId", couponData.id);
-
-    try {
-      const response = await fetch(
-        "https://api.bhattacharjeesolution.in/book/api/edit-banner.php",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      if (response.ok) {
-        // Handle success (e.g., display a success message)
-        console.log("Form submitted successfully!");
-        fetchDataFromAPI();
-        editPopup.style.display = "none"; // Close the popup after submission (you can replace this with your logic)
-      } else {
-        // Handle error (e.g., display an error message)
-        console.error("Form submission failed!");
-      }
-    } catch (error) {
-      console.error("An error occurred:", error);
-    }
-
-    editPopup.style.display = "none"; // Close the popup after submission (you can replace this with your logic)
+  editButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      editPopup.style.display = "flex";
+    });
   });
+
+  // Add an event listener to the form submission only if it's not already added
+  if (!isSubmitEventListenerAdded) {
+    const editForm = document.querySelector(".addCategory form");
+    editForm.addEventListener("submit", async function (e) {
+      e.preventDefault(); // Prevent the form from submitting normally (you can handle the submission logic here)
+      // You can access the form data using bannerNameInput.value and bannerImageInput.files[0]
+
+      const formData = {
+        code: code.value,
+        type: type.value,
+        value: value.value,
+        valid_from: valid_from.value,
+        valid_until: valid_until.value,
+        minimum_amount: minimum_amount.value,
+        id: bannerData.id,
+      };
+      console.log(token);
+      try {
+        fetch("https://api.bhattacharjeesolution.in/book/api/coupon.php", {
+          method: "PUT",
+          body: JSON.stringify(formData),
+          headers: {
+            // "Content-Type": "application/json",
+            token: token,
+          },
+        })
+          .then(async (response) => {
+            // console.log(response);
+            // response.json();
+            if (response.ok) {
+              const data = await response.json();
+              console.log(data);
+              // Handle success (e.g., display a success message)
+              alert("Form submitted successfully!");
+              window.location.reload();
+              fetchDataFromAPI();
+              editPopup.style.display = "none"; // Close the popup after submission (you can replace this with your logic)
+            } else {
+              // Handle error (e.g., display an error message)
+              console.error("Form submission failed!");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            document.querySelector(".error-message").textContent =
+              "An error occurred while logging in.";
+          });
+      } catch (error) {
+        console.error("An error occurred:", error);
+      }
+    });
+
+    isSubmitEventListenerAdded = true; // Set the flag to true to indicate that the listener has been added
+  }
 
   // Close the popup when the "Close" button is clicked
-  closePopupButton.addEventListener("click", () => {
-    editPopup.style.display = "none";
-  });
-}
-
-// Function to get the current date in the format YYYY-MM-DD
-function getCurrentDate() {
-  var today = new Date();
-  var year = today.getFullYear();
-  var month = String(today.getMonth() + 1).padStart(2, "0"); // January is 0
-  var day = String(today.getDate()).padStart(2, "0");
-  return year + "-" + month + "-" + day;
+  // closePopupButton.addEventListener("click", () => {
+  //   editPopup.style.display = "none";
+  // });
 }

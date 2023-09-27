@@ -124,10 +124,14 @@
                   <!-- <table class="styled-table"> -->
                   <thead>
                     <tr>
-                      <th>No0</th>
-                      <th>Name</th>
-                      <th>Validity and Starting</th>
+                      <th>No</th>
+                      <th>Code</th>
+                      <th>Type</th>
+                      <!-- <th>Value</th> -->
                       <th>Discount Price</th>
+                      <th>Minimun</th>
+                      <th>Valid From</th>
+                      <th>Valid Until</th>
                       <th></th>
                     </tr>
                   </thead>
@@ -148,34 +152,67 @@
                     </tr> -->
                   </tbody>
                 </table>
+
+                <div id="pagination">
+                  <button id="prev-button" onclick="prevPage()">
+                    <i class="fa-solid fa-arrow-left"></i>
+                  </button>
+                  <button id="next-button" onclick="nextPage()">
+                    <i class="fa-solid fa-arrow-right"></i>
+                  </button>
+                  <span id="page-info">Page 1 of 1</span>
+                </div>
               </div>
 
               <div class="popup-overlay" id="editPopup">
                 <div class="popup-container addCategory">
                   <h2>Edit Item</h2>
-                  <form
-                    action="/handle_form_submission"
-                    method="post"
-                    id="editForm"
-                  >
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required />
+                  <form action="#" method="post">
+                    <label for="code">Code:</label>
+                    <input type="text" id="code" name="code" required />
 
-                    <label for="image">Validity and Starting:</label>
-                    <input type="text" id="validity" name="validity" required />
+                    <label for="type">Type:</label>
+                    <select id="type" name="type" required>
+                      <option value="value">Value</option>
+                      <option value="percent">Percent</option>
+                    </select>
 
-                    <label for="description">Discount Price:</label>
+                    <label for="value">Discount:</label>
+                    <input type="number" id="value" name="value" required />
+
+                    <label for="valid_from">Valid From:</label>
+                    <input
+                      type="date"
+                      id="valid_from"
+                      name="valid_from"
+                      required
+                    />
+
+                    <label for="valid_until">Valid Until:</label>
+                    <input
+                      type="date"
+                      id="valid_until"
+                      name="valid_until"
+                      required
+                    />
+
+                    <label for="minimum_amount">Minimum Amount:</label>
+                    <input
+                      type="number"
+                      id="minimum_amount"
+                      name="minimum_amount"
+                      required
+                    />
+
+                    <!-- <label for="discountPrice">Discount Price:</label>
                     <input
                       id="discountPrice"
                       name="discountPrice"
                       type="number"
                       required
-                    />
+                    /> -->
 
-                    <div class="actions">
-                      <button type="submit">Submit</button>
-                      <button class="closebtn" id="closePopup">Close</button>
-                    </div>
+                    <button type="submit">Submit</button>
                   </form>
                   <!-- Add your edit form or content here -->
                 </div>
