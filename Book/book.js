@@ -6,12 +6,15 @@ var totalFilteredPages = 1; // Initialize to 1 page
 const token = localStorage.getItem("user");
 
 function fetchDataFromAPI() {
-  fetch("https://api.bhattacharjeesolution.in/book/api/admin-show-book.php", {
-    headers: {
-      "Content-Type": "application/json",
-      token: token,
-    },
-  }) // Replace with your API endpoint
+  fetch(
+    "https://api.bhattacharjeesolution.in/book/api/admin-show-book.php?type=book",
+    {
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    }
+  ) // Replace with your API endpoint
     .then(function (response) {
       console.log(response);
       if (!response.ok) {

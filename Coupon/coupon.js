@@ -216,9 +216,13 @@ function deleteBanner(bannerNumber) {
       })
       .then(function (data) {
         console.log("data:", data);
-        alert(data.data || "Successfully Deleted!");
-        window.location.reload();
-        fetchDataFromAPI(); // Update the table after deletion
+        if (data.error) {
+          alert(data.error || "Error while Deleting!");
+        } else {
+          alert(data.data || "Successfully Deleted!");
+          window.location.reload();
+          fetchDataFromAPI(); // Update the table after deletion
+        }
       })
       .catch(function (error) {
         console.error("Error fetching data:", error);
@@ -247,7 +251,7 @@ function editBanner(bannerData) {
   console.log(bannerData);
   const editPopup = document.getElementById("editPopup");
   const editButtons = document.querySelectorAll(".edit-button");
-  const closePopupButton = document.getElementById("closePopup");
+  const closePopupButton = document.getElementById("closemodal");
 
   const minimum_amount = document.getElementById("minimum_amount");
   const valid_until = document.getElementById("valid_until");
@@ -265,11 +269,11 @@ function editBanner(bannerData) {
   code.value = bannerData.code;
 
   // Show the popup
-  editButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      editPopup.style.display = "flex";
-    });
-  });
+  // editButtons.forEach((button) => {
+  //   button.addEventListener("click", () => {
+  //   });
+  // });
+  editPopup.style.display = "flex";
 
   // Add an event listener to the form submission only if it's not already added
   if (!isSubmitEventListenerAdded) {
@@ -327,7 +331,8 @@ function editBanner(bannerData) {
   }
 
   // Close the popup when the "Close" button is clicked
-  // closePopupButton.addEventListener("click", () => {
-  //   editPopup.style.display = "none";
-  // });
+  closePopupButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    editPopup.style.display = "none";
+  });
 }
