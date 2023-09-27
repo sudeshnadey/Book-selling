@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ab</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../Style.css" />
+    <link rel="stylesheet" href="../Category/table.css" />
+    <link rel="stylesheet" href="../Category/popUpStyle.css" />
+    <link rel="stylesheet" href="../Category/addCategory.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/blockMobile.js"></script>
+    <link rel="stylesheet" href="/loader.css" />
+    <script src="/loader.js"></script>
+  </head>
+
+  <body>
+    <div class="loader"></div>
+    <div class="dashboard">
+      <div class="container">
+        <div class="row">
+          <!-- sidebar -->
+          <!-- In your main HTML page -->
+          <div class="col-2 sidebar">
+            <iframe
+              src="/Layout/DashboardSidebar.html"
+              frameborder="0"
+              scrolling="no"
+              height="100%"
+            ></iframe>
+            <!-- In your main HTML page -->
+            <!-- #include virtual="sidebar.html" -->
+          </div>
+
+          <!-- dashboard -->
+          <div class="col-10 maindash">
+            <div class="maindashboard">
+              <!-- banner -->
+              <div class="row navbar">
+                <div class="col-1">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+
+                <div class="col-2 dropdown">
+                  <i
+                    class="fa-regular fa-user dropdown-toggle"
+                    id="userDropdown"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  ></i>
+                  <div class="dropdown-menu" aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="#">Profile</a>
+                    <a class="dropdown-item" href="#">Settings</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Logout</a>
+                  </div>
+                </div>
+              </div>
+              <!-- maincontent   -->
+              <div class="container mt-3">
+                <h2>About Us</h2>
+               
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                  "
+                >
+                  <button class="btnadd btn-primary mb-3">
+                    <a href="/Aboutus/addaboutus.html">Add About us</a>
+                  </button>
+                  <form>
+                    <div class="form-group">
+                      <!-- <div class="searbar"> -->
+                      <input
+                        type="text"
+                        name="searchbar"
+                        id="searchbar"
+                        class="form-control"
+                        placeholder="search"
+                      />
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <div class="bars">
+                <i class="fa-solid fa-bars"></i>
+              </div>
+              <div class="categoryTable row mt-3">
+                <table class="table" id="coupon-table-body">
+                  <!-- <table class="styled-table"> -->
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>Description</th>
+                   
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="coupon-table">
+                   
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="popup-overlay" id="editPopup">
+                <div class="popup-container addCategory">
+                  <h2>Edit Item</h2>
+                  <form
+                    action="/handle_form_submission"
+                    method="post"
+                    id="editForm"
+                  >
+                
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" rows="4" cols="50"></textarea>
+                    <div class="actions">
+                      <button type="submit">Submit</button>
+                      <button class="closebtn" id="closePopup">Close</button>
+                    </div>
+                  </form>
+                  <!-- Add your edit form or content here -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="../Script.js"></script>
+    <script src="coupon.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
+    <script>
+      // JavaScript to handle the popup
+      const editButtons = document.querySelectorAll(".edit-button");
+      const editPopup = document.getElementById("editPopup");
+      const closePopupButton = document.getElementById("closePopup");
+
+      // Add click event listeners to each "Edit" button
+      editButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          editPopup.style.display = "flex";
+        });
+      });
+
+      // Close the popup when the "Close" button is clicked
+      closePopupButton.addEventListener("click", () => {
+        editPopup.style.display = "none";
+      });
+    </script>
+    <!-- <script>
+      fetch("../Layout/DashboardSidebar.html")
+        .then((response) => response.text())
+        .then((content) => {
+          document.getElementById("sidebar").innerHTML = content;
+        });
+    </script> -->
+  </body>
+</html>
