@@ -27,9 +27,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="/blockMobile.js"></script>
+    <link rel="stylesheet" href="/loader.css" />
+    <script src="/loader.js"></script>
   </head>
 
   <body>
+    <div class="loader"></div>
     <div class="dashboard">
       <div class="container">
         <div class="row">
@@ -52,12 +55,17 @@
               <!-- banner -->
               <div class="row navbar">
                 <div class="col-1">
-                
                   <i class="fa-solid fa-magnifying-glass"></i>
                 </div>
-              
+
                 <div class="col-2 dropdown">
-                  <i class="fa-regular fa-user dropdown-toggle" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                  <i
+                    class="fa-regular fa-user dropdown-toggle"
+                    id="userDropdown"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  ></i>
                   <div class="dropdown-menu" aria-labelledby="userDropdown">
                     <a class="dropdown-item" href="#">Profile</a>
                     <a class="dropdown-item" href="#">Settings</a>
@@ -65,7 +73,6 @@
                     <a class="dropdown-item" href="#">Logout</a>
                   </div>
                 </div>
-                
               </div>
               <!-- maincontent   -->
               <div class="container mt-3">

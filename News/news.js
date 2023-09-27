@@ -263,7 +263,7 @@ function editBanner(bannerData) {
         "description",
         document.getElementById("description").value
       );
-      formData.append("categoryId", document.getElementById("category").value);
+      formData.append("category_id", document.getElementById("category").value);
       formData.append("lang", document.getElementById("lang").value);
       formData.append("update", 1);
       formData.append("added_by ", "Hunda");

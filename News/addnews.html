@@ -21,9 +21,12 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <link rel="stylesheet" href="/loader.css" />
+    <script src="/loader.js"></script>
   </head>
 
   <body>
+    <div class="loader"></div>
     <div class="dashboard">
       <div class="container">
         <div class="row">
@@ -83,8 +86,8 @@
                 <form
                   action="#"
                   method="post"
-                  enctype="multipart/form-data"
                   onsubmit="submitForm(event)"
+                  enctype="multipart/form-data"
                 >
                   <label for="name">Title:</label>
                   <input type="text" id="name" name="name" required />
@@ -220,13 +223,13 @@
           document.getElementById("description").value
         );
         formData.append(
-          "categoryId",
+          "category_id",
           document.getElementById("category").value
         );
         // formData.append("mrp", document.getElementById("mrp").value);
         formData.append("lang", document.getElementById("lang").value);
         formData.append("update", "0");
-        formData.append("added_by ", "Hunda");
+        formData.append("added_by", "Hunda");
         formData.append("photo", document.getElementById("image").files[0]);
 
         // Send the data to the server using Fetch and FormData
@@ -236,6 +239,7 @@
           headers: {
             token: token,
           },
+          // "Content-Type": "multipart/form-data",
         })
           .then((response) => {
             if (!response.ok) {
@@ -246,7 +250,7 @@
           .then((data) => {
             // Handle the API response data here
             console.log(data);
-            if (data.status === "success") {
+            if (data.id) {
               alert("Book Added!");
               window.location.href = "news.html";
             }
