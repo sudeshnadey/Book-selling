@@ -1,43 +1,45 @@
+const token = localStorage.getItem("user");
+
 // Function to populate the coupon table
-function populateCouponTable(data) {
-  data.forEach(function (item) {
-    var row = document.createElement("tr");
+function populateCouponTable(item) {
+  var bannerTable = document.getElementById("coupon-table-body");
+  var couponTableBody = document.getElementById("coupon-table");
 
-    row.innerHTML = `
-                  <td>${item.No}</td>
-                  <td>${item.Name}</td>
-                  <td>${item.Validity}</td>
-                  <td>$ ${item.Price}</td>
-                  <td>
-                      <button class="edit-button" style="border: none" data-coupon='${JSON.stringify(
-                        item
-                      )}'>
-                          <i class="fa-solid fa-pen"></i>
-                        </button>
+  // Clear the existing rows in couponTableBody
+  while (couponTableBody.firstChild) {
+    couponTableBody.removeChild(couponTableBody.firstChild);
+  }
+  console.log("item", item);
 
-                        <button style="border: none; color: red" onclick="deleteCoupon(${
-                          item.No
-                        })">
-                          <i class="fa-solid fa-trash"></i>
-                        </button>
-                  </td>
-              `;
+  var row = document.createElement("tr");
 
-    couponTableBody.appendChild(row);
+  row.innerHTML = `
+      <td>${item.id}</td>
+      <td>${item.terms}</td>
+      `;
+  // <td>
+  //     <button class="edit-button" style="border: none" data-coupon='${JSON.stringify(
+  //       item
+  //     )}'>
+  //         <i class="fa-solid fa-pen"></i>
+  //       </button>
+  // </td>
 
-    // Add an event listener to the "Edit" button
-    var editButton = row.querySelector(".edit-button");
-    editButton.addEventListener("click", function () {
-      var couponData = JSON.parse(editButton.getAttribute("data-coupon"));
-      editCoupon(couponData);
-    });
+  couponTableBody.appendChild(row);
+
+  // Add an event listener to the "Edit" button
+  var editButton = row.querySelector(".edit-button");
+  editButton.addEventListener("click", function () {
+    var couponData = JSON.parse(editButton.getAttribute("data-coupon"));
+    editCoupon(couponData);
   });
 }
 
 function fetchDataFromAPI() {
-  fetch("https://api.bhattacharjeesolution.in/book/api/admin-show-banner.php", {
+  fetch("https://api.bhattacharjeesolution.in/book/api/aboutus.php", {
     headers: {
       "Content-Type": "application/json",
+      token: token,
     },
   }) // Replace with your API endpoint
     .then(function (response) {
@@ -49,8 +51,8 @@ function fetchDataFromAPI() {
     })
     .then(function (data) {
       // Call the populateBannerTableWithData function with the retrieved data
-      populateCouponTable(data);
       console.log("data:", data);
+      populateCouponTable(data);
     })
     .catch(function (error) {
       console.error("Error fetching data:", error);
@@ -61,28 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var couponTable = document.getElementById("coupon-table");
   var couponTableBody = document.getElementById("coupon-table-body");
 
-  // Sample coupon data (simulated delay for demonstration)
-  setTimeout(function () {
-    var couponData = [
-      {
-        No: 1,
-        Name: "Coupon 1",
-        Validity: "2023-09-30",
-        Price: "10",
-      },
-      {
-        No: 2,
-        Name: "Coupon 2",
-        Validity: "2023-10-31",
-        Price: "20",
-      },
-      // Add more coupon data as needed
-    ];
-
-    // Call the populateCouponTable function with your coupon data on initial render
-    populateCouponTable(couponData);
-    fetchDataFromAPI();
-  }, 0); // No simulated delay in this example (adjust as needed)
+  fetchDataFromAPI();
 
   // Add an event listener to the search input field
   const noCouponMessage = document.createElement("div");

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Coupon</title>
+    <title>Terms & Conditions</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css"
@@ -81,7 +81,7 @@
                 <button class="btnadd btn-primary mb-3">
                   <a href="/Aboutus/aboutus.html">back</a>
                 </button>
-                <h2 class="mt-5">Add Aboutus</h2>
+                <h2 class="mt-5">Edit Terms & Conditions</h2>
               </div>
 
               <div class="bars">
@@ -89,18 +89,23 @@
               </div>
               <div class="addCategory">
                 <form
-                    action="/handle_form_submission"
-                    method="post"
-                    id="editForm"
-                  >
-                
-                    <label for="description">Description:</label>
-                    <textarea id="description" name="description" rows="4" cols="50"></textarea>
-                    <div class="actions">
-                      <button type="submit">Submit</button>
-                      <button class="closebtn" id="closePopup">Close</button>
-                    </div>
-                  </form>
+                  action="#"
+                  onsubmit="submitForm(event)"
+                  method="post"
+                  id="editForm"
+                >
+                  <label for="description">Description:</label>
+                  <textarea
+                    id="description"
+                    name="description"
+                    rows="4"
+                    cols="50"
+                  ></textarea>
+                  <div class="actions">
+                    <button type="submit">Submit</button>
+                    <button class="closebtn" id="closePopup">Close</button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
@@ -128,31 +133,33 @@
       });
     </script>
     <script>
+      const token = localStorage.getItem("user");
+
       async function submitForm(event) {
         event.preventDefault();
         console.log("inside");
-        const name = document.getElementById("name").value;
-        const validity = document.getElementById("validity").value;
-        const discountPrice = document.getElementById("discountPrice").files[0];
+        const name = document.getElementById("description").value;
 
-        const formData = new FormData();
-        formData.append("name", name);
-        formData.append("validity", validity);
-        formData.append("discountPrice", discountPrice);
+        const formData = {
+          terms: name,
+        };
 
         try {
           const response = await fetch(
-            "https://api.bhattacharjeesolution.in/book/api/category/add.php",
+            "https://api.bhattacharjeesolution.in/book/api/aboutus.php",
             {
               method: "POST",
-              body: formData,
+              body: JSON.stringify(formData),
+              headers: {
+                token: token,
+              },
             }
           );
 
           if (response.ok) {
             // Handle success (e.g., display a success message)
             console.log("Form submitted successfully!");
-            window.location.href = "Coupon.html";
+            window.location.href = "aboutus.html";
           } else {
             // Handle error (e.g., display an error message)
             console.error("Form submission failed!");

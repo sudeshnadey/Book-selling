@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ab</title>
+    <title>Terms & Conditions</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css"
@@ -76,8 +76,8 @@
               </div>
               <!-- maincontent   -->
               <div class="container mt-3">
-                <h2>About Us</h2>
-               
+                <h2>Terms & Conditions</h2>
+
                 <div
                   style="
                     display: flex;
@@ -86,7 +86,9 @@
                   "
                 >
                   <button class="btnadd btn-primary mb-3">
-                    <a href="/Aboutus/addaboutus.html">Add About us</a>
+                    <a href="/Terms & Conditions/addaboutus.html"
+                      >Terms & Conditions</a
+                    >
                   </button>
                   <form>
                     <div class="form-group">
@@ -113,13 +115,11 @@
                     <tr>
                       <th>No.</th>
                       <th>Description</th>
-                   
+
                       <th></th>
                     </tr>
                   </thead>
-                  <tbody id="coupon-table">
-                   
-                  </tbody>
+                  <tbody id="coupon-table"></tbody>
                 </table>
               </div>
 
@@ -131,9 +131,13 @@
                     method="post"
                     id="editForm"
                   >
-                
                     <label for="description">Description:</label>
-                    <textarea id="description" name="description" rows="4" cols="50"></textarea>
+                    <textarea
+                      id="description"
+                      name="description"
+                      rows="4"
+                      cols="50"
+                    ></textarea>
                     <div class="actions">
                       <button type="submit">Submit</button>
                       <button class="closebtn" id="closePopup">Close</button>
@@ -148,7 +152,7 @@
       </div>
     </div>
     <script src="../Script.js"></script>
-    <script src="coupon.js"></script>
+    <script src="aboutus.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
     <script>
       // JavaScript to handle the popup
