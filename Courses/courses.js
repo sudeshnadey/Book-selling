@@ -11,7 +11,7 @@ function fetchDataFromAPI() {
   // fetch(
   // "https://api.bhattacharjeesolution.in/book/api/admin-show-banner.php",
   fetch(
-    "https://api.bhattacharjeesolution.in/book/api/courses.php?type=video&id=2",
+    "https://api.bhattacharjeesolution.in/book/api/courses.php?type=video&id=5",
     {
       headers: {
         "Content-Type": "application/json",
@@ -58,30 +58,35 @@ function populateCategoryTable(data) {
     var row = document.createElement("tr");
 
     row.innerHTML = `
-                  <td>${item.id}</td>
-                  <td>${item.name}</td>
-                  <td>
-                  <img src="${
-                    item.image
-                  }" alt="" style="width: calc(80% - 30px); flex: 5; object-fit: cover; max-width: 100px; max-height: 100px;" />
-                  </td>
-                  <td>${item.mrp}</td>
-                  <td>${item.discount}</td>
-                  <td>${item.type}</td>
-                  <td>${item.description}</td>
-                  <td>
-                      <button class="edit-button" style="border: none" data-coupon='${JSON.stringify(
-                        item
-                      )}'>
-                          <i class="fa-solid fa-pen"></i>
-                        </button>
-                        <button style="border: none; color: red"  onclick="deleteCategory(${
-                          item.id
-                        })">
-                          <i class="fa-solid fa-trash"></i>
-                        </button>
-                  </td>
-              `;
+      <td>${item.id}</td>
+      <td>${item.name}</td>
+      <td>
+      <img src="${
+        item.image
+      }" alt="" style="width: calc(80% - 30px); flex: 5; object-fit: cover; max-width: 100px; max-height: 100px;" />
+      </td>
+      <td>${item.mrp}</td>
+      <td>${item.discount}</td>
+      <td>${item.type}</td>
+      <td>${item.description}</td>
+      <td class="addstyle">
+        <a href="#" onclick="sendDetail(${item.id})">View Resources</a> 
+      </td>
+      <td>
+        <button class="edit-button" style="border: none" data-coupon='${JSON.stringify(
+          item
+        )}'>
+          <i class="fa-solid fa-pen"></i>
+        </button>
+        <button style="border: none; color: red"  onclick="deleteCategory(${
+          item.id
+        })">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </td>`;
+    // <a href="#" onclick="sendTest(${item.id}, '${item.name}')">Test</a>
+    // <a href="#" onclick="sendPdf(${item.id}, '${item.name}')">Pdfs</a>
+    // <a href="#" onclick="sendRoute(${item.id}, '${item.name}')">Video</a>
 
     categoryTableBody.appendChild(row);
 
@@ -89,7 +94,6 @@ function populateCategoryTable(data) {
     // Use a closure to capture the item data for each edit button
     addEditButtonClickHandler(editButton, item);
   }
-
   function addEditButtonClickHandler(editButton, item) {
     editButton.addEventListener("click", function () {
       var couponData = JSON.parse(editButton.getAttribute("data-coupon"));
@@ -98,6 +102,33 @@ function populateCategoryTable(data) {
   }
 
   updatePaginationControls(data.length);
+}
+
+function sendDetail(id) {
+  console.log("routing");
+  localStorage.setItem("addCourseDetailId", id);
+  window.location.href = "DetailCourse.html";
+}
+
+function sendTest(id, name) {
+  console.log("routing");
+  localStorage.setItem("addvideoId", id);
+  localStorage.setItem("addvideoName", name);
+  window.location.href = "AddTest.html";
+}
+
+function sendPdf(id, name) {
+  console.log("routing");
+  localStorage.setItem("addvideoId", id);
+  localStorage.setItem("addvideoName", name);
+  window.location.href = "AddPdf.html";
+}
+
+function sendRoute(id, name) {
+  console.log("routing");
+  localStorage.setItem("addvideoId", id);
+  localStorage.setItem("addvideoName", name);
+  window.location.href = "AddVideo.html";
 }
 
 function searchTable() {

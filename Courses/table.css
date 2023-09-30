@@ -43,3 +43,15 @@
   border: none;
   display: none;
 }
+
+.table.table-bordered {
+  min-width: 100%;
+  max-width: 100%;
+}
+.table.table-bordered tr,
+.table.table-bordered td {
+  width: 100%;
+}
+#table-video {
+  max-width: 100%;
+}

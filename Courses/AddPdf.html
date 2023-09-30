@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add PDFs</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../Style.css" />
+    <link rel="stylesheet" href="addCategory.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/blockMobile.js"></script>
+    <link rel="stylesheet" href="/loader.css" />
+    <script src="/loader.js"></script>
+  </head>
+
+  <body>
+    <div class="loader"></div>
+    <div class="dashboard">
+      <div class="container">
+        <div class="row">
+          <!-- sidebar -->
+          <!-- In your main HTML page -->
+          <div class="col-2 sidebar">
+            <iframe
+              src="/Layout/DashboardSidebar.html"
+              frameborder="0"
+              scrolling="no"
+              height="100%"
+            ></iframe>
+          </div>
+
+          <!-- dashboard -->
+          <div class="col-10 maindash">
+            <div class="maindashboard">
+              <!-- banner -->
+              <div class="row navbar">
+                <div class="col-1">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+
+                <div class="col-2 dropdown">
+                  <i
+                    class="fa-regular fa-user dropdown-toggle"
+                    id="userDropdown"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  ></i>
+                  <div class="dropdown-menu" aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="#">Profile</a>
+                    <a class="dropdown-item" href="#">Settings</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Logout</a>
+                  </div>
+                </div>
+              </div>
+              <!-- maincontent   -->
+              <div>
+                <a href="/Courses/DetailCourse.html">back</a>
+                <h2 class="mt-5">Add PDFs - <span id="coursename"></span></h2>
+              </div>
+
+              <div class="bars">
+                <i class="fa-solid fa-bars"></i>
+              </div>
+              <div class="addCategory">
+                <form action="#" method="post" onsubmit="submitForm(event)">
+                  <label for="name">Title:</label>
+                  <input type="text" id="name" name="name" required />
+
+                  <br />
+                  <label for="description">Description:</label>
+                  <textarea
+                    id="description"
+                    name="description"
+                    rows="4"
+                    required
+                  ></textarea>
+
+                  <label for="dayno">Day Number:</label>
+                  <input type="number" id="dayno" name="dayno" />
+
+                  <label for="pdf">Content ( PDF File ):</label>
+                  <input
+                    type="file"
+                    id="pdf"
+                    name="pdf"
+                    accept=".pdf"
+                    required
+                  />
+
+                  <button type="submit">Submit</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="Script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
+    <script>
+      const token = localStorage.getItem("user");
+      const vidid = localStorage.getItem("addvideoId");
+      const vidname = localStorage.getItem("addvideoName");
+      console.log("id:", vidid);
+
+      document.getElementById("coursename").innerText = vidname;
+
+      async function submitForm(event) {
+        event.preventDefault();
+        console.log("inside");
+        const name = document.getElementById("name").value;
+        const description = document.getElementById("description").value;
+        // const category = document.getElementById("category").value;
+        const pdf = document.getElementById("pdf").files[0];
+        const dayno = document.getElementById("dayno").value;
+
+        const formData = new FormData();
+        formData.append("title", name);
+        formData.append("description", description);
+        formData.append("course_id", vidid);
+        formData.append("content", pdf);
+        formData.append("day_no", dayno);
+        // formData.append("type", type);
+
+        try {
+          // const response = await fetch("https://api.bhattacharjeesolution.in/book/api/category/add.php", {
+          const response = await fetch(
+            "https://api.bhattacharjeesolution.in/book/api/pdf.php",
+            {
+              method: "POST",
+              body: formData,
+              headers: {
+                token: token,
+              },
+            }
+          );
+
+          if (response.ok) {
+            // Handle success (e.g., display a success message)
+            console.log("Form submitted successfully!");
+            window.location.href = "DetailCourse.html";
+          } else {
+            // Handle error (e.g., display an error message)
+            console.error("Form submission failed!");
+          }
+        } catch (error) {
+          console.error("An error occurred:", error);
+        }
+      }
+
+      window.addEventListener("load", fetchCategoryData);
+    </script>
+  </body>
+</html>
