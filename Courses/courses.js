@@ -11,7 +11,7 @@ function fetchDataFromAPI() {
   // fetch(
   // "https://api.bhattacharjeesolution.in/book/api/admin-show-banner.php",
   fetch(
-    "https://api.bhattacharjeesolution.in/book/api/courses.php?type=video&id=5",
+    "https://api.bhattacharjeesolution.in/book/api/courses.php?type=video&id=2",
     {
       headers: {
         "Content-Type": "application/json",

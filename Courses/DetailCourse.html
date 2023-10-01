@@ -68,6 +68,10 @@
         max-width: 100%;
         margin: 0;
       }
+      #pdfdisplay,
+      #videodisplay{
+        display: none;
+      }
     </style>
     <link rel="stylesheet" href="/loader.css" />
     <script src="/loader.js"></script>
@@ -184,22 +188,26 @@
 
                       <label for="dayno">Day Number:</label>
                       <input type="number" id="daynoedit" name="dayno" />
+                      <div id="pdfdisplay">
+                        <label for="pdf">Content ( PDF File ):</label>
+                        <input
+                          type="file"
+                          id="pdfedit"
+                          name="pdf"
+                          accept=".pdf"
+                        />
+                      </div>
 
-                      <label for="pdf">Content ( PDF File ):</label>
-                      <input
-                        type="file"
-                        id="pdfedit"
-                        name="pdf"
-                        accept=".pdf"
-                      />
+                      <div id="videodisplay">
 
-                      <label for="link">Link:</label>
-                      <input type="text" id="linkedit" name="link" />
+                        <label for="link">Link:</label>
+                        <input type="text" id="linkedit" name="link" />
+                      </div>
 
                       <div
                         style="display: flex; gap: 5px; justify-content: right"
                       >
-                        <button style="background-color: red" id="closemodal">
+                        <button type="button" style="background-color: red" id="closemodal">
                           Close
                         </button>
                         <button type="submit">Save</button>

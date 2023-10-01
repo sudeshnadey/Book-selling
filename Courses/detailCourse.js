@@ -217,7 +217,9 @@ function populateCategoryTable(data) {
             <td>${item.description}</td>
             <td><a href="${item.link}" target="_blank">${item.link}</a></td>
             <td>
-              <button class="edit-button" style="border: none" data-coupon='${JSON.stringify(
+              <button class="edit-button" style="border: none" onclick="handleEditTests('${encodeURIComponent(
+                JSON.stringify(item)
+              )}')" data-coupon='${JSON.stringify(
                 item
               )}'>
                 <i class="fa-solid fa-pen"></i>
@@ -252,7 +254,10 @@ function populateCategoryTable(data) {
 function handleEditCoaching(itemString) {
   const item = JSON.parse(decodeURIComponent(itemString));
   console.log(item);
-  console.log(item);
+
+  const typediplay = document.getElementById("pdfdisplay");
+  typediplay.style.display = "flex";
+  typediplay.style.flexDirection = "column";
 
   const editButtons = document.querySelectorAll(".edit-button");
   const editPopup = document.getElementById("editPopup");
@@ -321,10 +326,89 @@ function handleEditCoaching(itemString) {
   });
 }
 
+function handleEditTests(itemString) {
+  const item = JSON.parse(decodeURIComponent(itemString));
+  console.log(item);
+
+  const typediplay = document.getElementById("pdfdisplay");
+  typediplay.style.display = "flex";
+  typediplay.style.flexDirection = "column";
+
+  const editButtons = document.querySelectorAll(".edit-button");
+  const editPopup = document.getElementById("editPopup");
+  const closePopupButton = document.getElementById("closemodal");
+
+  document.getElementById("nameedit").value = item.title;
+  document.getElementById("descriptionedit").value = item.description;
+  // const category = document.getElementById("category").value;
+  // const pdf = document.getElementById("pdf").files[0];
+  document.getElementById("daynoedit").value = item.day_no;
+
+  editPopup.style.display = "flex";
+  // editPopup.style.display = "flex";
+
+  // Add an event listener to the form submission
+  const editForm = document.querySelector(".addCategory form");
+  editForm.addEventListener("submit", async function (e) {
+    e.preventDefault(); // Prevent the form from submitting normally (you can handle the submission logic here)
+    // You can access the form data using nameInput.value, imageInput.files, and descriptionInput.value
+
+    const formData = new FormData();
+    formData.append("title", document.getElementById("nameedit").value);
+    formData.append(
+      "description",
+      document.getElementById("descriptionedit").value
+    );
+    // formData.append("course_id", item.id);
+    // formData.append("content", document.getElementById("pdfedit").files[0]);
+    formData.append("day_no", document.getElementById("daynoedit").value);
+    formData.append("course_id", localStorage.getItem("addCourseDetailId"));
+
+    fetch(
+      `https://api.bhattacharjeesolution.in/book/api/test.php/?id=${item.id}`,
+      {
+        method: "POST",
+        body: formData,
+        headers: {
+          token: token,
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((res) => {
+        console.log(res);
+        if (res.message) {
+          // Handle success (e.g., display a success message)
+          alert(res.message || "Form submitted successfully!");
+          window.location.reload();
+          // fetchDataFromAPI();
+          editPopup.style.display = "none"; // Close the popup after submission (you can replace this with your logic)
+        } else {
+          // Handle error (e.g., display an error message)
+          console.error("Form submission failed!");
+          alert(res.error || "Form submission failed!");
+        }
+      })
+      .catch((error) => {
+        console.error("An error occurred:", error);
+      });
+    // editPopup.style.display = "none"; // Close the popup after submission (you can replace this with your logic)
+  });
+
+  // Close the popup when the "Close" button is clicked
+  closePopupButton.addEventListener("click", () => {
+    editPopup.style.display = "none";
+  });
+}
+
 function handleVideoEdit(itemString) {
   const item = JSON.parse(decodeURIComponent(itemString));
   console.log(item);
   console.log(item);
+
+  const typediplay = document.getElementById("videodisplay");
+  typediplay.style.display = "flex";
+  typediplay.style.flexDirection = "column";
 
   const editButtons = document.querySelectorAll(".edit-button");
   const editPopup = document.getElementById("editPopup");
@@ -357,7 +441,7 @@ function handleVideoEdit(itemString) {
     fetch(
       `https://api.bhattacharjeesolution.in/book/api/video.php/?id=${item.id}`,
       {
-        method: "POST",
+        method: "PUT",
         body: JSON.stringify(formData),
         headers: {
           token: token,
