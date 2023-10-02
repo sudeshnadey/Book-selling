@@ -37,3 +37,8 @@
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
+
+#editPopup .popup-container {
+  width: 80%; /* You can adjust the percentage to your desired width */
+  max-width: 500px; /* You can also set a maximum width if needed */
+}

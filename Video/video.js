@@ -11,7 +11,7 @@ function fetchDataFromAPI() {
   // fetch(
   // "https://api.bhattacharjeesolution.in/book/api/admin-show-banner.php",
   fetch(
-    "https://api.bhattacharjeesolution.in/book/api/courses.php?type=video&id=5",
+    "https://api.bhattacharjeesolution.in/book/api/courses.php?type=video",
     {
       headers: {
         "Content-Type": "application/json",
@@ -26,9 +26,9 @@ function fetchDataFromAPI() {
       // }
       return response.json(); // Parse the response as JSON
     })
-    .then(function (odata) {
-      const data = [];
-      data.push(odata);
+    .then(function (data) {
+      // const data = [];
+      // data.push(odata);
       // Call the populateBannerTableWithData function with the retrieved data
       console.log("data:", data);
       window.fetchedData = data;
@@ -63,7 +63,7 @@ function populateCategoryTable(data) {
       <td>
       <img src="${
         item.image
-      }" alt="" style="width: calc(80% - 30px); flex: 5; object-fit: cover; max-width: 100px; max-height: 100px;" />
+      }" alt="" style="width: 70px; object-fit: contain; height: 50px;" />
       </td>
       <td>${item.mrp}</td>
       <td>${item.discount}</td>
@@ -107,7 +107,7 @@ function populateCategoryTable(data) {
 function sendDetail(id) {
   console.log("routing");
   localStorage.setItem("addCourseDetailId", id);
-  window.location.href = "DetailCourse.html";
+  window.location.href = "/Courses/DetailCourse.html";
 }
 
 function sendTest(id, name) {
@@ -256,6 +256,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Function to handle category deletion
+
 function deleteCategory(categoryNumber) {
   const modal = document.getElementById("deleteCategoryModal");
   const confirmDeleteCategoryButton = document.getElementById(
@@ -341,8 +342,35 @@ function editCategory(categoryData) {
   mrp.value = categoryData.mrp;
   discount.value = categoryData.discount;
   lang.value = categoryData.lang;
-  isfree.value = categoryData.is_free;
+  // isfree.value = categoryData.is_free;
   typeInput.value = categoryData.type;
+
+  // Assuming categoryData.category_id contains the correct category ID
+  const selectedCategoryId = categoryData.category_id;
+
+  // Loop through the options in the "Category" select element
+  for (const option of category.options) {
+    if (option.value == selectedCategoryId) {
+      option.selected = true; // Set the matching option as selected
+    } else {
+      option.selected = false; // Deselect other options
+    }
+  }
+
+  // Assuming categoryData.is_free contains the value from the database (0 or 1)
+  const isFreeValue = categoryData.is_free == "1" ? "true" : "false"; // Convert to boolean
+
+  console.log("val", isFreeValue);
+  // Loop through the options in the "Is Free" select element
+  for (const option of isfree.options) {
+    console.log(option.value);
+    if (option.value === isFreeValue) {
+      option.selected = true; // Set the matching option as selected
+    } else {
+      option.selected = false; // Deselect other options
+    }
+  }
+
   // categoryImagePreInput.src = `${categoryData?.image}`;
 
   // Show the popup
@@ -386,7 +414,7 @@ function editCategory(categoryData) {
         if (res.message) {
           // Handle success (e.g., display a success message)
           alert(res.message || "Form submitted successfully!");
-          // window.location.reload();
+          window.location.reload();
           // fetchDataFromAPI();
           editPopup.style.display = "none"; // Close the popup after submission (you can replace this with your logic)
         } else {

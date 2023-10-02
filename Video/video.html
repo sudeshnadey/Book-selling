@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Detail Courses</title>
+    <title>Video</title>
     <!-- <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css"
@@ -12,9 +12,9 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
       rel="stylesheet"
     /> -->
-    <link rel="stylesheet" href="table.css" />
-    <link rel="stylesheet" href="popUpStyle.css" />
-    <link rel="stylesheet" href="addCategory.css" />
+    <link rel="stylesheet" href="/Courses/table.css" />
+    <link rel="stylesheet" href="/Courses/popUpStyle.css" />
+    <link rel="stylesheet" href="/Courses/addCategory.css" />
     <script src="/blockMobile.js"></script>
     <link
       rel="stylesheet"
@@ -68,10 +68,6 @@
         max-width: 100%;
         margin: 0;
       }
-      #pdfdisplay,
-      #videodisplay {
-        display: none;
-      }
     </style>
     <link rel="stylesheet" href="/loader.css" />
     <script src="/loader.js"></script>
@@ -82,8 +78,6 @@
     <div class="dashboard">
       <div class="">
         <div class="row">
-          <!-- sidebar -->
-          <!-- In your main HTML page -->
           <div class="col-2 sidebar">
             <iframe
               src="/Layout/DashboardSidebar.html"
@@ -91,8 +85,6 @@
               scrolling="no"
               height="100%"
             ></iframe>
-            <!-- In your main HTML page -->
-            <!-- #include virtual="sidebar.html" -->
           </div>
 
           <!-- dashboard -->
@@ -120,12 +112,33 @@
                   </div>
                 </div>
               </div>
-              <!-- maincontent   -->
 
               <div class="container mt-3">
-                <h2>Details Courses</h2>
-                <!-- <h2 class="mt-5">Category</h2> -->
-                <!--  <button >Add</button> -->
+                <h2>All Video</h2>
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                  "
+                >
+                  <button class="btnadd mb-3" id="addClassButton">
+                    <a href="/Courses/AddCourses.html">Add Video</a>
+                  </button>
+                  <form>
+                    <div class="form-group">
+                      <!-- <div class="searbar"> -->
+                      <input
+                        type="text"
+                        name="searchbar"
+                        id="searchbar"
+                        class="form-control"
+                        placeholder="search"
+                        oninput="searchTable()"
+                      />
+                    </div>
+                  </form>
+                </div>
               </div>
 
               <div class="bars">
@@ -133,40 +146,34 @@
               </div>
               <div class="categoryTable row mt-3">
                 <table
-                  class="table table-hover table-bordered tableLong"
+                  class="table table-hover table-bordered"
                   id="category-table"
                 >
                   <!-- <table class="styled-table"> -->
-                  <thead></thead>
-                  <tbody id="category-table-body"></tbody>
-                </table>
-              </div>
-              <div>
-                <h6>Resource</h6>
-                <table
-                  class="table table-hover table-bordered"
-                  id="table-video"
-                >
                   <thead>
                     <tr>
-                      <th>Day</th>
-                      <th>Title</th>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Image</th>
+                      <th>Price</th>
+                      <th>Discount</th>
                       <th>Type</th>
                       <th>Description</th>
-                      <th>Link</th>
+                      <th>Add Resourses</th>
                       <th>Action</th>
                     </tr>
                   </thead>
+                  <tbody id="category-table-body"></tbody>
                 </table>
-                <button class="btnadd mb-3" id="addClassButton">
-                  <a href="/Courses/AddVideo.html">Add Video</a>
-                </button>
-                <button class="btnadd mb-3" id="addClassButton">
-                  <a href="/Courses/AddTest.html">Add Tests</a>
-                </button>
-                <button class="btnadd mb-3" id="addClassButton">
-                  <a href="/Courses/AddPdf.html">Add Pdf</a>
-                </button>
+                <div id="pagination">
+                  <button id="prev-button" onclick="prevPage()">
+                    <i class="fa-solid fa-arrow-left"></i>
+                  </button>
+                  <button id="next-button" onclick="nextPage()">
+                    <i class="fa-solid fa-arrow-right"></i>
+                  </button>
+                  <span id="page-info">Page 1 of 1</span>
+                </div>
               </div>
 
               <div class="popup-overlay" id="editPopup">
@@ -174,34 +181,72 @@
                   <h2>Edit Item</h2>
                   <div style="max-height: 80vh; overflow-y: auto">
                     <form action="#" method="post">
-                      <label for="name">Title:</label>
-                      <input type="text" id="nameedit" name="name" required />
+                      <label for="name">Name:</label>
+                      <input type="text" id="name" name="name" required />
 
                       <br />
                       <label for="description">Description:</label>
                       <textarea
-                        id="descriptionedit"
-                        name="descriptionedit"
+                        id="description"
+                        name="description"
                         rows="4"
                         required
                       ></textarea>
 
-                      <label for="dayno">Day Number:</label>
-                      <input type="number" id="daynoedit" name="dayno" />
-                      <div id="pdfdisplay">
-                        <label for="pdf">Content ( PDF File ):</label>
-                        <input
-                          type="file"
-                          id="pdfedit"
-                          name="pdf"
-                          accept=".pdf"
+                      <!-- <label for="image">Image:</label>
+                      <input
+                        type="file"
+                        id="image"
+                        name="image"
+                        accept="image/*"
+                        required
+                        onchange="previewImage()"
+                      />
+                      <br />
+                      <div class="imgPreview">
+                        <img
+                          id="imagePreview"
+                          src="#"
+                          alt="Image Preview"
+                          style="
+                            display: none;
+                            max-width: 200px;
+                            max-height: 200px;
+                          "
                         />
-                      </div>
+                      </div> -->
 
-                      <div id="videodisplay">
-                        <label for="link">Link:</label>
-                        <input type="text" id="linkedit" name="link" />
-                      </div>
+                      <label for="category">Category:</label>
+                      <select name="category" id="category">
+                        <option value="0">Loading categories...</option>
+                      </select>
+
+                      <label for="mrp">MRP:</label>
+                      <input type="number" id="mrp" name="mrp" />
+
+                      <label for="discount">Discount Price:</label>
+                      <input type="number" id="discount" name="discount" />
+
+                      <label for="edittype">Type:</label>
+                      <select id="edittype" name="edittype" required>
+                        <option value="pet">PETest</option>
+                        <option value="video">Video</option>
+                        <option value="test">Test</option>
+                        <option value="pdf">PDF</option>
+                      </select>
+                      <br />
+
+                      <label for="lang">Language:</label>
+                      <select id="lang" name="lang" required>
+                        <option value="in">INDIAN</option>
+                        <option value="en">ENGLISH</option>
+                      </select>
+
+                      <label for="isfree">Is Free:</label>
+                      <select id="isfree" name="isfree" required>
+                        <option value="false">Not free</option>
+                        <option value="true">Free</option>
+                      </select>
 
                       <div
                         style="display: flex; gap: 5px; justify-content: right"
@@ -213,7 +258,7 @@
                         >
                           Close
                         </button>
-                        <button type="submit">Save</button>
+                        <button type="submit">Submit</button>
                       </div>
                     </form>
                   </div>
@@ -264,7 +309,7 @@
     </div>
 
     <!-- <script src="../Script.js"></script> -->
-    <script src="detailCourse.js"></script>
+    <script src="video.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
     <script>
       var fileInput = document.getElementById("fileInput");

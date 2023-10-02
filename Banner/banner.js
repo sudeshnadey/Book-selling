@@ -83,9 +83,8 @@ function populateBannerTable(data) {
     //   var couponData = JSON.parse(editButton.getAttribute("data-coupon"));
     //   editBanner(couponData);
     // });
-  };
+  }
 
-  
   function addEditButtonClickHandler(editButton, item) {
     editButton.addEventListener("click", function () {
       var couponData = JSON.parse(editButton.getAttribute("data-coupon"));
@@ -95,7 +94,6 @@ function populateBannerTable(data) {
 
   updatePaginationControls(data.length);
 }
-
 
 function searchTable() {
   const searchInput = document.getElementById("searchbar").value.toLowerCase();
@@ -262,11 +260,11 @@ function editBanner(bannerData) {
   bannerImagePreInput.src = `${bannerData.image.replace(" ", "%20")}`;
 
   // Show the popup
-  editButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      editPopup.style.display = "flex";
-    });
-  });
+  // editButtons.forEach((button) => {
+  //   button.addEventListener("click", () => {
+  //   });
+  // });
+  editPopup.style.display = "flex";
 
   // Add an event listener to the form submission only if it's not already added
   if (!isSubmitEventListenerAdded) {
