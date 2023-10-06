@@ -3,15 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>User</title>
-    <!-- <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    /> -->
+    <title>Quiz</title>
     <link rel="stylesheet" href="/Courses/table.css" />
     <link rel="stylesheet" href="/Courses/popUpStyle.css" />
     <link rel="stylesheet" href="/Courses/addCategory.css" />
@@ -78,8 +70,6 @@
     <div class="dashboard">
       <div class="">
         <div class="row">
-          <!-- sidebar -->
-          <!-- In your main HTML page -->
           <div class="col-2 sidebar">
             <iframe
               src="/Layout/DashboardSidebar.html"
@@ -87,8 +77,6 @@
               scrolling="no"
               height="100%"
             ></iframe>
-            <!-- In your main HTML page -->
-            <!-- #include virtual="sidebar.html" -->
           </div>
 
           <!-- dashboard -->
@@ -116,12 +104,9 @@
                   </div>
                 </div>
               </div>
-              <!-- maincontent   -->
 
               <div class="container mt-3">
-                <h2>All Users</h2>
-                <!-- <h2 class="mt-5">Category</h2> -->
-                <!--  <button >Add</button> -->
+                <h2>All Quiz</h2>
                 <div
                   style="
                     display: flex;
@@ -129,6 +114,9 @@
                     justify-content: space-between;
                   "
                 >
+                  <button class="btnadd mb-3" id="addClassButton">
+                    <a href="addQuiz.html">Add Quiz</a>
+                  </button>
                   <form>
                     <div class="form-group">
                       <!-- <div class="searbar"> -->
@@ -157,10 +145,14 @@
                   <thead>
                     <tr>
                       <th>#</th>
-                      <th>Name</th>
+                      <th>Title</th>
                       <th>Image</th>
-                      <th>Email</th>
-                      <th>Phone Number</th>
+                      <th>Lang</th>
+                      <th>Duration</th>
+                      <th>ISFREE</th>
+                      <th>Description</th>
+                      <th>Questions</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody id="category-table-body"></tbody>
@@ -179,43 +171,76 @@
               <div class="popup-overlay" id="editPopup">
                 <div class="popup-container addCategory">
                   <h2>Edit Item</h2>
-                  <form action="#" method="post">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required />
+                  <div style="max-height: 80vh; overflow-y: auto">
+                    <form action="#" method="post">
+                      <label for="name">Name:</label>
+                      <input type="text" id="name" name="name" required />
 
-                    <label for="image">Image:</label>
-                    <input
-                      type="file"
-                      id="fileInput"
-                      name="image"
-                      accept="image/*"
-                    />
-                    <img
-                      id="preimage"
-                      name="preimage"
-                      width="100%"
-                      height="100px"
-                    />
-                    <label for="type">Choose Type:</label>
-                    <select id="edittype" name="type" required>
-                      <option value="book">Book</option>
-                      <option value="lecture">Lecture</option>
-                      <option value="news">News</option>
-                    </select>
-                    <br />
-                    <label for="description">Description:</label>
-                    <textarea
-                      id="description"
-                      name="description"
-                      rows="4"
-                      required
-                    ></textarea>
+                      <br />
+                      <label for="description">Description:</label>
+                      <textarea
+                        id="description"
+                        name="description"
+                        rows="4"
+                        required
+                      ></textarea>
 
-                    <div class="actions">
-                      <button type="submit">Submit</button>
-                      <button class="closebtn" id="closePopup">Close</button>
-                    </div>
-                  </form>
+                      <label for="image">Image:</label>
+                      <input
+                        type="file"
+                        id="image"
+                        name="image"
+                        accept="image/*"
+                        onchange="previewImage()"
+                      />
+                      <br />
+                      <div class="imgPreview">
+                        <img
+                          id="imagePreview"
+                          src="#"
+                          alt="Image Preview"
+                          style="
+                            display: none;
+                            max-width: 200px;
+                            max-height: 200px;
+                          "
+                        />
+                      </div>
+
+                      <label for="category">Category:</label>
+                      <select name="category" id="category">
+                        <option value="0">Loading categories...</option>
+                      </select>
+
+                      <label for="duration">Duration:</label>
+                      <input type="number" id="duration" name="duration" />
+
+                      <label for="lang">Language:</label>
+                      <select id="lang" name="lang" required>
+                        <option value="in">INDIAN</option>
+                        <option value="en">ENGLISH</option>
+                      </select>
+
+                      <label for="isfree">Is Free:</label>
+                      <select id="isfree" name="isfree" required>
+                        <option value="0">Not free</option>
+                        <option value="1">Free</option>
+                      </select>
+
+                      <div
+                        style="display: flex; gap: 5px; justify-content: right"
+                      >
+                        <button
+                          type="button"
+                          style="background-color: red"
+                          id="closemodal"
+                        >
+                          Close
+                        </button>
+                        <button type="submit">Submit</button>
+                      </div>
+                    </form>
+                  </div>
                   <!-- Add your edit form or content here -->
                 </div>
               </div>
@@ -263,7 +288,7 @@
     </div>
 
     <!-- <script src="../Script.js"></script> -->
-    <script src="script.js"></script>
+    <script src="quiz.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
     <script>
       var fileInput = document.getElementById("fileInput");
@@ -286,6 +311,50 @@
           reader.readAsDataURL(fileInput.files[0]);
         }
       });
+    </script>
+    <script>
+      function fetchCategoryData() {
+        // Replace 'YOUR_API_URL' with the actual API endpoint
+        console.log("fethichg", token);
+        fetch(
+          "https://api.bhattacharjeesolution.in/book/api/admin-show-category.php",
+          {
+            headers: {
+              token: token,
+            },
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("data", data);
+            const categorySelect = document.getElementById("category");
+
+            // Clear existing options
+            categorySelect.innerHTML = "";
+
+            // Add a default option
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "0";
+            defaultOption.textContent = "Select a category";
+            categorySelect.appendChild(defaultOption);
+
+            // Populate the select with data from the API
+            data.forEach((category) => {
+              const option = document.createElement("option");
+              option.value = category.id;
+              option.textContent = category.name;
+              categorySelect.appendChild(option);
+            });
+
+            // Add an event listener to fetch subcategories when a category is selected
+            // categorySelect.addEventListener("change", fetchSubcategories);
+          })
+          .catch((error) => {
+            console.error("Error fetching data:", error);
+          });
+      }
+
+      window.addEventListener("load", fetchCategoryData);
     </script>
     <script>
       // JavaScript to handle the popup
@@ -324,26 +393,28 @@
         });
     </script>
     <script>
-      function previewImage(input) {
-        const previewElement = input.parentNode.querySelector(".image-preview");
+      function previewImage() {
+        const input = document.getElementById("image");
+        const preview = document.getElementById("imagePreview");
+
         if (input.files && input.files[0]) {
           const reader = new FileReader();
+
           reader.onload = function (e) {
-            previewElement.src = e.target.result;
-            // Store the image data in local storage
-            localStorage.setItem("imagePreview", e.target.result);
+            preview.style.display = "block";
+            preview.src = e.target.result;
           };
+
           reader.readAsDataURL(input.files[0]);
         } else {
-          previewElement.src = "#";
-          // Remove the image data from local storage
-          localStorage.removeItem("imagePreview");
+          preview.style.display = "none";
+          preview.src = "";
         }
       }
       // Check if there's a stored image preview on page load
       const storedImagePreview = localStorage.getItem("imagePreview");
       if (storedImagePreview) {
-        const previewElements = document.querySelectorAll(".image-preview");
+        const previewElements = document.getElementById("imagePreview");
         previewElements.forEach((element) => {
           element.src = storedImagePreview;
         });

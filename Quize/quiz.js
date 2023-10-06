@@ -10,7 +10,7 @@ function fetchDataFromAPI() {
   console.log("fetchig");
   // fetch(
   // "https://api.bhattacharjeesolution.in/book/api/admin-show-banner.php",
-  fetch("https://api.bhattacharjeesolution.in/book/api/user-show.php", {
+  fetch("https://api.bhattacharjeesolution.in/book/api/quize.php", {
     headers: {
       "Content-Type": "application/json",
       token: token,
@@ -24,12 +24,14 @@ function fetchDataFromAPI() {
       return response.json(); // Parse the response as JSON
     })
     .then(function (data) {
+      // const data = [];
+      // data.push(odata);
       // Call the populateBannerTableWithData function with the retrieved data
-      console.log("data:", data);
-      window.fetchedData = data;
-      filteredData = data;
-      totalFilteredPages = data.length; // Calculate total pages for the original data
-      populateCategoryTable(data);
+      console.log("data:", data.quiz);
+      window.fetchedData = data.quiz;
+      filteredData = data.quiz;
+      totalFilteredPages = data.quiz.length; // Calculate total pages for the original data
+      populateCategoryTable(data.quiz);
     })
     .catch(function (error) {
       console.error("Error fetching data:", error);
@@ -53,19 +55,77 @@ function populateCategoryTable(data) {
     var row = document.createElement("tr");
 
     row.innerHTML = `
-        <td>${item?.id}</td>
-        <td>${item?.name}</td>
-        <td>
-        <img src="${item?.photo}" alt="" style="width: 60px; object-fit: cover; max-width: 100px; max-height: 100px;" />
-        </td>
-        <td>${item?.email}</td>
-        <td>${item?.phone}</td>
-    `;
+      <td>${item.id}</td>
+      <td>${item.title}</td>
+      <td>
+      <img src="${
+        item.image
+      }" alt="" style="width: 70px; object-fit: contain; height: 50px;" />
+      </td>
+      <td>${item.lang}</td>
+      <td>${item.duration}</td>
+      <td>${item.is_free}</td>
+      <td>${item.description}</td>
+      <td class="addstyle">
+        <a href="#" onclick="sendDetail(${item.id})">View Questions</a> 
+      </td>
+      <td>
+        <button class="edit-button" style="border: none" data-coupon='${JSON.stringify(
+          item
+        )}'>
+          <i class="fa-solid fa-pen"></i>
+        </button>
+        <button style="border: none; color: red"  onclick="deleteCategory(${
+          item.id
+        })">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </td>`;
+    // <a href="#" onclick="sendTest(${item.id}, '${item.name}')">Test</a>
+    // <a href="#" onclick="sendPdf(${item.id}, '${item.name}')">Pdfs</a>
+    // <a href="#" onclick="sendRoute(${item.id}, '${item.name}')">Video</a>
 
     categoryTableBody.appendChild(row);
+
+    var editButton = row.querySelector(".edit-button");
+    // Use a closure to capture the item data for each edit button
+    addEditButtonClickHandler(editButton, item);
+  }
+  function addEditButtonClickHandler(editButton, item) {
+    editButton.addEventListener("click", function () {
+      var couponData = JSON.parse(editButton.getAttribute("data-coupon"));
+      editCategory(item); // Pass the 'item' to the editCategory function
+    });
   }
 
   updatePaginationControls(data.length);
+}
+
+function sendDetail(id) {
+  console.log("routing");
+  localStorage.setItem("addQuestionId", id);
+  window.location.href = "/Question/question.html";
+}
+
+function sendTest(id, name) {
+  console.log("routing");
+  localStorage.setItem("addvideoId", id);
+  localStorage.setItem("addvideoName", name);
+  window.location.href = "AddTest.html";
+}
+
+function sendPdf(id, name) {
+  console.log("routing");
+  localStorage.setItem("addvideoId", id);
+  localStorage.setItem("addvideoName", name);
+  window.location.href = "AddPdf.html";
+}
+
+function sendRoute(id, name) {
+  console.log("routing");
+  localStorage.setItem("addvideoId", id);
+  localStorage.setItem("addvideoName", name);
+  window.location.href = "AddVideo.html";
 }
 
 function searchTable() {
@@ -193,6 +253,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Function to handle category deletion
+
 function deleteCategory(categoryNumber) {
   const modal = document.getElementById("deleteCategoryModal");
   const confirmDeleteCategoryButton = document.getElementById(
@@ -211,18 +272,16 @@ function deleteCategory(categoryNumber) {
     modal.classList.remove("show"); // Close the modal
     modal.style.display = "none";
 
-    // Perform the deletion here
-    const formdata = new FormData();
-    formdata.append("categoryId", categoryNumberToDelete);
-    fetch(`https://api.bhattacharjeesolution.in/book/api/delete-category.php`, {
-      method: "POST",
-      body: formdata,
-      headers: {
-        token: token,
-      },
-    })
+    fetch(
+      `https://api.bhattacharjeesolution.in/book/api/quize.php?id=${categoryNumberToDelete}`,
+      {
+        method: "DELETE",
+        headers: {
+          token: token,
+        },
+      }
+    )
       .then(function (response) {
-        console.log(response);
         return response.json(); // Parse the response as JSON
       })
       .then(function (data) {
@@ -256,26 +315,86 @@ function editCategory(categoryData) {
   console.log(categoryData);
   const editButtons = document.querySelectorAll(".edit-button");
   const editPopup = document.getElementById("editPopup");
-  const closePopupButton = document.getElementById("closePopup");
+  const closePopupButton = document.getElementById("closemodal");
+
   const nameInput = document.getElementById("name");
-  const typeInput = document.getElementById("edittype");
-  const imageInput = document.getElementById("image");
-  const categoryImageInput = document.getElementById("fileInput");
-  const categoryImagePreInput = document.getElementById("preimage");
   const descriptionInput = document.getElementById("description");
+  const image = document.getElementById("image");
+  const category = document.getElementById("category");
+  const duration = document.getElementById("duration");
+  // const typeInput = document.getElementById("edittype");
+  const lang = document.getElementById("lang");
+  const isfree = document.getElementById("isfree");
+
+  // const name = document.getElementById("name").value;
+  // const description = document.getElementById("description").value;
+  // const mrp = document.getElementById("mrp");
+  // const image = document.getElementById("image").files[0];
+  // const category = document.getElementById("category").value;
+
+  // const imageInput = document.getElementById("image");
+  // const categoryImageInput = document.getElementById("image");
+  const categoryImagePreInput = document.getElementById("imagePreview");
+  categoryImagePreInput.src = categoryData.image;
+  // `${bannerData?.image}`;
+  categoryImagePreInput.style.display = "block";
 
   // Set the initial values in the form fields
-  nameInput.value = categoryData.name;
+  nameInput.value = categoryData.title;
   descriptionInput.value = categoryData.description;
-  typeInput.value = categoryData.type;
-  categoryImagePreInput.src = `${categoryData.image.replace(" ", "%20")}`;
+  duration.value = categoryData.duration;
+  lang.value = categoryData.lang;
+  // isfree.value = categoryData.is_free;
+  // typeInput.value = categoryData.type;
+
+  // Assuming categoryData.category_id contains the correct category ID
+  const selectedCategoryId = categoryData.category_id;
+  // console.log("idsecat", selectedCategoryId);
+  // Loop through the options in the "Category" select element
+  for (const option of category.options) {
+    // console.log(option.value);
+    if (option.value == selectedCategoryId) {
+      option.selected = true; // Set the matching option as selected
+    } else {
+      option.selected = false; // Deselect other options
+    }
+  }
+
+  // Assuming categoryData.is_free contains the value from the database (0 or 1)
+  // const langValue = categoryData.lang == "1" ? "true" : "false"; // Convert to boolean
+
+  // console.log("val", isFreeValue);
+  // // Loop through the options in the "Is Free" select element
+  // for (const option of isfree.options) {
+  //   console.log(option.value);
+  //   if (option.value === isFreeValue) {
+  //     option.selected = true; // Set the matching option as selected
+  //   } else {
+  //     option.selected = false; // Deselect other options
+  //   }
+  // }
+
+  // Assuming categoryData.is_free contains the value from the database (0 or 1)
+  const isFreeValue = categoryData.is_free; // Convert to boolean
+  console.log("val", isFreeValue);
+  // Loop through the options in the "Is Free" select element
+  for (const option of isfree.options) {
+    console.log(option.value);
+    if (option.value == isFreeValue) {
+      option.selected = true; // Set the matching option as selected
+    } else {
+      option.selected = false; // Deselect other options
+    }
+  }
+
+  // categoryImagePreInput.src = `${categoryData?.image}`;
 
   // Show the popup
-  editButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      editPopup.style.display = "flex";
-    });
-  });
+  // editButtons.forEach((button) => {
+  //   button.addEventListener("click", () => {
+  //   });
+  // });
+  editPopup.style.display = "flex";
   // editPopup.style.display = "flex";
 
   // Add an event listener to the form submission
@@ -283,46 +402,43 @@ function editCategory(categoryData) {
   editForm.addEventListener("submit", async function (e) {
     e.preventDefault(); // Prevent the form from submitting normally (you can handle the submission logic here)
     // You can access the form data using nameInput.value, imageInput.files, and descriptionInput.value
-    console.log(
-      "Form submitted:",
-      nameInput.value,
-      categoryImageInput.files[0],
-      descriptionInput.value
-    );
 
     const formData = new FormData();
-    formData.append("name", nameInput.value);
-    formData.append("type", typeInput.value);
+    formData.append("title", nameInput.value);
     formData.append("description", descriptionInput.value);
-    formData.append("image", categoryImageInput.files[0]);
-    formData.append("categoryId", categoryData.id);
+    image.files[0] && formData.append("image", image.files[0]);
+    formData.append("category_id", category.value);
+    formData.append("duration", duration.value);
+    formData.append("lang", lang.value);
+    formData.append("is_free", isfree.value);
+    formData.append("id", categoryData.id);
 
-    try {
-      const response = await fetch(
-        "https://api.bhattacharjeesolution.in/book/api/edit-category.php",
-        {
-          method: "POST",
-          body: formData,
-          headers: {
-            token: token,
-          },
+    fetch(`https://api.bhattacharjeesolution.in/book/api/quize.php`, {
+      method: "POST",
+      body: formData,
+      headers: {
+        token: token,
+      },
+    })
+      .then((response) => response.json())
+      .then((res) => {
+        console.log(res);
+        if (res.message) {
+          // Handle success (e.g., display a success message)
+          alert(res.message || "Form submitted successfully!");
+          // window.location.reload();
+          // fetchDataFromAPI();
+          editPopup.style.display = "none"; // Close the popup after submission (you can replace this with your logic)
+        } else {
+          // Handle error (e.g., display an error message)
+          console.error("Form submission failed!");
+          alert(res.error || "Form submission failed!");
         }
-      );
-
-      if (response.ok) {
-        // Handle success (e.g., display a success message)
-        console.log("Form submitted successfully!");
-        window.location.reload();
-        fetchDataFromAPI();
-        editPopup.style.display = "none"; // Close the popup after submission (you can replace this with your logic)
-      } else {
-        // Handle error (e.g., display an error message)
-        console.error("Form submission failed!");
-      }
-    } catch (error) {
-      console.error("An error occurred:", error);
-    }
-    editPopup.style.display = "none"; // Close the popup after submission (you can replace this with your logic)
+      })
+      .catch((error) => {
+        console.error("An error occurred:", error);
+      });
+    // editPopup.style.display = "none"; // Close the popup after submission (you can replace this with your logic)
   });
 
   // Close the popup when the "Close" button is clicked

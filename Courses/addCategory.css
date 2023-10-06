@@ -57,3 +57,13 @@
 .addCategory .actions .closebtn {
   background-color: red;
 }
+
+.addCategory .form-control {
+  display: flex;
+  justify-content: left;
+  gap: 10px;
+  align-items: center;
+}
+.addCategory .form-control input {
+  margin: 0;
+}

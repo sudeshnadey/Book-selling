@@ -1,0 +1,48 @@
+#question-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+#question-list /* styles.css */
+/* styles.css */
+.question {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.question .text {
+  flex-grow: 1;
+  padding-right: 10px;
+}
+
+.question .options ul {
+  list-style: circle;
+  padding: 0;
+}
+
+.question .options ul li {
+  margin: 5px 18px;
+  font-size: 14px;
+}
+
+.question .options ul li.correct {
+  color: green;
+}
+
+.question .options ul li.wrong {
+  color: red;
+}
+
+.question button {
+  margin-left: 10px;
+  cursor: pointer;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 5px 10px;
+}

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Questions</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../Style.css" />
+    <link rel="stylesheet" href="/Courses/addCategory.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/blockMobile.js"></script>
+    <link rel="stylesheet" href="/loader.css" />
+    <script src="/loader.js"></script>
+    <style>
+      .form-control {
+        display: flex;
+        justify-content: left;
+        gap: 10px;
+        align-items: center;
+      }
+      .form-control input {
+        margin: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="loader"></div>
+    <div class="dashboard">
+      <div class="container">
+        <div class="row">
+          <!-- sidebar -->
+          <!-- In your main HTML page -->
+          <div class="col-2 sidebar">
+            <iframe
+              src="/Layout/DashboardSidebar.html"
+              frameborder="0"
+              scrolling="no"
+              height="100%"
+            ></iframe>
+          </div>
+
+          <!-- dashboard -->
+          <div class="col-10 maindash">
+            <div class="maindashboard">
+              <!-- banner -->
+              <div class="row navbar">
+                <div class="col-1">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+
+                <div class="col-2 dropdown">
+                  <i
+                    class="fa-regular fa-user dropdown-toggle"
+                    id="userDropdown"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  ></i>
+                  <div class="dropdown-menu" aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="#">Profile</a>
+                    <a class="dropdown-item" href="#">Settings</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Logout</a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bars">
+                <i class="fa-solid fa-bars"></i>
+              </div>
+              <div class="addCategory">
+                <h3>Add Question</h3>
+                <form id="question-form">
+                  <label for="question-text">Question:</label>
+                  <input type="text" id="question-text" required />
+                  <p>Select Correct Answer:</p>
+                  <div id="choices-container">
+                    <!-- Choice inputs will be added here dynamically -->
+                  </div>
+                  <!-- Correct answer options will be added here dynamically -->
+                  <div class="actions">
+                    <button type="button" id="add-choice">Add Choice</button>
+                    <button type="submit">Submit Question</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="Script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
+    <script>
+      const token = localStorage.getItem("user");
+      const quizId = localStorage.getItem("addQuestionId");
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("question-form");
+        const choicesContainer = document.getElementById("choices-container");
+        const addChoiceButton = document.getElementById("add-choice");
+
+        let choiceCount = 2; // Start with 2 choices (you can adjust this as needed)
+
+        // Function to add a new choice input field
+        function addChoiceInput() {
+          const containerdiv = document.createElement("div");
+          containerdiv.classList.add("form-control");
+          const choiceInput = document.createElement("input");
+          choiceInput.type = "radio";
+          choiceInput.name = "correct-answer";
+          choiceInput.value = `choiceText${choiceCount}`; // Assign a value to each radio button based on the choice text input name
+
+          containerdiv.appendChild(choiceInput);
+
+          const choiceTextInput = document.createElement("input");
+          choiceTextInput.type = "text";
+          choiceTextInput.name = `choiceText${choiceCount}`;
+          choiceTextInput.placeholder = `Choice ${choiceCount}`;
+          containerdiv.appendChild(choiceTextInput);
+          choicesContainer.appendChild(containerdiv);
+
+          choiceCount++;
+        }
+
+        addChoiceButton.addEventListener("click", addChoiceInput);
+
+        form.addEventListener("submit", function (event) {
+          event.preventDefault();
+          const questionText = document.getElementById("question-text").value;
+          const choices = [];
+
+          let correctAnswer; // Store the correct answer value
+
+          // Gather all choice inputs
+          const choiceTextInputs = document.querySelectorAll(
+            'input[type="text"][name^="choiceText"]'
+          );
+          choiceTextInputs.forEach((choiceTextInput) => {
+            choices.push(choiceTextInput.value);
+
+            // Check if the choice is marked as correct
+            const choiceInput = document.querySelector(
+              `input[type="radio"][value="${choiceTextInput.name}"]`
+            );
+
+            if (choiceInput && choiceInput.checked) {
+              correctAnswer = choiceTextInput.value;
+            }
+          });
+
+          // Check if a correct answer is selected
+          if (!correctAnswer) {
+            alert("Please mark one choice as the correct answer.");
+            return;
+          }
+
+          // You can now use 'questionText', 'correctAnswer', and 'choices' to do whatever you want, like sending them to a server or displaying them on the page.
+          console.log("Question:", questionText);
+          console.log("Correct Answer:", correctAnswer);
+          console.log("Choices:", choices);
+
+          // Transform 'choices' into the specified format
+          const options = choices.map((choice) => {
+            return {
+              option_text: choice,
+              is_correct: choice === correctAnswer ? 1 : 0,
+            };
+          });
+
+          console.log("Transformed options:", options);
+
+          const formData = {
+            quiz_id: parseInt(quizId),
+            text: questionText,
+            options: options,
+          };
+
+          fetch("https://api.bhattacharjeesolution.in/book/api/questions.php", {
+            method: "POST",
+            body: JSON.stringify(formData),
+            headers: {
+              token: token,
+            },
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              console.log(res);
+              console.log("Form submitted successfully!");
+              window.location.href = "question.html";
+            })
+            .catch((error) => {
+              console.error("An error occurred:", error);
+            });
+        });
+      });
+    </script>
+  </body>
+</html>

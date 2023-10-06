@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>User</title>
+    <title>Questions</title>
     <!-- <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css"
@@ -12,9 +12,10 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
       rel="stylesheet"
     /> -->
-    <link rel="stylesheet" href="/Courses/table.css" />
-    <link rel="stylesheet" href="/Courses/popUpStyle.css" />
-    <link rel="stylesheet" href="/Courses/addCategory.css" />
+    <link rel="stylesheet" href="/courses/table.css" />
+    <link rel="stylesheet" href="/courses/popUpStyle.css" />
+    <link rel="stylesheet" href="/courses/addCategory.css" />
+    <link rel="stylesheet" href="question.css" />
     <script src="/blockMobile.js"></script>
     <link
       rel="stylesheet"
@@ -68,6 +69,10 @@
         max-width: 100%;
         margin: 0;
       }
+      #pdfdisplay,
+      #videodisplay {
+        display: none;
+      }
     </style>
     <link rel="stylesheet" href="/loader.css" />
     <script src="/loader.js"></script>
@@ -119,7 +124,7 @@
               <!-- maincontent   -->
 
               <div class="container mt-3">
-                <h2>All Users</h2>
+                <h2>Questions</h2>
                 <!-- <h2 class="mt-5">Category</h2> -->
                 <!--  <button >Add</button> -->
                 <div
@@ -129,17 +134,20 @@
                     justify-content: space-between;
                   "
                 >
+                  <button class="btnadd mb-3" id="addClassButton">
+                    <a href="/Question/addQuestion.html">Add Question</a>
+                  </button>
                   <form>
                     <div class="form-group">
                       <!-- <div class="searbar"> -->
-                      <input
+                      <!-- <input
                         type="text"
                         name="searchbar"
                         id="searchbar"
                         class="form-control"
                         placeholder="search"
                         oninput="searchTable()"
-                      />
+                      /> -->
                     </div>
                   </form>
                 </div>
@@ -148,74 +156,50 @@
               <div class="bars">
                 <i class="fa-solid fa-bars"></i>
               </div>
-              <div class="categoryTable row mt-3">
-                <table
-                  class="table table-hover table-bordered"
-                  id="category-table"
-                >
-                  <!-- <table class="styled-table"> -->
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Name</th>
-                      <th>Image</th>
-                      <th>Email</th>
-                      <th>Phone Number</th>
-                    </tr>
-                  </thead>
-                  <tbody id="category-table-body"></tbody>
-                </table>
-                <div id="pagination">
-                  <button id="prev-button" onclick="prevPage()">
-                    <i class="fa-solid fa-arrow-left"></i>
-                  </button>
-                  <button id="next-button" onclick="nextPage()">
-                    <i class="fa-solid fa-arrow-right"></i>
-                  </button>
-                  <span id="page-info">Page 1 of 1</span>
-                </div>
+              <div id="question-list">
+                <!-- Questions will be added here dynamically -->
               </div>
 
               <div class="popup-overlay" id="editPopup">
                 <div class="popup-container addCategory">
                   <h2>Edit Item</h2>
-                  <form action="#" method="post">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required />
+                  <div style="max-height: 80vh; overflow-y: auto">
+                    <form action="#" method="post">
+                      <div class="form-group">
+                        <label for="edit-question-text">Question:</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="edit-question-text"
+                          required
+                        />
+                      </div>
+                      <p>Option</p>
+                      <div id="edit-options-container">
+                        <!-- Edit options will be added here dynamically -->
+                      </div>
+                      <!-- <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="add-edit-choice"
+                      >
+                        Add Choice
+                      </button> -->
 
-                    <label for="image">Image:</label>
-                    <input
-                      type="file"
-                      id="fileInput"
-                      name="image"
-                      accept="image/*"
-                    />
-                    <img
-                      id="preimage"
-                      name="preimage"
-                      width="100%"
-                      height="100px"
-                    />
-                    <label for="type">Choose Type:</label>
-                    <select id="edittype" name="type" required>
-                      <option value="book">Book</option>
-                      <option value="lecture">Lecture</option>
-                      <option value="news">News</option>
-                    </select>
-                    <br />
-                    <label for="description">Description:</label>
-                    <textarea
-                      id="description"
-                      name="description"
-                      rows="4"
-                      required
-                    ></textarea>
-
-                    <div class="actions">
-                      <button type="submit">Submit</button>
-                      <button class="closebtn" id="closePopup">Close</button>
-                    </div>
-                  </form>
+                      <div
+                        style="display: flex; gap: 5px; justify-content: right"
+                      >
+                        <button
+                          type="button"
+                          style="background-color: red"
+                          id="closemodal"
+                        >
+                          Close
+                        </button>
+                        <button type="submit">Save</button>
+                      </div>
+                    </form>
+                  </div>
                   <!-- Add your edit form or content here -->
                 </div>
               </div>
@@ -263,7 +247,7 @@
     </div>
 
     <!-- <script src="../Script.js"></script> -->
-    <script src="script.js"></script>
+    <script src="question.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
     <script>
       var fileInput = document.getElementById("fileInput");
@@ -286,6 +270,50 @@
           reader.readAsDataURL(fileInput.files[0]);
         }
       });
+    </script>
+    <script>
+      function fetchCategoryData() {
+        // Replace 'YOUR_API_URL' with the actual API endpoint
+        console.log("fethichg", token);
+        fetch(
+          "https://api.bhattacharjeesolution.in/book/api/admin-show-category.php",
+          {
+            headers: {
+              token: token,
+            },
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("data", data);
+            const categorySelect = document.getElementById("category");
+
+            // Clear existing options
+            categorySelect.innerHTML = "";
+
+            // Add a default option
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "0";
+            defaultOption.textContent = "Select a category";
+            categorySelect.appendChild(defaultOption);
+
+            // Populate the select with data from the API
+            data.forEach((category) => {
+              const option = document.createElement("option");
+              option.value = category.id;
+              option.textContent = category.name;
+              categorySelect.appendChild(option);
+            });
+
+            // Add an event listener to fetch subcategories when a category is selected
+            // categorySelect.addEventListener("change", fetchSubcategories);
+          })
+          .catch((error) => {
+            console.error("Error fetching data:", error);
+          });
+      }
+
+      window.addEventListener("load", fetchCategoryData);
     </script>
     <script>
       // JavaScript to handle the popup
@@ -349,13 +377,6 @@
         });
       }
     </script>
-    <!-- <script>
-      fetch("../Layout/DashboardSidebar.html")
-        .then((response) => response.text())
-        .then((content) => {
-          document.getElementById("sidebar").innerHTML = content;
-        });
-    </script> -->
     <script src="blockMobile.js"></script>
   </body>
 </html>

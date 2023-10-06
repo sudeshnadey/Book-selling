@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Add PDFs</title>
+    <title>Add Quiz</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css"
@@ -13,7 +13,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../Style.css" />
-    <link rel="stylesheet" href="addCategory.css" />
+    <link rel="stylesheet" href="/Courses/addCategory.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
@@ -43,6 +43,8 @@
               scrolling="no"
               height="100%"
             ></iframe>
+            <!-- In your main HTML page -->
+            <!-- #include virtual="sidebar.html" -->
           </div>
 
           <!-- dashboard -->
@@ -71,17 +73,18 @@
                 </div>
               </div>
               <!-- maincontent   -->
-              <div>
-                <a href="/Courses/DetailCourse.html">back</a>
-                <h2 class="mt-5">Add PDFs - <span id="coursename"></span></h2>
-              </div>
+              <!-- <div>
+                <a href="/Courses/Courses.html">back</a>
+                <h2 class="mt-5">Add Courses</h2>
+              </div> -->
 
               <div class="bars">
                 <i class="fa-solid fa-bars"></i>
               </div>
               <div class="addCategory">
+                <h3>Add Quiz</h3>
                 <form action="#" method="post" onsubmit="submitForm(event)">
-                  <label for="name">Title:</label>
+                  <label for="name">Name:</label>
                   <input type="text" id="name" name="name" required />
 
                   <br />
@@ -93,19 +96,44 @@
                     required
                   ></textarea>
 
-                  <label for="dayno"
-                    >Day Number: (The Resource will be free for day 0! )</label
-                  >
-                  <input type="number" id="dayno" name="dayno" />
-
-                  <label for="pdf">Content ( PDF File ):</label>
+                  <label for="image">Image:</label>
                   <input
                     type="file"
-                    id="pdf"
-                    name="pdf"
-                    accept=".pdf"
+                    id="image"
+                    name="image"
+                    accept="image/*"
                     required
+                    onchange="previewImage()"
                   />
+                  <br />
+                  <div class="imgPreview">
+                    <img
+                      id="imagePreview"
+                      src="#"
+                      alt="Image Preview"
+                      style="display: none; max-width: 200px; max-height: 200px"
+                    />
+                  </div>
+
+                  <label for="category">Category:</label>
+                  <select name="category" id="category">
+                    <option value="0">Loading categories...</option>
+                  </select>
+
+                  <label for="duration">Duration:</label>
+                  <input type="number" id="duration" name="duration" />
+
+                  <label for="lang">Language:</label>
+                  <select id="lang" name="lang" required>
+                    <option value="in">INDIAN</option>
+                    <option value="en">ENGLISH</option>
+                  </select>
+
+                  <label for="isfree">Is Free:</label>
+                  <select id="isfree" name="isfree" required>
+                    <option value="{0}">Not free</option>
+                    <option value="{1}">Free</option>
+                  </select>
 
                   <button type="submit">Submit</button>
                 </form>
@@ -119,33 +147,90 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
     <script>
       const token = localStorage.getItem("user");
-      const vidid = localStorage.getItem("addvideoId");
-      const vidname = localStorage.getItem("addvideoName");
-      console.log("id:", vidid);
+      function previewImage() {
+        const input = document.getElementById("image");
+        const preview = document.getElementById("imagePreview");
 
-      document.getElementById("coursename").innerText = vidname;
+        if (input.files && input.files[0]) {
+          const reader = new FileReader();
+
+          reader.onload = function (e) {
+            preview.style.display = "block";
+            preview.src = e.target.result;
+          };
+
+          reader.readAsDataURL(input.files[0]);
+        } else {
+          preview.style.display = "none";
+          preview.src = "";
+        }
+      }
+
+      function fetchCategoryData() {
+        // Replace 'YOUR_API_URL' with the actual API endpoint
+        console.log("fethichg", token);
+        fetch(
+          "https://api.bhattacharjeesolution.in/book/api/admin-show-category.php",
+          {
+            headers: {
+              token: token,
+            },
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("data", data);
+            const categorySelect = document.getElementById("category");
+
+            // Clear existing options
+            categorySelect.innerHTML = "";
+
+            // Add a default option
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "0";
+            defaultOption.textContent = "Select a category";
+            categorySelect.appendChild(defaultOption);
+
+            // Populate the select with data from the API
+            data.forEach((category) => {
+              const option = document.createElement("option");
+              option.value = category.id;
+              option.textContent = category.name;
+              categorySelect.appendChild(option);
+            });
+
+            // Add an event listener to fetch subcategories when a category is selected
+            // categorySelect.addEventListener("change", fetchSubcategories);
+          })
+          .catch((error) => {
+            console.error("Error fetching data:", error);
+          });
+      }
 
       async function submitForm(event) {
         event.preventDefault();
         console.log("inside");
         const name = document.getElementById("name").value;
         const description = document.getElementById("description").value;
-        // const category = document.getElementById("category").value;
-        const pdf = document.getElementById("pdf").files[0];
-        const dayno = document.getElementById("dayno").value;
+        const image = document.getElementById("image").files[0];
+        const category = document.getElementById("category").value;
+        const duration = document.getElementById("duration").value;
+        const lang = document.getElementById("lang").value;
+        const isfree = document.getElementById("isfree").value;
 
         const formData = new FormData();
         formData.append("title", name);
         formData.append("description", description);
-        formData.append("course_id", vidid);
-        formData.append("content", pdf);
-        formData.append("day_no", dayno);
-        // formData.append("type", type);
+        formData.append("image", image);
+        formData.append("category_id", category);
+        formData.append("duration", duration);
+        formData.append("lang", lang);
+        formData.append("is_free", isfree);
 
         try {
           // const response = await fetch("https://api.bhattacharjeesolution.in/book/api/category/add.php", {
           const response = await fetch(
-            "https://api.bhattacharjeesolution.in/book/api/pdf.php",
+            "https://api.bhattacharjeesolution.in/book/api/quize.php",
             {
               method: "POST",
               body: formData,
@@ -158,7 +243,7 @@
           if (response.ok) {
             // Handle success (e.g., display a success message)
             console.log("Form submitted successfully!");
-            window.location.href = "DetailCourse.html";
+            window.location.href = "quiz.html";
           } else {
             // Handle error (e.g., display an error message)
             console.error("Form submission failed!");
