@@ -127,8 +127,9 @@
 
                   <label for="type">Type:</label>
                   <select id="type" name="type" required>
-                    <option value="pet">PETest</option>
+                    <option value="pet">PET course</option>
                     <option value="video">Video</option>
+                    <option value="ebook">E-book</option>
                     <option value="test">Test</option>
                     <option value="pdf">PDF</option>
                   </select>
@@ -142,8 +143,8 @@
 
                   <label for="isfree">Is Free:</label>
                   <select id="isfree" name="isfree" required>
-                    <option value="{0}">Not free</option>
-                    <option value="{1}">Free</option>
+                    <option value="0">Not free</option>
+                    <option value="1">Free</option>
                   </select>
 
                   <button type="submit">Submit</button>
@@ -234,12 +235,12 @@
         const formData = new FormData();
         formData.append("name", name);
         formData.append("description", description);
-        formData.append("image[0]", image);
+        formData.append("image", image);
         formData.append("category_id", category);
         formData.append("mrp", mrp);
         formData.append("discount", discount);
         formData.append("lang", lang);
-        formData.append("is_free", isfree);
+        formData.append("is_free", parseInt(isfree));
         formData.append("type", type);
 
         try {
@@ -258,7 +259,8 @@
           if (response.ok) {
             // Handle success (e.g., display a success message)
             console.log("Form submitted successfully!");
-            window.location.href = "Courses.html";
+            window.history.back();
+            // window.location.href = "Courses.html";
           } else {
             // Handle error (e.g., display an error message)
             console.error("Form submission failed!");

@@ -211,8 +211,12 @@ function editCategory(question) {
     const choiceInput = document.createElement("input");
     choiceInput.type = "radio";
     choiceInput.name = "correct-answer";
-    choiceInput.checked = option.is_correct == "1" ? true : false;
-    choiceInput.value = `edit-choiceText${choiceCount}`; // Assign a value to each radio button based on the choice text input name
+    choiceInput.checked = option.is_correct == 1 ? true : false;
+    choiceInput.value = `edit-choiceText${choiceCount}`;
+    choiceInput.setAttribute("data-is-correct", option.is_correct);
+
+    // Increment choiceCount for the next radio input
+    choiceCount++;
 
     editOptionsContainer.appendChild(choiceInput);
     editOptionsContainer.appendChild(optionInput);
@@ -241,15 +245,27 @@ function editCategory(question) {
       choices.push(choiceTextInput.value);
 
       // Check if the choice is marked as correct
-      const choiceInput = document.querySelector(
-        `input[type="radio"][value="${choiceTextInput.name}"]`
-      );
+      // const choiceInput = document.querySelector(
+      //   `input[type="radio"][value="${choiceTextInput.name}"]`
+      // );
 
-      console.log(choiceInput);
-      if (choiceInput && choiceInput.checked) {
-        correctAnswer = choiceTextInput.value;
+      // console.log(choiceInput);
+      // if (choiceInput) {
+      //   correctAnswer = choiceTextInput.value;
+      // }
+    });
+
+    // Loop through radio inputs
+    const choiceRadioInputs = document.querySelectorAll(
+      'input[type="radio"][name="correct-answer"]'
+    );
+
+    choiceRadioInputs.forEach((choiceRadioInput) => {
+      if (choiceRadioInput.checked) {
+        correctAnswer = choiceRadioInput.value.replace("edit-choiceText", "");
       }
     });
+    console.log("correct", correctAnswer);
 
     // Transform 'choices' into the specified format
     const options = choices.map((choice) => {
@@ -258,6 +274,17 @@ function editCategory(question) {
         is_correct: choice === correctAnswer ? 1 : 0,
       };
     });
+
+    // Update 'is_correct' based on the selected radio input
+    const selectedRadioInput = document.querySelector(
+      `input[type="radio"][value="edit-choiceText${correctAnswer}"]`
+    );
+    console.log(selectedRadioInput);
+    if (selectedRadioInput) {
+      // If the selected radio input exists, set its corresponding option's 'is_correct' to 1
+      const selectedChoiceIndex = parseInt(correctAnswer) - 1; // Adjust for 0-based indexing
+      options[selectedChoiceIndex].is_correct = 1;
+    }
 
     const formData = {
       text: editQuestionText.value,
