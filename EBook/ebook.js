@@ -107,7 +107,7 @@ function populateCategoryTable(data) {
 function sendDetail(id) {
   console.log("routing");
   localStorage.setItem("addCourseDetailId", id);
-  window.location.href = "/Courses/DetailCourse.html";
+  window.location.href = "/EBook/DetailEbook.html";
 }
 
 function sendTest(id, name) {

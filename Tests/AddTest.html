@@ -257,13 +257,14 @@
               },
             }
           );
-
-          if (response.ok) {
+          const data = response.json();
+          if (response.ok && !data.error) {
             // Handle success (e.g., display a success message)
             console.log("Form submitted successfully!");
             // window.history.back();
-            window.location.href = "test.html";
+            window.location.href = "tests.html";
           } else {
+            alert(data.error || "Error while saving data!");
             // Handle error (e.g., display an error message)
             console.error("Form submission failed!");
           }

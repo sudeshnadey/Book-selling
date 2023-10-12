@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/blockMobile.js"></script>
+  </head>
+  <body style="position: fixed; top: 0">
+    <!-- <div class="col-2 sidebar"> -->
+    <!-- <div class="row navbar"> -->
+    <div class="col-1">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </div>
+
+    <div class="col-2 dropdown">
+      <i
+        class="fa-regular fa-user dropdown-toggle"
+        id="userDropdown"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      ></i>
+      <div class="dropdown-menu" aria-labelledby="userDropdown">
+        <a class="dropdown-item" href="#">Profile</a>
+        <a class="dropdown-item" href="#">Settings</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#" onclick="handlelogout()">Logout</a>
+      </div>
+    </div>
+    <!-- </div> -->
+    <!-- </div> -->
+    <script>
+      // Get the current URL
+      var url = window.location.href;
+      console.log(url);
+      // Get all the links in the sidebar
+      var links = document.querySelectorAll(".sidebaritems a");
+      console.log(links);
+      // Loop through each link and check if it matches the current URL
+      for (var i = 0; i < links.length; i++) {
+        // if (links[i].href === url) {
+        if (url.includes(links[i].href)) {
+          // Add a class to the corresponding tab
+          links[i].classList.add("highlight");
+        }
+      }
+    </script>
+    <script src="../Script.js"></script>
+    <!-- <script src="../logout.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
+  </body>
+</html>

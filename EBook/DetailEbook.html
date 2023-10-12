@@ -3,6 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detail Courses</title>
+    <!-- <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    /> -->
+    <link rel="stylesheet" href="/Courses/table.css" />
+    <link rel="stylesheet" href="/Courses/popUpStyle.css" />
+    <link rel="stylesheet" href="/Courses/addCategory.css" />
+    <script src="/blockMobile.js"></script>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css"
@@ -11,12 +24,6 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <title>User</title>
-    <link rel="stylesheet" href="../Style.css" />
-    <link rel="stylesheet" href="/Courses/table.css" />
-    <link rel="stylesheet" href="/Courses/popUpStyle.css" />
-    <link rel="stylesheet" href="/Courses/addCategory.css" />
-    <script src="/blockMobile.js"></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
@@ -50,6 +57,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../Style.css" />
     <style>
       .col-10 {
         /* padding: 0; */
@@ -59,6 +67,10 @@
         width: 100%;
         max-width: 100%;
         margin: 0;
+      }
+      #pdfdisplay,
+      #videodisplay {
+        display: none;
       }
     </style>
     <link rel="stylesheet" href="/loader.css" />
@@ -111,30 +123,9 @@
               <!-- maincontent   -->
 
               <div class="container mt-3">
-                <h2>All Users</h2>
+                <h2>Details Courses</h2>
                 <!-- <h2 class="mt-5">Category</h2> -->
                 <!--  <button >Add</button> -->
-                <div
-                  style="
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                  "
-                >
-                  <form>
-                    <div class="form-group">
-                      <!-- <div class="searbar"> -->
-                      <input
-                        type="text"
-                        name="searchbar"
-                        id="searchbar"
-                        class="form-control"
-                        placeholder="search"
-                        oninput="searchTable()"
-                      />
-                    </div>
-                  </form>
-                </div>
               </div>
 
               <div class="bars">
@@ -142,72 +133,93 @@
               </div>
               <div class="categoryTable row mt-3">
                 <table
-                  class="table table-hover table-bordered"
+                  class="table table-hover table-bordered tableLong"
                   id="category-table"
                 >
                   <!-- <table class="styled-table"> -->
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Name</th>
-                      <th>Image</th>
-                      <th>Email</th>
-                      <th>Phone Number</th>
-                    </tr>
-                  </thead>
+                  <thead></thead>
                   <tbody id="category-table-body"></tbody>
                 </table>
-                <div id="pagination">
-                  <button id="prev-button" onclick="prevPage()">
-                    <i class="fa-solid fa-arrow-left"></i>
-                  </button>
-                  <button id="next-button" onclick="nextPage()">
-                    <i class="fa-solid fa-arrow-right"></i>
-                  </button>
-                  <span id="page-info">Page 1 of 1</span>
-                </div>
+              </div>
+              <div>
+                <h6>Resource</h6>
+                <table
+                  class="table table-hover table-bordered"
+                  id="table-video"
+                >
+                  <thead>
+                    <tr>
+                      <th>Day</th>
+                      <th>Title</th>
+                      <th>Type</th>
+                      <th>Description</th>
+                      <th>Link</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                </table>
+                <!-- <button class="btnadd mb-3" id="addClassButton">
+                  <a href="/Courses/AddVideo.html">Add Video</a>
+                </button>
+                <button class="btnadd mb-3" id="addClassButton">
+                  <a href="/Courses/AddTest.html">Add Tests</a>
+                </button> -->
+                <button class="btnadd mb-3" id="addClassButton">
+                  <a href="/Courses/AddPdf.html">Add Pdf</a>
+                </button>
+                <!-- <button class="btnadd mb-3" id="addClassButton">
+                  <a href="/Courses/AddPet.html">Add PET</a>
+                </button> -->
               </div>
 
               <div class="popup-overlay" id="editPopup">
                 <div class="popup-container addCategory">
                   <h2>Edit Item</h2>
-                  <form action="#" method="post">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required />
+                  <div style="max-height: 80vh; overflow-y: auto">
+                    <form action="#" method="post">
+                      <label for="name">Title:</label>
+                      <input type="text" id="nameedit" name="name" required />
 
-                    <label for="image">Image:</label>
-                    <input
-                      type="file"
-                      id="fileInput"
-                      name="image"
-                      accept="image/*"
-                    />
-                    <img
-                      id="preimage"
-                      name="preimage"
-                      width="100%"
-                      height="100px"
-                    />
-                    <label for="type">Choose Type:</label>
-                    <select id="edittype" name="type" required>
-                      <option value="book">Book</option>
-                      <option value="lecture">Lecture</option>
-                      <option value="news">News</option>
-                    </select>
-                    <br />
-                    <label for="description">Description:</label>
-                    <textarea
-                      id="description"
-                      name="description"
-                      rows="4"
-                      required
-                    ></textarea>
+                      <br />
+                      <label for="description">Description:</label>
+                      <textarea
+                        id="descriptionedit"
+                        name="descriptionedit"
+                        rows="4"
+                        required
+                      ></textarea>
 
-                    <div class="actions">
-                      <button type="submit">Submit</button>
-                      <button class="closebtn" id="closePopup">Close</button>
-                    </div>
-                  </form>
+                      <label for="dayno">Day Number:</label>
+                      <input type="number" id="daynoedit" name="dayno" />
+                      <div id="pdfdisplay">
+                        <label for="pdf">Content ( PDF File ):</label>
+                        <input
+                          type="file"
+                          id="pdfedit"
+                          name="pdf"
+                          accept=".pdf"
+                        />
+                      </div>
+
+                      <div id="videodisplay">
+                        <label for="link">Link:</label>
+                        <input type="text" id="linkedit" name="link" />
+                      </div>
+
+                      <div
+                        style="display: flex; gap: 5px; justify-content: right"
+                      >
+                        <button
+                          type="button"
+                          style="background-color: red"
+                          id="closemodal"
+                        >
+                          Close
+                        </button>
+                        <button type="submit">Save</button>
+                      </div>
+                    </form>
+                  </div>
                   <!-- Add your edit form or content here -->
                 </div>
               </div>
@@ -255,7 +267,7 @@
     </div>
 
     <!-- <script src="../Script.js"></script> -->
-    <script src="script.js"></script>
+    <script src="/Courses/detailCourse.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
     <script>
       var fileInput = document.getElementById("fileInput");
@@ -278,6 +290,50 @@
           reader.readAsDataURL(fileInput.files[0]);
         }
       });
+    </script>
+    <script>
+      function fetchCategoryData() {
+        // Replace 'YOUR_API_URL' with the actual API endpoint
+        console.log("fethichg", token);
+        fetch(
+          "https://api.bhattacharjeesolution.in/book/api/admin-show-category.php",
+          {
+            headers: {
+              token: token,
+            },
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("data", data);
+            const categorySelect = document.getElementById("category");
+
+            // Clear existing options
+            categorySelect.innerHTML = "";
+
+            // Add a default option
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "0";
+            defaultOption.textContent = "Select a category";
+            categorySelect.appendChild(defaultOption);
+
+            // Populate the select with data from the API
+            data.forEach((category) => {
+              const option = document.createElement("option");
+              option.value = category.id;
+              option.textContent = category.name;
+              categorySelect.appendChild(option);
+            });
+
+            // Add an event listener to fetch subcategories when a category is selected
+            // categorySelect.addEventListener("change", fetchSubcategories);
+          })
+          .catch((error) => {
+            console.error("Error fetching data:", error);
+          });
+      }
+
+      window.addEventListener("load", fetchCategoryData);
     </script>
     <script>
       // JavaScript to handle the popup

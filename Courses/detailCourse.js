@@ -72,7 +72,7 @@ function populateCategoryTable(data) {
       <tr>
         <th>Image</th>
         <td>
-          <img src="${item.image}" alt="" style="width: calc(80% - 30px); flex: 5; object-fit: cover; max-width: 100px; max-height: 100px;" />
+          <img src="${item.images[0]}" alt="" style="width: calc(80% - 30px); flex: 5; object-fit: cover; max-width: 100px; max-height: 100px;" />
         </td>
       </tr>
       <tr>
@@ -219,9 +219,7 @@ function populateCategoryTable(data) {
             <td>
               <button class="edit-button" style="border: none" onclick="handleEditTests('${encodeURIComponent(
                 JSON.stringify(item)
-              )}')" data-coupon='${JSON.stringify(
-                item
-              )}'>
+              )}')" data-coupon='${JSON.stringify(item)}'>
                 <i class="fa-solid fa-pen"></i>
               </button>
               <button style="border: none; color: red"  onclick="deleteTests(${

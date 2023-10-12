@@ -24,6 +24,7 @@ function fetchDataFromAPI() {
       window.fetchedData = data;
       filteredData = data;
       totalFilteredPages = data.length; // Calculate total pages for the original data
+      console.log("totalpage:", data);
       console.log("totalpage:", totalFilteredPages);
       populateBannerTable(data);
       console.log("data:", data.length);
@@ -58,7 +59,7 @@ function populateBannerTable(data) {
       <td>${index + 1}</td>
       <td>${item.title}</td>
       <td>${item.description}</td>
-      <td><img src="${item.images}" height="50px" widht="50px" /></td>
+      <td><img src="${item.image}" height="50px" widht="50px" /></td>
       <td>${item.added_by}</td>
       <td>${item.created_at}</td>
       <td>
