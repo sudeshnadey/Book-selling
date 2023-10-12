@@ -14,7 +14,7 @@ function populateCouponTable(item) {
   var row = document.createElement("tr");
 
   row.innerHTML = `
-      <td>${item.id}</td>
+      <td>1</td>
       <td>${item.about}</td>
       `;
   // <td>

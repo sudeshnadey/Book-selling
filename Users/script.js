@@ -52,11 +52,14 @@ function populateCategoryTable(data) {
     const item = data[index];
     var row = document.createElement("tr");
 
+    // <td>${item?.id}</td>;
     row.innerHTML = `
-        <td>${item?.id}</td>
+        <td>${index + 1}</td>
         <td>${item?.name}</td>
         <td>
-        <img src="${item?.photo}" alt="" style="width: 60px; object-fit: cover; max-width: 100px; max-height: 100px;" />
+        <img src="${
+          item?.photo
+        }" alt="" style="width: 60px; object-fit: cover; max-width: 100px; max-height: 100px;" />
         </td>
         <td>${item?.email}</td>
         <td>${item?.phone}</td>

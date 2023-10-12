@@ -55,7 +55,7 @@ function populateBannerTable(data) {
     // <td>${item.description}</td>
     // <td>${item.name}</td>
     row.innerHTML = `
-      <td>${item.id}</td>
+      <td>${index + 1}</td>
       <td>${item.title}</td>
       <td>${item.description}</td>
       <td><img src="${item.images}" height="50px" widht="50px" /></td>

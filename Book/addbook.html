@@ -167,19 +167,19 @@
                   <!-- <label for="createdApp">Created App:</label>
                   <input type="text" id="createdApp" name="createdApp" /> -->
 
-                  <label for="pdf">Content ( PDF File ):</label>
+                  <label for="pdf">Content ( PDF File ): (optional) </label>
+                  <input type="file" id="pdf" name="pdf" accept=".pdf" />
+
+                  <label for="sample">Sample ( PDF File ):</label>
                   <input
                     type="file"
-                    id="pdf"
-                    name="pdf"
+                    id="sample"
+                    name="sample"
                     accept=".pdf"
                     required
                   />
 
-                  <label for="sample">Sample ( PDF File ):</label>
-                  <input type="file" id="sample" name="sample" accept=".pdf" />
-
-                  <label for="barcode">Barcode:</label>
+                  <label for="barcode">Barcode: (optional)</label>
                   <input type="file" id="barcode" name="barcode" />
                   <!-- accept=".pdf" -->
 
@@ -246,10 +246,13 @@
 
             // Populate the select with data from the API
             data.forEach((category) => {
-              const option = document.createElement("option");
-              option.value = category.id;
-              option.textContent = category.name;
-              categorySelect.appendChild(option);
+              if (category.type == "book") {
+                console.log(category);
+                const option = document.createElement("option");
+                option.value = category.id;
+                option.textContent = category.name;
+                categorySelect.appendChild(option);
+              }
             });
 
             // Add an event listener to fetch subcategories when a category is selected

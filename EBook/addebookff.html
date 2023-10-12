@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Add News</title>
+    <title>Add E-Book</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css"
@@ -73,10 +73,10 @@
               <!-- maincontent   -->
               <div>
                 <button class="btnadd btn-primary mb-3">
-                  <a href="/News/news.html">back</a>
+                  <a href="/EBook/ebook.html">back</a>
                 </button>
                 <!-- <a href="/Banner/Banner.html">back</a> -->
-                <h2 class="mt-3">Add News</h2>
+                <h2 class="mt-3">Add E-Book</h2>
               </div>
 
               <div class="bars">
@@ -86,10 +86,10 @@
                 <form
                   action="#"
                   method="post"
-                  onsubmit="submitForm(event)"
                   enctype="multipart/form-data"
+                  onsubmit="submitForm(event)"
                 >
-                  <label for="name">Title:</label>
+                  <label for="name">Name:</label>
                   <input type="text" id="name" name="name" required />
 
                   <label for="description">Description:</label>
@@ -119,18 +119,70 @@
                   </div>
 
                   <label for="category">Category:</label>
-                  <select name="category" id="category" required>
+                  <select name="category" id="category">
                     <option value="0">Loading categories...</option>
                   </select>
 
-                  <!-- <label for="discount">Discount Price:</label>
-                  <input type="number" id="discount" name="discount" /> -->
+                  <label for="mrp">MRP:</label>
+                  <input type="number" id="mrp" name="mrp" />
+
+                  <label for="discount">Discount Price:</label>
+                  <input type="number" id="discount" name="discount" />
+
+                  <label for="delivery">Delivery Price:</label>
+                  <input type="number" id="delivery" name="delivery" />
+
+                  <label for="quantity">Quantity:</label>
+                  <input type="number" id="quantity" name="quantity" required />
 
                   <label for="lang">Language:</label>
                   <select id="lang" name="lang" required>
                     <option value="in">INDIAN</option>
                     <option value="en">ENGLISH</option>
                   </select>
+                  <!-- 
+                  <label for="type">Type:</label>
+                  <select id="type" name="type" required>
+                    <option value="book">Book</option>
+                    <option value="lecture">Lecture</option>
+                    <option value="news">News</option>
+                  </select> -->
+
+                  <!-- <label for="barcodeImage">Barcode Image:</label>
+                  <input
+                      type="file"
+                      id="barcodeImage"
+                      name="barcodeImage"
+                      accept="image/*"
+                      required
+                      onchange="previewBarcodeImage()"
+                  />
+                  <div class="barcodeImagePreview">
+                      <img
+                          id="barcodeImagePreview"
+                          src="#"
+                          alt="Barcode Image Preview"
+                          style="display: none; max-width: 200px; max-height: 200px"
+                      />
+                  </div> -->
+
+                  <!-- <label for="createdApp">Created App:</label>
+                  <input type="text" id="createdApp" name="createdApp" /> -->
+
+                  <label for="pdf">Content ( PDF File ):</label>
+                  <input
+                    type="file"
+                    id="pdf"
+                    name="pdf"
+                    accept=".pdf"
+                    required
+                  />
+
+                  <label for="sample">Sample ( PDF File ):</label>
+                  <input type="file" id="sample" name="sample" accept=".pdf" />
+
+                  <label for="barcode">Barcode:</label>
+                  <input type="file" id="barcode" name="barcode" />
                   <!-- accept=".pdf" -->
 
                   <!-- onchange="previewPDF()" -->
@@ -196,12 +248,10 @@
 
             // Populate the select with data from the API
             data.forEach((category) => {
-              if (category.type == "news") {
-                const option = document.createElement("option");
-                option.value = category.id;
-                option.textContent = category.name;
-                categorySelect.appendChild(option);
-              }
+              const option = document.createElement("option");
+              option.value = category.id;
+              option.textContent = category.name;
+              categorySelect.appendChild(option);
             });
 
             // Add an event listener to fetch subcategories when a category is selected
@@ -219,29 +269,36 @@
         const formData = new FormData();
 
         // Append each input individually to the FormData
-        formData.append("title", document.getElementById("name").value);
+        formData.append("name", document.getElementById("name").value);
         formData.append(
           "description",
           document.getElementById("description").value
         );
         formData.append(
-          "category_id",
+          "categoryId",
           document.getElementById("category").value
         );
-        // formData.append("mrp", document.getElementById("mrp").value);
+        formData.append("mrp", document.getElementById("mrp").value);
+        formData.append("quantity", document.getElementById("quantity").value);
+        formData.append("discount", document.getElementById("discount").value);
         formData.append("lang", document.getElementById("lang").value);
-        formData.append("update", "0");
-        formData.append("added_by", "Hunda");
-        formData.append("photo", document.getElementById("image").files[0]);
+        formData.append(
+          "delivery_price",
+          document.getElementById("delivery").value
+        );
+        formData.append("type", "ebook");
+        formData.append("image", document.getElementById("image").files[0]);
+        formData.append("content", document.getElementById("pdf").files[0]);
+        formData.append("barcode", document.getElementById("barcode").files[0]);
+        formData.append("sample", document.getElementById("sample").files[0]);
 
         // Send the data to the server using Fetch and FormData
-        fetch("https://api.bhattacharjeesolution.in/book/api/news.php", {
+        fetch("https://api.bhattacharjeesolution.in/book/api/add-book.php", {
           method: "POST", // You may want to use POST for FormData
           body: formData,
           headers: {
             token: token,
           },
-          // "Content-Type": "multipart/form-data",
         })
           .then((response) => {
             if (!response.ok) {
@@ -252,9 +309,9 @@
           .then((data) => {
             // Handle the API response data here
             console.log(data);
-            if (data.id) {
-              alert("News Added!");
-              window.location.href = "news.html";
+            if (data.status === "success") {
+              alert("Book Added!");
+              window.location.href = "ebook.html";
             }
           })
           .catch((error) => {

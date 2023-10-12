@@ -58,7 +58,7 @@ function populateCategoryTable(data) {
     var row = document.createElement("tr");
 
     row.innerHTML = `
-      <td>${item.id}</td>
+      <td>${index + 1}</td>
       <td>${item.name}</td>
       <td>
       <img src="${
