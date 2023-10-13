@@ -100,25 +100,25 @@
               <!-- banner -->
               <div class="row navbar">
                 <div class="col-1">
-                  <i class="fa-solid fa-bars"></i>
                   <i class="fa-solid fa-magnifying-glass"></i>
                 </div>
-                <div class="col-2">
-                  <button class="btnd">WEBSITE</button>
-                </div>
-                <div class="col-2">
-                  <button class="btnd">DASHBOARD</button>
-                </div>
-                <div class="col-1">
-                  <button class="btnd">REPORTS</button>
-                </div>
-                <div class="col-2">
-                  <p>2023-2024</p>
-                </div>
 
-                <div class="col-1">
-                  <i class="fa-regular fa-comment"></i>
-                  <i class="fa-solid fa-bell"></i>
+                <div class="col-2 dropdown">
+                  <i
+                    class="fa-regular fa-user dropdown-toggle"
+                    id="userDropdown"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  ></i>
+                  <div class="dropdown-menu" aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="#">Profile</a>
+                    <a class="dropdown-item" href="#">Settings</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" onclick="handlelogout()"
+                      >Logout</a
+                    >
+                  </div>
                 </div>
               </div>
               <!-- maincontent   -->
@@ -243,7 +243,11 @@
                       <div
                         style="display: flex; gap: 5px; justify-content: right"
                       >
-                        <button type="button" style="background-color: red" id="closemodal">
+                        <button
+                          type="button"
+                          style="background-color: red"
+                          id="closemodal"
+                        >
                           Close
                         </button>
                         <button type="submit">Submit</button>
@@ -295,6 +299,8 @@
       </div>
     </div>
     <!-- <script src="../Script.js"></script> -->
+
+    <script src="logout.js"></script>
     <script src="/blockMobile.js"></script>
     <script src="news.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
@@ -319,6 +325,14 @@
       //     reader.readAsDataURL(fileInput.files[0]);
       //   }
       // });
+    </script>
+    <script>
+      function handlelogout() {
+        if (localStorage.getItem("user")) {
+          localStorage.removeItem("user");
+          window.location.href = "../Index.html";
+        }
+      }
     </script>
     <!-- <script>
       // JavaScript to handle the popup
@@ -382,6 +396,7 @@
       //   });
       // }
     </script>
+
     <!-- <script>
       fetch("../Layout/DashboardSidebar.html")
         .then((response) => response.text())
