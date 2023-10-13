@@ -275,32 +275,35 @@ function deleteCategory(categoryNumber) {
     modal.classList.remove("show"); // Close the modal
     modal.style.display = "none";
 
-    // Perform the deletion here
     const formdata = new FormData();
     formdata.append("categoryId", categoryNumberToDelete);
-    fetch(`https://api.bhattacharjeesolution.in/book/api/delete-category.php`, {
-      method: "POST",
-      body: formdata,
-      headers: {
-        token: token,
-      },
-    })
+    fetch(
+      `https://api.bhattacharjeesolution.in/book/api/courses.php?id=${categoryNumberToDelete}`,
+      {
+        method: "DELETE",
+        headers: {
+          token: token,
+        },
+      }
+    )
       .then(function (response) {
         console.log(response);
         return response.json(); // Parse the response as JSON
       })
       .then(function (data) {
         console.log(data);
-        alert(data.data || "Successfully Deleted!");
-        window.location.reload();
-        fetchDataFromAPI(); // Update the table after deletion
-        console.log("data:", data);
+        if (data.error) {
+          alert(data.error || "Error while deleting!");
+        } else {
+          alert(data.message || "Successfully Deleted!");
+          window.location.reload();
+          // fetchDataFromAPI(); // Update the table after deletion
+        }
       })
       .catch(function (error) {
         console.error("Error fetching data:", error);
       });
 
-    // Remove the event listener to prevent multiple deletions
     confirmDeleteCategoryButton.removeEventListener("click", this);
   });
 

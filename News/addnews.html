@@ -169,6 +169,7 @@
     </script>
     <script>
       const token = localStorage.getItem("user");
+      const user = JSON.parse(localStorage.getItem("userInfo"));
       function fetchCategoryData() {
         // Replace 'YOUR_API_URL' with the actual API endpoint
         console.log("fethichg", token);
@@ -231,7 +232,7 @@
         // formData.append("mrp", document.getElementById("mrp").value);
         formData.append("lang", document.getElementById("lang").value);
         formData.append("update", "0");
-        formData.append("added_by", "Hunda");
+        formData.append("added_by", user.name);
         formData.append("photo", document.getElementById("image").files[0]);
 
         // Send the data to the server using Fetch and FormData
@@ -254,7 +255,7 @@
             console.log(data);
             if (data.id) {
               alert("News Added!");
-              // window.location.href = "news.html";
+              window.location.href = "news.html";
             }
           })
           .catch((error) => {

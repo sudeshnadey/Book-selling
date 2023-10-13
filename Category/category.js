@@ -300,11 +300,11 @@ function editCategory(categoryData) {
   categoryImagePreInput.src = `${categoryData.image.replace(" ", "%20")}`;
 
   // Show the popup
-  editButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      editPopup.style.display = "flex";
-    });
-  });
+  // editButtons.forEach((button) => {
+  //   button.addEventListener("click", () => {
+  //   });
+  // });
+  editPopup.style.display = "flex";
   // editPopup.style.display = "flex";
 
   // Add an event listener to the form submission

@@ -309,7 +309,7 @@ function editBanner(bannerData) {
       formData.append("quantity", document.getElementById("quantity").value);
       formData.append("discount", document.getElementById("discount").value);
       formData.append("lang", document.getElementById("lang").value);
-      // formData.append("type", document.getElementById("type").value);
+      formData.append("type", "book");
       formData.append("image", document.getElementById("image").files[0]);
       formData.append("id", bannerData.id);
       // formData.append("pdf", document.getElementById("pdf").files[0]);
@@ -384,10 +384,12 @@ function fetchCategoryData() {
 
       // Populate the select with data from the API
       data.forEach((category) => {
-        const option = document.createElement("option");
-        option.value = category.id;
-        option.textContent = category.name;
-        categorySelect.appendChild(option);
+        if (category.type == "book") {
+          const option = document.createElement("option");
+          option.value = category.id;
+          option.textContent = category.name;
+          categorySelect.appendChild(option);
+        }
       });
 
       // Add an event listener to fetch subcategories when a category is selected

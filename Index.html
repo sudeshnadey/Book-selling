@@ -94,6 +94,7 @@
               if (response.ok) {
                 const json = await response.json();
                 localStorage.setItem("user", json.token);
+                localStorage.setItem("userInfo", JSON.stringify(json.user));
                 // Handle successful login (e.g., redirect to dashboard)
                 window.location.href = "Dashboard.html";
               } else {

@@ -28,6 +28,7 @@ function fetchDataFromAPI() {
       console.log("totalpage:", totalFilteredPages);
       populateBannerTable(data);
       console.log("data:", data.length);
+      console.log("data:", data);
     })
     .catch(function (error) {
       console.error("Error fetching data:", error);
@@ -59,7 +60,7 @@ function populateBannerTable(data) {
       <td>${index + 1}</td>
       <td>${item.title}</td>
       <td>${item.description}</td>
-      <td><img src="${item.image}" height="50px" widht="50px" /></td>
+      <td><img src="${item.photo}" height="50px" widht="50px" /></td>
       <td>${item.added_by}</td>
       <td>${item.created_at}</td>
       <td>
@@ -211,7 +212,7 @@ function deleteBanner(bannerNumber) {
 
 // Flag to check if the submit event listener is already added
 let isSubmitEventListenerAdded = false;
-
+const user = JSON.parse(localStorage.getItem("userInfo"));
 // Function to handle editing a banner
 function editBanner(bannerData) {
   console.log(bannerData);
@@ -267,8 +268,10 @@ function editBanner(bannerData) {
       formData.append("category_id", document.getElementById("category").value);
       formData.append("lang", document.getElementById("lang").value);
       formData.append("update", 1);
-      formData.append("added_by ", "Hunda");
-      formData.append("photo", document.getElementById("image").files[0]);
+      formData.append("added_by", user.name);
+      if (document.getElementById("image").files[0]) {
+        formData.append("photo", document.getElementById("image").files[0]);
+      }
       formData.append("news_id", bannerData.id);
       try {
         const response = await fetch(
@@ -283,10 +286,16 @@ function editBanner(bannerData) {
         );
 
         if (response.ok) {
-          // Handle success (e.g., display a success message)
-          console.log("Form submitted successfully!");
-          window.location.reload();
-          fetchDataFromAPI();
+          const data = response.json();
+          console.log(data);
+          if (data.error) {
+            alert(data.error || "Error while editing!");
+          } else {
+            // Handle success (e.g., display a success message)
+            console.log("Form submitted successfully!");
+            window.location.reload();
+          }
+          // fetchDataFromAPI();
           editPopup.style.display = "none"; // Close the popup after submission (you can replace this with your logic)
         } else {
           // Handle error (e.g., display an error message)
@@ -340,10 +349,12 @@ function fetchCategoryData(id) {
 
       // Populate the select with data from the API
       data.forEach((category) => {
-        const option = document.createElement("option");
-        option.value = category.id;
-        option.textContent = category.name;
-        categorySelect.appendChild(option);
+        if (category.type == "news") {
+          const option = document.createElement("option");
+          option.value = category.id;
+          option.textContent = category.name;
+          categorySelect.appendChild(option);
+        }
       });
 
       categorySelect.value = id;

@@ -366,10 +366,12 @@
 
             // Populate the select with data from the API
             data.forEach((category) => {
-              const option = document.createElement("option");
-              option.value = category.id;
-              option.textContent = category.name;
-              categorySelect.appendChild(option);
+              if (category.type == "pdf") {
+                const option = document.createElement("option");
+                option.value = category.id;
+                option.textContent = category.name;
+                categorySelect.appendChild(option);
+              }
             });
 
             // Add an event listener to fetch subcategories when a category is selected
