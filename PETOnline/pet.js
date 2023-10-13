@@ -413,14 +413,14 @@ function editCategory(categoryData) {
         if (res.message) {
           // Handle success (e.g., display a success message)
           alert(res.message || "Form submitted successfully!");
-          window.location.reload();
+          // window.location.reload();
           // fetchDataFromAPI();
-          editPopup.style.display = "none"; // Close the popup after submission (you can replace this with your logic)
         } else {
           // Handle error (e.g., display an error message)
           console.error("Form submission failed!");
           alert(res.error || "Form submission failed!");
         }
+        editPopup.style.display = "none"; // Close the popup after submission (you can replace this with your logic)
       })
       .catch((error) => {
         console.error("An error occurred:", error);

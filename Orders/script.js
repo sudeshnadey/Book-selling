@@ -57,12 +57,10 @@ function fetchDataFromAPI() {
     });
 }
 
-
 // Function to populate the table
 function populateTable(data) {
   var tbody = document.getElementById("table-body");
 
-  
   // Calculate the start and end indices for the current page
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, data.length);
@@ -74,11 +72,18 @@ function populateTable(data) {
     row.innerHTML = `
             <td>${item.id}</td>
             <td>${item.name || ""}</td>
+            <td>${item.name || ""}</td>
+            <td>${item.name || ""}</td>
+            <td>${item.name || ""}</td>
             <td>${item.payment_method}</td>
             <td>${item.total_price}</td>
             <td>${item.created_at}</td>
             
-            <td>${item.status === "delivered" ? `<span class="badge badge-danger" style="background-color: green;"  >${item.status}</span>` : `<span class="badge badge-success" style="background-color: red;">${item.status}</span>` }</td>
+            <td>${
+              item.status === "delivered"
+                ? `<span class="badge badge-danger" style="background-color: green;"  >${item.status}</span>`
+                : `<span class="badge badge-success" style="background-color: red;">${item.status}</span>`
+            }</td>
             <td>
                 <button class="edit-button" style="border: none"  data-coupon='${JSON.stringify(
                   item
@@ -95,13 +100,12 @@ function populateTable(data) {
 
     var editButton = row.querySelector(".edit-button");
     addEditButtonClickHandler(editButton, item);
-  };
+  }
 
-  
   function addEditButtonClickHandler(editButton, item) {
     editButton.addEventListener("click", function () {
       var couponData = JSON.parse(editButton.getAttribute("data-coupon"));
-      console.log('item', item);
+      console.log("item", item);
       editBanner(item); // Pass the 'item' to the editCategory function
     });
   }
@@ -115,32 +119,36 @@ function editBanner(item) {
   console.log(item);
 
   const formdata = new FormData();
-  formdata.append("id", item.id)
-  formdata.append("status", item.status === "delivered" ? 'pending' : 'delivered')
+  formdata.append("id", item.id);
+  formdata.append(
+    "status",
+    item.status === "delivered" ? "pending" : "delivered"
+  );
 
-  fetch('https://api.bhattacharjeesolution.in/book/api/update-order.php', {
-      method: "POST",
-      headers: {
-        token: `${token}`, // Include the Bearer token in the header
-        // "Content-Type": "application/json", // You can adjust the content type as needed
-      },
-      body: formdata
-    }).then((response) => {
-      response.json()
+  fetch("https://api.bhattacharjeesolution.in/book/api/update-order.php", {
+    method: "POST",
+    headers: {
+      token: `${token}`, // Include the Bearer token in the header
+      // "Content-Type": "application/json", // You can adjust the content type as needed
+    },
+    body: formdata,
+  })
+    .then((response) => {
+      response.json();
     })
     .then((res) => {
       console.log(res);
       window.location.reload();
-    }).catch((err) => {
-      console.log(err);
     })
+    .catch((err) => {
+      console.log(err);
+    });
 
   // localStorage.setItem('coachingeditdata', itemString)
 
   // const queryParams = `data=${encodeURIComponent(JSON.stringify(itemData))}`;
   // window.location.href = `edit-student.php`;
 }
-
 
 function searchTable() {
   const searchInput = document.getElementById("searchbar").value.toLowerCase();
@@ -191,7 +199,6 @@ function nextPage() {
     // populateTable(window.fetchedData); // Display data for the updated page
   }
 }
-
 
 // script.js
 document.addEventListener("DOMContentLoaded", fetchDataFromAPI);
