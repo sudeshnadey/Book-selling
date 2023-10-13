@@ -308,7 +308,7 @@ function editCategory(question) {
         if (res.message) {
           // Handle success (e.g., display a success message)
           alert(res.message || "Form submitted successfully!");
-          // window.location.reload();
+          window.location.reload();
           // fetchDataFromAPI();
           editPopup.style.display = "none"; // Close the popup after submission (you can replace this with your logic)
         } else {

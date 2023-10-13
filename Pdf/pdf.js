@@ -65,6 +65,7 @@ function populateCategoryTable(data) {
       <td>${item.mrp}</td>
       <td>${item.discount}</td>
       <td>${item.type}</td>
+      <td>${item.lang == "in" ? "INDIAN" : "ENGLISH"} </td>
       <td>${item.description}</td>
       <td class="addstyle">
         <a href="#" onclick="sendDetail(${item.id})">View Resources</a> 

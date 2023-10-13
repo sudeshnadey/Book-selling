@@ -65,6 +65,7 @@ function populateCategoryTable(data) {
       <td>${item.mrp}</td>
       <td>${item.discount}</td>
       <td>${item.type}</td>
+      <td>${item.lang == "in" ? "INDIAN" : "ENGLISH"} </td>
       <td>${item.description}</td>
       <td class="addstyle">
         <a href="#" onclick="sendDetail(${item.id})">View Resources</a> 
@@ -413,7 +414,7 @@ function editCategory(categoryData) {
         if (res.message) {
           // Handle success (e.g., display a success message)
           alert(res.message || "Form submitted successfully!");
-          // window.location.reload();
+          window.location.reload();
           // fetchDataFromAPI();
         } else {
           // Handle error (e.g., display an error message)
