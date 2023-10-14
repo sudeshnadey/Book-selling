@@ -69,7 +69,7 @@ function populateCategoryTable(data) {
       <td>${item.discount}</td>
       <td>${item.type}</td>
       <td>${item.lang == "in" ? "INDIAN" : "ENGLISH"} </td>
-      <td>${item.description}</td>
+      <td>${item.description.slice(0, 20)}</td>
       <td class="addstyle">
         <a href="#" onclick="sendDetail(${item.id})">View Resources</a> 
       </td>
@@ -108,7 +108,7 @@ function populateCategoryTable(data) {
 function sendDetail(id) {
   console.log("routing");
   localStorage.setItem("addCourseDetailId", id);
-  window.location.href = "/EBook/DetailEbook.html";
+  window.location.href = "/ebook/DetailEbook.html";
 }
 
 function sendTest(id, name) {
