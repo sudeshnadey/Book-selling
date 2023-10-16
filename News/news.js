@@ -237,7 +237,7 @@ function editBanner(bannerData) {
   category.value = bannerData.categoryId;
   lang.value = bannerData.lang;
   // type.value = bannerData.type;
-  bannerImagePreInput.src = `${bannerData?.image}`;
+  bannerImagePreInput.src = `${bannerData?.photo}`;
   bannerImagePreInput.style.display = "block";
 
   // Show the popup
