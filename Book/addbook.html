@@ -167,8 +167,8 @@
                   <!-- <label for="createdApp">Created App:</label>
                   <input type="text" id="createdApp" name="createdApp" /> -->
 
-                  <label for="pdf">Content ( PDF File ): (optional) </label>
-                  <input type="file" id="pdf" name="pdf" accept=".pdf" />
+                  <!-- <label for="pdf">Content ( PDF File ): (optional) </label>
+                  <input type="file" id="pdf" name="pdf" accept=".pdf" /> -->
 
                   <label for="sample">Sample ( PDF File ):</label>
                   <input
@@ -285,9 +285,10 @@
         formData.append("lang", document.getElementById("lang").value);
         formData.append("type", "book");
         formData.append("image", document.getElementById("image").files[0]);
-        formData.append("content", document.getElementById("pdf").files[0]);
+        // formData.append("content", document.getElementById("pdf").files[0]);
         formData.append("barcode", document.getElementById("barcode").files[0]);
-        formData.append("sample", document.getElementById("sample").files[0]);
+        formData.append("content", document.getElementById("sample").files[0]);
+        // formData.append("sample", document.getElementById("sample").files[0]);
 
         // Send the data to the server using Fetch and FormData
         fetch("https://api.bhattacharjeesolution.in/book/api/add-book.php", {

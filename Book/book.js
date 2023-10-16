@@ -29,7 +29,7 @@ function fetchDataFromAPI() {
       totalFilteredPages = data.length; // Calculate total pages for the original data
       console.log("totalpage:", totalFilteredPages);
       populateBannerTable(data);
-      console.log("data:", data.length);
+      console.log("data:", data);
     })
     .catch(function (error) {
       console.error("Error fetching data:", error);
